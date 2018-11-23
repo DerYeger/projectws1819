@@ -5,7 +5,6 @@ import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.model.Unit;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class GameController {
 
@@ -30,30 +29,15 @@ public class GameController {
                 !source.getNeighbors().contains(destination) ||
                 source.getUnits().size() < 2) return false;
 
-        /*
-        while (destination.getUnits().size() > 0 && source.getUnits().size() > 1) {
-            Unit defendingUnit = destination.getUnits().get(0);
-            Unit attackingUnit = source.getUnits().get(0);
-            destination.withoutUnits(defendingUnit)
-                    .getPlayer().withoutUnits(defendingUnit);
-            source.withoutUnits(attackingUnit)
-                    .getPlayer().withoutUnits(attackingUnit);
-        }
-        */
+        int lostUnitCount = Math.min(source.getUnits().size() - 1, destination.getUnits().size());
+        ArrayList<Unit> lostAttackers = new ArrayList<>(source.getUnits().subList(0, lostUnitCount));
+        ArrayList<Unit> lostDefenders = new ArrayList<>(destination.getUnits().subList(0, lostUnitCount));
+        source.withoutUnits(lostAttackers)
+                .getPlayer().withoutUnits(lostAttackers);
+        destination.withoutUnits(lostDefenders)
+                .getPlayer().withoutUnits(lostDefenders);
 
-        ArrayList<Unit> lostAttackers = new ArrayList<>();
-        ArrayList<Unit> lostDefenders = new ArrayList<>();
-        Iterator<Unit> aI = source.getUnits().iterator();
-        Iterator<Unit> dI = destination.getUnits().iterator();
-        aI.next();
-        while (aI.hasNext() && dI.hasNext()) {
-            lostAttackers.add(aI.next());
-            lostDefenders.add(dI.next());
-        }
-        source.withoutUnits(lostAttackers).getPlayer().withoutUnits(lostAttackers);
-        destination.withoutUnits(lostDefenders).getPlayer().withoutUnits(lostDefenders);
-
-        if (destination.getUnits().size() == 0) {
+        if (destination.getUnits().isEmpty()) {
             destination.setPlayer(null);
             move(source, destination);
         }

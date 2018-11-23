@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="11584355-e588-44bf-8997-3f25566ebd11" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/uniks/liverisk/controller/GameController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/de/uniks/liverisk/controller/ControllerTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/uniks/liverisk/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/uniks/liverisk/controller/GameController.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -23,7 +22,7 @@
     <SUITE FILE_PATH="coverage/liverisk$ControllerTests.ic" NAME="ControllerTests Coverage Results" MODIFIED="1542992482589" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>de.uniks.liverisk.model.controller.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/liverisk$ControllerTests__1_.ic" NAME="ControllerTests (1) Coverage Results" MODIFIED="1543008024273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/liverisk$ControllerTests__1_.ic" NAME="ControllerTests (1) Coverage Results" MODIFIED="1543012674618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>de.uniks.liverisk.controller.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/liverisk$ControllerTests_testMove.ic" NAME="ControllerTests.testMove Coverage Results" MODIFIED="1542990871743" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
@@ -46,7 +45,7 @@
       <file leaf-file-name="ControllerTests.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/de/uniks/liverisk/controller/ControllerTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="446">
+            <state relative-caret-position="4066">
               <caret line="220" selection-start-line="220" selection-end-line="220" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -58,11 +57,20 @@
       <file leaf-file-name="GameController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/de/uniks/liverisk/controller/GameController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="419">
-              <caret line="40" column="9" lean-forward="true" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
+            <state relative-caret-position="875">
+              <caret line="48" column="45" selection-start-line="48" selection-start-column="45" selection-end-line="48" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Platform.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/de/uniks/liverisk/model/Platform.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4807">
+              <caret line="270" selection-start-line="270" selection-end-line="270" />
             </state>
           </provider>
         </entry>
@@ -487,8 +495,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -788,50 +796,51 @@
       <workItem from="1542987529907" duration="6584000" />
       <workItem from="1542999536850" duration="86000" />
       <workItem from="1542999636726" duration="8519000" />
+      <workItem from="1543010834081" duration="1711000" />
+      <workItem from="1543012897913" duration="6000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 08m 36s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 30m 04s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 09m 01s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 34m 17s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 15m 11s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 34m 38s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 15m 36s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 35m 40s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 16m 09s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 36m 08s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 17m 36s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 36m 10s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 17m 41s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 37m 11s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 18m 35s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 37m 35s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 19m 13s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 37m 37s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ControllerTests_(1) - 2018.11.23 at 22h 20m 25s.xml">
+    <history-entry file="ControllerTests_(1) - 2018.11.23 at 23h 37m 55s.xml">
       <configuration name="ControllerTests (1)" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15771000" />
+    <option name="totallyTimeSpent" value="17488000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="3394" height="1456" extended-state="6" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.32885906" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
@@ -840,7 +849,6 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32885906" />
-      <window_info anchor="right" id="Coverage" order="4" side_tool="true" weight="0.3294849" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
@@ -853,6 +861,7 @@
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.398956" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.32885906" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Build" order="7" weight="0.32960477" />
@@ -860,6 +869,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="right" id="Coverage" order="4" side_tool="true" weight="0.3294849" />
     </layout>
     <layout-to-restore>
       <window_info anchor="bottom" id="Build" order="7" weight="0.32960477" />
@@ -903,10 +913,57 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="19" />
+      <option name="time" value="21" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/test/java/de/uniks/liverisk/controller/ControllerTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4066">
+          <caret line="220" selection-start-line="220" selection-end-line="220" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/uniks/liverisk/model/Platform.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4807">
+          <caret line="270" selection-start-line="270" selection-end-line="270" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/uniks/liverisk/controller/GameController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="836">
+          <caret line="48" column="45" lean-forward="true" selection-start-line="48" selection-start-column="45" selection-end-line="48" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/de/uniks/liverisk/controller/ControllerTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4180">
+          <caret line="220" selection-start-line="220" selection-end-line="220" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/uniks/liverisk/controller/GameController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="665">
+          <caret line="40" column="9" lean-forward="true" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/de/uniks/liverisk/controller/ControllerTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
@@ -923,9 +980,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="15" column="7" lean-forward="true" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -937,13 +991,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
           <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/de/uniks/liverisk/model/Platform.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="298" column="28" selection-start-line="298" selection-start-column="19" selection-end-line="298" selection-end-column="28" />
         </state>
       </provider>
     </entry>
@@ -960,9 +1007,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="18" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -977,15 +1021,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="51" selection-start-line="51" selection-end-line="51" />
-          <folding>
-            <element signature="e#1482#1483#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/de/uniks/liverisk/controller/ControllerTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
+        <state relative-caret-position="4066">
           <caret line="220" selection-start-line="220" selection-end-line="220" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -993,10 +1034,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/uniks/liverisk/model/Platform.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4807">
+          <caret line="270" selection-start-line="270" selection-end-line="270" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/de/uniks/liverisk/controller/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="40" column="9" lean-forward="true" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
+        <state relative-caret-position="875">
+          <caret line="48" column="45" selection-start-line="48" selection-start-column="45" selection-end-line="48" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
