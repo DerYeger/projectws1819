@@ -13,11 +13,9 @@ public class GameController {
                 source.getPlayer() == null || destination.getPlayer() != null && source.getPlayer() != destination.getPlayer() ||
                 !source.getNeighbors().contains(destination) ||
                 destination.getUnits().size() >= destination.getCapacity() || source.getUnits().size() < 2) return false;
-        while (destination.getCapacity() - destination.getUnits().size() > 0 && source.getUnits().size() > 1) {
-            Unit unit = source.getUnits().get(0);
-            source.withoutUnits(unit);
-            destination.withUnits(unit);
-        }
+
+        ArrayList<Unit> unitsToMove = new ArrayList<>(source.getUnits().subList(0, Math.min(destination.getCapacity() - destination.getUnits().size(), source.getUnits().size() - 1)));
+        destination.withUnits(unitsToMove);
         destination.setPlayer(destination.getUnits().get(0).getPlayer());
         return true;
     }
@@ -30,12 +28,12 @@ public class GameController {
                 source.getUnits().size() < 2) return false;
 
         int lostUnitCount = Math.min(source.getUnits().size() - 1, destination.getUnits().size());
-        ArrayList<Unit> lostAttackers = new ArrayList<>(source.getUnits().subList(0, lostUnitCount));
-        ArrayList<Unit> lostDefenders = new ArrayList<>(destination.getUnits().subList(0, lostUnitCount));
-        source.withoutUnits(lostAttackers)
-                .getPlayer().withoutUnits(lostAttackers);
-        destination.withoutUnits(lostDefenders)
-                .getPlayer().withoutUnits(lostDefenders);
+
+        ArrayList<Unit> attackers = new ArrayList<>(source.getUnits());
+        ArrayList<Unit> defenders = new ArrayList<>(destination.getUnits());
+
+        attackers.stream().limit(lostUnitCount).forEach(u -> u.removeYou());
+        defenders.stream().limit(lostUnitCount).forEach(u -> u.removeYou());
 
         if (destination.getUnits().isEmpty()) {
             destination.setPlayer(null);
@@ -46,19 +44,11 @@ public class GameController {
 
     public boolean reenforce(Platform platform) {
         if (platform == null || platform.getPlayer() == null || platform.getUnits().size() >= platform.getCapacity()) return false;
-        Player player = platform.getPlayer();
-        ArrayList<Unit> spareUnits = new ArrayList<>();
-
-        player.getUnits().stream().filter(u -> u.getPlatform() == null).forEach(u -> spareUnits.add(u));
-
-        if (spareUnits.isEmpty()) return false;
-
-        //Iterator<Unit> it = spareUnits.iterator();
-        //while (platform.getCapacity() > platform.getUnits().size() && it.hasNext()) platform.withUnits(it.next());
-        int emptySlots = platform.getCapacity() - platform.getUnits().size();
-        platform.withUnits(spareUnits.subList(0, emptySlots > spareUnits.size() ? spareUnits.size() : emptySlots));
-
-        return true;
+        int oldUnitCount = platform.getUnits().size();
+        platform.getPlayer().getUnits().stream().filter(u -> u.getPlatform() == null)
+                .limit(platform.getCapacity() - platform.getUnits().size())
+                .forEach(u -> platform.withUnits(u));
+        return oldUnitCount != platform.getUnits().size();
     }
 
 }
