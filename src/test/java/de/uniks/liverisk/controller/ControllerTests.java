@@ -88,6 +88,40 @@ public class ControllerTests extends TestCase {
         for (Unit unit : alice.getUnits()) Assert.assertNotNull(unit.getPlatform());
     }
 
+    @Test
+    public void testAdditionalMoveCases() {
+        //setup
+        GameController gc = new GameController();
+        Game game = new Game();
+        Platform platform1 = new Platform().setCapacity(5).withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit());
+        Platform platform2 = new Platform().setCapacity(3);
+        Platform platform3 = new Platform().setCapacity(3).withUnits(new Unit(), new Unit(), new Unit());
+        Platform platform4 = new Platform().setCapacity(5);
+        Platform platform5 = new Platform().setCapacity(5).withUnits(new Unit(), new Unit(), new Unit(), new Unit());
+        Platform platform6 = new Platform().setCapacity(5).withUnits(new Unit(), new Unit(), new Unit());
+        Player alice = new Player().withPlatforms(platform1).withUnits(platform1.getUnits());
+        Player bob = new Player().withPlatforms(platform3, platform5, platform6).withUnits(platform3.getUnits(), platform5.getUnits(), platform6.getUnits());
+
+        platform1.withNeighbors(platform2);
+        platform3.withNeighbors(platform4);
+        platform5.withNeighbors(platform6);
+
+        game.withPlatforms(platform1, platform2, platform3, platform4, platform5, platform6).withPlayers(alice, bob);
+
+        //actions and asserts
+        Assert.assertTrue(gc.move(platform1, platform2));   //destination cap reached
+        Assert.assertTrue(gc.move(platform3, platform4));   //1 left on source
+        Assert.assertTrue(gc.move(platform5, platform6));   //destination cap reached, units already present
+
+        Assert.assertEquals(2, platform1.getUnits().size());
+        Assert.assertEquals(3, platform2.getUnits().size());
+
+        Assert.assertEquals(1, platform3.getUnits().size());
+        Assert.assertEquals(2, platform4.getUnits().size());
+
+        Assert.assertEquals(2, platform5.getUnits().size());
+        Assert.assertEquals(5, platform6.getUnits().size());
+    }
 
     @Test
     public void testBadMoveCases() {
@@ -152,7 +186,8 @@ public class ControllerTests extends TestCase {
         Player alice = new Player().setName("Alice");
         Player bob = new Player().setName("Bob");
 
-        game.withPlatforms(platformA1, platformA2, platformA3, platformA4, platformA5, platformB1, platformB2, platformB3, platformB4, platformB5).withPlayers(alice, bob);
+        game.withPlatforms(platformA1, platformA2, platformA3, platformA4, platformA5, platformB1, platformB2, platformB3, platformB4, platformB5)
+                .withPlayers(alice, bob);
 
         platformA1.withUnits(new Unit(), new Unit(), new Unit(), new Unit(),new Unit())
                 .setPlayer(alice)

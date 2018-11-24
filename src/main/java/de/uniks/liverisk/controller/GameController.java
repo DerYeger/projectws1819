@@ -1,7 +1,6 @@
 package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.Platform;
-import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.model.Unit;
 
 import java.util.ArrayList;
@@ -44,10 +43,11 @@ public class GameController {
 
     public boolean reenforce(Platform platform) {
         if (platform == null || platform.getPlayer() == null || platform.getUnits().size() >= platform.getCapacity()) return false;
+
         int oldUnitCount = platform.getUnits().size();
         platform.getPlayer().getUnits().stream().filter(u -> u.getPlatform() == null)
                 .limit(platform.getCapacity() - platform.getUnits().size())
-                .forEach(u -> platform.withUnits(u));
+                .forEach(u -> u.setPlatform(platform));
         return oldUnitCount != platform.getUnits().size();
     }
 
