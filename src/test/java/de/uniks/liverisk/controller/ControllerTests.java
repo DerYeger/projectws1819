@@ -10,7 +10,10 @@ import org.junit.Test;
 
 public class ControllerTests extends TestCase {
 
-    //alice moves a unit
+    //Alice moves a unit
+    //Start: Alice has 5 units on platform 1. No units are on platform 2, which is connected to platform 1.
+    //Action: Alice moves to platform 2.
+    //End: Alice has 2 units on platform 1 and 3 units on platform 2.
     @Test
     public void testMove() {
         //setup
@@ -34,7 +37,10 @@ public class ControllerTests extends TestCase {
         Assert.assertTrue(alice.getPlatforms().contains(platform2));
     }
 
-    //bob attacks alice
+    //Bob attacks alice
+    //Start: Bob has 3 units on one platform, which is connected to a platform containing 1 unit owned by Alice.
+    //Action: Bob attacks Alice's platform from his own.
+    //End: Bob and Alice lose 1 unit each. Bob has 1 unit on the attacking and 1 unit on the attacked platform.
     @Test
     public void testAttack() {
         //setup
@@ -69,7 +75,10 @@ public class ControllerTests extends TestCase {
         Assert.assertEquals(1, platformB.getUnits().size());
     }
 
-    //alice reenforces a platform
+    //Alice reenforces a platform
+    //Start: Alice has 1 unit on a platform with a capacity of 3 and 1 unit in her reserves.
+    //Action: Alice sends 1 unit from her reserves on the platform.
+    //End: Alice has 2 units on the platform and no units in her reserves.
     @Test
     public void testReenforce() {
         //setup
@@ -87,6 +96,9 @@ public class ControllerTests extends TestCase {
         Assert.assertEquals(2, platform.getUnits().size());
         for (Unit unit : alice.getUnits()) Assert.assertNotNull(unit.getPlatform());
     }
+
+    //none of the following tests is required to reach 100% CodeCoverage
+    //and thus can/should be disregarded for the assignment
 
     @Test
     public void testAdditionalMoveCases() {
@@ -110,7 +122,7 @@ public class ControllerTests extends TestCase {
 
         //actions and asserts
         Assert.assertTrue(gc.move(platform1, platform2));   //destination cap reached
-        Assert.assertTrue(gc.move(platform3, platform4));   //1 left on source
+        Assert.assertTrue(gc.move(platform3, platform4));   //only 1 unit left on source
         Assert.assertTrue(gc.move(platform5, platform6));   //destination cap reached, units already present
 
         Assert.assertEquals(2, platform1.getUnits().size());
@@ -226,24 +238,6 @@ public class ControllerTests extends TestCase {
                 .setCapacity(3);
         alice.withUnits(platformA1.getUnits(), platformA2.getUnits(), platformA3.getUnits(), platformA4.getUnits(), platformA5.getUnits());
         bob.withUnits(platformB1.getUnits(), platformB2.getUnits(), platformB3.getUnits(), platformB4.getUnits(), platformB5.getUnits());
-
-        //pre-action assert
-        Assert.assertEquals(24, alice.getUnits().size());
-        Assert.assertEquals(16, bob.getUnits().size());
-        Assert.assertEquals(5, alice.getPlatforms().size());
-        Assert.assertEquals(5, bob.getPlatforms().size());
-
-        Assert.assertTrue(alice.getPlatforms().contains(platformA1));
-        Assert.assertTrue(alice.getPlatforms().contains(platformA2));
-        Assert.assertTrue(alice.getPlatforms().contains(platformA3));
-        Assert.assertTrue(alice.getPlatforms().contains(platformA4));
-        Assert.assertTrue(alice.getPlatforms().contains(platformA5));
-
-        Assert.assertTrue(bob.getPlatforms().contains(platformB1));
-        Assert.assertTrue(bob.getPlatforms().contains(platformB2));
-        Assert.assertTrue(bob.getPlatforms().contains(platformB3));
-        Assert.assertTrue(bob.getPlatforms().contains(platformB4));
-        Assert.assertTrue(bob.getPlatforms().contains(platformB5));
 
         //actions
         Assert.assertTrue(gc.attack(platformA1, platformB1));   //successful attack
@@ -382,4 +376,5 @@ public class ControllerTests extends TestCase {
         Assert.assertFalse(gc.reenforce(platformC));    //reenforcing unowned platform with units
         Assert.assertFalse(gc.reenforce(platformD));    //reenforcing unowned platform without units
     }
+
 }
