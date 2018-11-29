@@ -37,7 +37,7 @@ public class ControllerTests extends TestCase {
         Assert.assertTrue(alice.getPlatforms().contains(platform2));
     }
 
-    //Bob attacks alice
+    //Bob attacks Alice
     //Start: Bob has 3 units on one platform, which is connected to a platform containing 1 unit owned by Alice.
     //Action: Bob attacks Alice's platform from his own.
     //End: Bob and Alice lose 1 unit each. Bob has 1 unit on the attacking and 1 unit on the attacked platform.
