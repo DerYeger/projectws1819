@@ -15,7 +15,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class MainApp extends Application {
+
+    private GameController gc;
 
     public static void main(String[] args) {
         launch(args);
@@ -27,7 +31,9 @@ public class MainApp extends Application {
         primaryStage.show();
     }
 
-    private Scene buildStartScreen(Stage primaryStage) {
+
+    private void buildStartScreen(Stage primaryStage) {
+        Objects.requireNonNull(primaryStage);
         Button twoPlayerButton = new Button("Start 2-player Game");
         Button threePlayerButton = new Button("Start 3-player Game");
         Button fourPlayerButton = new Button("Start 4-player Game");
@@ -37,18 +43,19 @@ public class MainApp extends Application {
         fourPlayerButton.setOnAction(e -> buildPlayerEditorScreen(primaryStage, 4));
 
         Label welcomeLabel = new Label("Welcome to LiveRisk.");
-        Label infoLabel = new Label("Please select the number of players for this round.");
-
         welcomeLabel.setStyle("-fx-font-size: 35");
+
+        Label infoLabel = new Label("Please select the number of players for this round.");
         infoLabel.setStyle("-fx-font-size: 15");
 
         VBox mainBox = new VBox(40);
-        VBox labelBox = new VBox(10);
-        VBox buttonBox = new VBox(20);
-
-        mainBox.setAlignment(Pos.CENTER);
+        mainBox.setAlignment(Pos.TOP_CENTER);
         mainBox.setStyle("-fx-font-size: 20");
+
+        VBox labelBox = new VBox(10);
         labelBox.setAlignment(Pos.CENTER);
+
+        VBox buttonBox = new VBox(20);
         buttonBox.setAlignment(Pos.CENTER);
 
         mainBox.getChildren().addAll(labelBox, buttonBox);
@@ -57,42 +64,56 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(mainBox, 800, 600);
         primaryStage.setScene(scene);
-        return scene;
     }
 
-    private Scene buildPlayerEditorScreen(Stage primaryStage, int playerCount) {
-        GameController gc = new GameController();
+    private void buildPlayerEditorScreen(Stage primaryStage, int playerCount) {
+        Objects.requireNonNull(primaryStage);
+        gc = new GameController();
         gc.initialize(playerCount);
 
         Button startButton = new Button("Start");
 
         Label welcomeLabel = new Label("Welcome to LiveRisk.");
-        Label infoLabel = new Label("Please choose player names and colors.");
-
         welcomeLabel.setStyle("-fx-font-size: 35");
+
+        Label infoLabel = new Label("Please choose player names and colors.");
         infoLabel.setStyle("-fx-font-size: 15");
 
         VBox mainBox = new VBox(40);
-        VBox labelBox = new VBox(10);
-        VBox editBox = new VBox(20);
-
-        mainBox.setAlignment(Pos.CENTER);
+        mainBox.setAlignment(Pos.TOP_CENTER);
         mainBox.setStyle("-fx-font-size: 20");
+
+        VBox labelBox = new VBox(10);
         labelBox.setAlignment(Pos.CENTER);
+
+        VBox editBox = new VBox(20);
         editBox.setAlignment(Pos.CENTER);
 
         for (int i = 0; i < playerCount; i++) {
-            PlayerNameField playerNameField =  new PlayerNameField(gc.getGame().getPlayers().get(i));
-            PlayerColorPicker playerColorPicker = new PlayerColorPicker(gc.getGame().getPlayers().get(i));
 
-            playerNameField.textProperty().addListener((observable, oldValue, newValue) -> playerNameField.updatePlayerName(newValue));
-            playerColorPicker.valueProperty().addListener((observable, oldValue, newValue) -> playerColorPicker.updatePlayerColor(newValue.toString()));
+            class PlayerEditHBox extends HBox{
+                private Player player;
+                private TextField playerNameField;
+                private ColorPicker playerColorPicker;
 
-            HBox playerBox = new HBox(20);
 
-            playerBox.setAlignment(Pos.CENTER);
-            playerBox.getChildren().addAll(playerNameField, playerColorPicker);
-            editBox.getChildren().add(playerBox);
+                PlayerEditHBox(double spacing, Player player) {
+                    super(spacing);
+                    this.player = player;
+                    initialize();
+                }
+
+                private void initialize() {
+                    playerNameField = new TextField(gc.getPlayerName(player));
+                    playerColorPicker = new ColorPicker(Color.web(gc.getPlayerColor(player)));
+                    playerNameField.textProperty().addListener((observable, oldValue, newValue) -> gc.setPlayerName(player, newValue));
+                    playerColorPicker.valueProperty().addListener((observable, oldValue, newValue) -> gc.setPlayerColor(player, newValue.toString()));
+                    getChildren().addAll(playerNameField, playerColorPicker);
+                    setAlignment(Pos.CENTER);
+                }
+            }
+
+            editBox.getChildren().add(new PlayerEditHBox(20, gc.getPlayerByNumber(i)));
         }
 
         mainBox.getChildren().addAll(labelBox, editBox, startButton);
@@ -100,41 +121,7 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(mainBox, 800, 600);
         primaryStage.setScene(scene);
-        return scene;
     }
 
-    private class PlayerNameField extends TextField {
-        private Player player;
 
-        public Player getPlayer() {
-            return player;
-        }
-
-        PlayerNameField(Player player) {
-            this.player = player;
-            setText(player.getName());
-        }
-
-        public void updatePlayerName(String newName) {
-            getPlayer().setName(newName);
-        }
-
-    }
-
-    private class PlayerColorPicker extends ColorPicker {
-        private Player player;
-
-        public Player getPlayer() {
-            return player;
-        }
-
-        PlayerColorPicker(Player player) {
-            this.player = player;
-            setValue(Color.web(player.getColor()));
-        }
-
-        public void updatePlayerColor(String newColor) {
-            getPlayer().setName(newColor);
-        }
-    }
 }
