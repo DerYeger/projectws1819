@@ -106,8 +106,14 @@ public class MainApp extends Application {
                 private void initialize() {
                     playerNameField = new TextField(gc.getPlayerName(player));
                     playerColorPicker = new ColorPicker(Color.web(gc.getPlayerColor(player)));
-                    playerNameField.textProperty().addListener((observable, oldValue, newValue) -> gc.setPlayerName(player, newValue));
-                    playerColorPicker.valueProperty().addListener((observable, oldValue, newValue) -> gc.setPlayerColor(player, newValue.toString()));
+                    playerNameField.textProperty().addListener((observable, oldValue, newValue) -> {
+                        gc.setPlayerName(player, newValue);
+                        startButton.setDisable(gc.playerConfigurationIsInvalid());
+                    });
+                    playerColorPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+                        gc.setPlayerColor(player, newValue.toString());
+                        startButton.setDisable(gc.playerConfigurationIsInvalid());
+                    });
                     getChildren().addAll(playerNameField, playerColorPicker);
                     setAlignment(Pos.CENTER);
                 }

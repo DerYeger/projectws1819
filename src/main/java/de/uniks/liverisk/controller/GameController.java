@@ -7,6 +7,7 @@ import de.uniks.liverisk.model.Unit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class GameController {
 
@@ -20,7 +21,7 @@ public class GameController {
     }
 
     public void initialize(int playerCount) {
-        if (game != null) return;
+        if (game != null || playerCount < 2 || playerCount > 4) return;
         game = new Game();
         for (int i = 0; i < playerCount; i++) {
             game.withPlayers(new Player().setName(defaultNames.get(i)).setColor(defaultColors.get(i)));
@@ -69,6 +70,18 @@ public class GameController {
                 .limit(platform.getCapacity() - platform.getUnits().size())
                 .forEach(u -> u.setPlatform(platform));
         return oldUnitCount != platform.getUnits().size();
+    }
+
+    public boolean playerConfigurationIsInvalid() {
+        //checks if player names include duplicates
+        HashSet<String> nameSet = new HashSet<>();
+        getGame().getPlayers().stream().filter(p -> !p.getName().isEmpty()).forEach(p -> nameSet.add(p.getName()));
+        if (nameSet.size() != getGame().getPlayers().size()) return true;
+
+        //checks if player colors include duplicates
+        HashSet<String> colorSet = new HashSet<>();
+        getGame().getPlayers().stream().filter(p -> !p.getColor().isEmpty()).forEach(p -> colorSet.add(p.getColor()));
+        return colorSet.size() != getGame().getPlayers().size();
     }
 
     public Player getPlayerByNumber(int number) {
