@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class GameController {
 
-    private static final ArrayList<String> defaultNames = new ArrayList<>(Arrays.asList("Alpha", "Beta", "Charlie", "Delta"));
+    private static final ArrayList<String> defaultNames = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
     private static final ArrayList<String> defaultColors = new ArrayList<>(Arrays.asList("green", "red", "blue", "yellow"));
 
     private Game game;
@@ -69,6 +69,26 @@ public class GameController {
                 .limit(platform.getCapacity() - platform.getUnits().size())
                 .forEach(u -> u.setPlatform(platform));
         return oldUnitCount != platform.getUnits().size();
+    }
+
+    public Player getPlayerByNumber(int number) {
+        return getGame().getPlayers().get(number);
+    }
+
+    public String getPlayerName(Player player) {
+        return player.getName();
+    }
+
+    public void setPlayerName(Player player, String name) {
+        player.setName(name);
+    }
+
+    public String getPlayerColor(Player player) {
+        return player.getColor();
+    }
+
+    public void setPlayerColor(Player player, String color) {
+        player.setColor(color);
     }
 
 }
