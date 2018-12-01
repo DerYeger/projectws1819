@@ -1,11 +1,31 @@
 package de.uniks.liverisk.controller;
 
+import de.uniks.liverisk.model.Game;
 import de.uniks.liverisk.model.Platform;
+import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.model.Unit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameController {
+
+    private static final ArrayList<String> defaultNames = new ArrayList<>(Arrays.asList("Alpha", "Beta", "Charlie", "Delta"));
+    private static final ArrayList<String> defaultColors = new ArrayList<>(Arrays.asList("green", "red", "blue", "yellow"));
+
+    private Game game;
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void initialize(int playerCount) {
+        if (game != null) return;
+        game = new Game();
+        for (int i = 0; i < playerCount; i++) {
+            game.withPlayers(new Player().setName(defaultNames.get(i)).setColor(defaultColors.get(i)));
+        }
+    }
 
     public boolean move(Platform source, Platform destination) {
         if (source == null || destination == null ||
