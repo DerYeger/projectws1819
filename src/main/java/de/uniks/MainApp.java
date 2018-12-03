@@ -27,20 +27,20 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        buildStartScreen(primaryStage);
+        primaryStage.setScene(buildStartScreen(primaryStage));
         primaryStage.show();
     }
 
 
-    private void buildStartScreen(Stage primaryStage) {
+    private Scene buildStartScreen(Stage primaryStage) {
         Objects.requireNonNull(primaryStage);
         Button twoPlayerButton = new Button("Start 2-player Game");
         Button threePlayerButton = new Button("Start 3-player Game");
         Button fourPlayerButton = new Button("Start 4-player Game");
 
-        twoPlayerButton.setOnAction(e -> buildPlayerEditorScreen(primaryStage, 2));
-        threePlayerButton.setOnAction(e -> buildPlayerEditorScreen(primaryStage, 3));
-        fourPlayerButton.setOnAction(e -> buildPlayerEditorScreen(primaryStage, 4));
+        twoPlayerButton.setOnAction(e -> primaryStage.setScene(buildPlayerEditorScreen(primaryStage, 2)));
+        threePlayerButton.setOnAction(e -> primaryStage.setScene(buildPlayerEditorScreen(primaryStage, 3)));
+        fourPlayerButton.setOnAction(e -> primaryStage.setScene(buildPlayerEditorScreen(primaryStage, 4)));
 
         Label welcomeLabel = new Label("Welcome to LiveRisk.");
         welcomeLabel.setStyle("-fx-font-size: 35");
@@ -49,7 +49,7 @@ public class MainApp extends Application {
         infoLabel.setStyle("-fx-font-size: 15");
 
         VBox mainBox = new VBox(40);
-        mainBox.setAlignment(Pos.TOP_CENTER);
+        mainBox.setAlignment(Pos.CENTER);
         mainBox.setStyle("-fx-font-size: 20");
 
         VBox labelBox = new VBox(10);
@@ -62,11 +62,10 @@ public class MainApp extends Application {
         labelBox.getChildren().addAll(welcomeLabel, infoLabel);
         buttonBox.getChildren().addAll(twoPlayerButton, threePlayerButton, fourPlayerButton);
 
-        Scene scene = new Scene(mainBox, 800, 600);
-        primaryStage.setScene(scene);
+        return new Scene(mainBox, 800, 600);
     }
 
-    private void buildPlayerEditorScreen(Stage primaryStage, int playerCount) {
+    private Scene buildPlayerEditorScreen(Stage primaryStage, int playerCount) {
         Objects.requireNonNull(primaryStage);
         gc = new GameController();
         gc.initialize(playerCount);
@@ -80,7 +79,7 @@ public class MainApp extends Application {
         infoLabel.setStyle("-fx-font-size: 15");
 
         VBox mainBox = new VBox(40);
-        mainBox.setAlignment(Pos.TOP_CENTER);
+        mainBox.setAlignment(Pos.CENTER);
         mainBox.setStyle("-fx-font-size: 20");
 
         VBox labelBox = new VBox(10);
@@ -125,8 +124,7 @@ public class MainApp extends Application {
         mainBox.getChildren().addAll(labelBox, editBox, startButton);
         labelBox.getChildren().addAll(welcomeLabel, infoLabel);
 
-        Scene scene = new Scene(mainBox, 800, 600);
-        primaryStage.setScene(scene);
+        return new Scene(mainBox, 800, 600);
     }
 
 
