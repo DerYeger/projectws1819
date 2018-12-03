@@ -12,7 +12,7 @@ import java.util.HashSet;
 public class GameController {
 
     private static final ArrayList<String> DEFAULT_NAMES = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
-    private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("green", "red", "blue", "yellow"));
+    private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("0x008000ff", "0xff0000ff", "0x0000ffff", "0xffff00ff"));
 
     private Game game;
 
