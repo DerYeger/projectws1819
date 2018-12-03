@@ -11,8 +11,8 @@ import java.util.HashSet;
 
 public class GameController {
 
-    private static final ArrayList<String> defaultNames = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
-    private static final ArrayList<String> defaultColors = new ArrayList<>(Arrays.asList("green", "red", "blue", "yellow"));
+    private static final ArrayList<String> DEFAULT_NAMES = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
+    private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("green", "red", "blue", "yellow"));
 
     private Game game;
 
@@ -24,7 +24,7 @@ public class GameController {
         if (game != null || playerCount < 2 || playerCount > 4) return;
         game = new Game();
         for (int i = 0; i < playerCount; i++) {
-            game.withPlayers(new Player().setName(defaultNames.get(i)).setColor(defaultColors.get(i)));
+            game.withPlayers(new Player().setName(DEFAULT_NAMES.get(i)).setColor(DEFAULT_COLORS.get(i)));
         }
     }
 
@@ -72,16 +72,15 @@ public class GameController {
         return oldUnitCount != platform.getUnits().size();
     }
 
+    //checks if player names or colors include duplicates
     public boolean playerConfigurationIsInvalid() {
-        //checks if player names include duplicates
         HashSet<String> nameSet = new HashSet<>();
-        getGame().getPlayers().stream().filter(p -> !p.getName().isEmpty()).forEach(p -> nameSet.add(p.getName()));
-        if (nameSet.size() != getGame().getPlayers().size()) return true;
-
-        //checks if player colors include duplicates
         HashSet<String> colorSet = new HashSet<>();
-        getGame().getPlayers().stream().filter(p -> !p.getColor().isEmpty()).forEach(p -> colorSet.add(p.getColor()));
-        return colorSet.size() != getGame().getPlayers().size();
+        getGame().getPlayers().stream().filter(p -> !p.getName().isEmpty() && !p.getColor().isEmpty()).forEach(p -> {
+            nameSet.add(p.getName());
+            colorSet.add(p.getColor());
+        });
+        return nameSet.size() != getGame().getPlayers().size() || colorSet.size() != getGame().getPlayers().size();
     }
 
     public Player getPlayerByNumber(int number) {
