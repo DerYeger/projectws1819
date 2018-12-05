@@ -2,6 +2,7 @@
     -fx-font-size: 20;
     -fx-pref-width: 300;
     -fx-pref-height: 50;
+    -fx-background-radius: 10;
     -fx-alignment: center;
     -fx-focus-traversable: false;
 }
@@ -9,9 +10,9 @@
 .color-picker {
     -fx-pref-width: 50;
     -fx-pref-height: 50;
+    -fx-background-radius: 50;
     -fx-focus-traversable: false;
     -fx-color-label-visible: false;
-    -fx-background-radius: 30, 30, 30, 30;
 }
 
 .color-picker .color-picker-label .picker-color .picker-color-rect {
@@ -23,6 +24,7 @@
     -fx-font-size: 20;
     -fx-pref-width: 300;
     -fx-pref-height: 50;
+    -fx-background-radius: 10;
     -fx-alignment: center;
     -fx-focus-traversable: false;
 }
