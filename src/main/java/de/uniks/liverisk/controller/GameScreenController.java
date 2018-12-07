@@ -23,11 +23,8 @@ public class GameScreenController {
             FXMLLoader fxmlLoader = new FXMLLoader(SceneBuilder.class.getResource("playerCard.fxml"));
             try {
                 Parent parent = fxmlLoader.load();
-
                 PlayerCardController controller = fxmlLoader.getController();
-
                 controller.setPlayer(player);
-
                 playerList.getChildren().add(parent);
             } catch (IOException e) {
                 e.printStackTrace();

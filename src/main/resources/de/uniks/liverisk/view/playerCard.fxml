@@ -5,11 +5,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
-<VBox spacing="1.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.liverisk.controller.PlayerCardController">
+<VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.liverisk.controller.PlayerCardController">
    <children>
-      <Label fx:id="playerNameLabel" text="Label" />
-      <HBox fx:id="meeples" spacing="1.0">
+      <Label fx:id="playerNameLabel" style="-fx-text-fill: LightGrey;" text="Label">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <HBox fx:id="meeples" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="190.0" spacing="2.0">
          <children>
              <Circle fill="DODGERBLUE" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
              <Circle fill="DODGERBLUE" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
@@ -29,11 +33,11 @@
              <Circle fill="DODGERBLUE" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
          <VBox.margin>
-            <Insets top="1.0" />
+            <Insets />
          </VBox.margin>
       </HBox>
    </children>
    <padding>
-      <Insets top="1.0" />
+      <Insets left="5.0" />
    </padding>
 </VBox>

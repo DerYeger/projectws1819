@@ -11,7 +11,7 @@ public class GameController {
     private static final ArrayList<String> DEFAULT_NAMES = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
     private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("0x008000ff", "0xff0000ff", "0x0000ffff", "0xffff00ff"));
 
-    public void initialize(int playerCount) {
+    public void initGame(int playerCount) {
         Game game = Model.getInstance().getGame();
         if (playerCount < 2 || playerCount > 4) return;
         for (int i = 0; i < playerCount; i++) {
@@ -19,6 +19,9 @@ public class GameController {
             player.setName(DEFAULT_NAMES.get(i))
                     .setColor(DEFAULT_COLORS.get(i))
                     .withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit());
+            Platform startPlatform = new Platform();
+            startPlatform.setCapacity(5).setPlayer(player);
+            //TODO: Finish init process
             game.withPlayers(player);
         }
     }

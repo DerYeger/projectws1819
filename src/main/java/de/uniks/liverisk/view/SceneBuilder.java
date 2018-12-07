@@ -5,7 +5,6 @@ import de.uniks.liverisk.model.Player;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -60,7 +59,7 @@ public class SceneBuilder {
         Objects.requireNonNull(stage);
         Objects.requireNonNull(gc);
 
-        gc.initialize(playerCount);
+        gc.initGame(playerCount);
 
         Button startButton = new Button("Start");
 
