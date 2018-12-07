@@ -3,7 +3,9 @@ package de.uniks.liverisk.view;
 import de.uniks.liverisk.controller.GameController;
 import de.uniks.liverisk.model.Player;
 
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -13,6 +15,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class SceneBuilder {
@@ -109,6 +112,8 @@ public class SceneBuilder {
             }
         }
 
+        startButton.setOnAction(e -> stage.setScene(buildGameScene()));
+
         for (int i = 0; i < playerCount; i++) {
 
             editBox.getChildren().add(new PlayerEditHBox(gc.getPlayerByNumber(i)));
@@ -121,4 +126,16 @@ public class SceneBuilder {
         scene.getStylesheets().add(SceneBuilder.class.getResource("main.css").toExternalForm());
         return scene;
     }
+
+    public static Scene buildGameScene() {
+        FXMLLoader fxmlLoader = new FXMLLoader(SceneBuilder.class.getResource("gameScreen.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 800, 600);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return scene;
+    }
+
 }

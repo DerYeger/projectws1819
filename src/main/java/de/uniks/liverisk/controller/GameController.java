@@ -1,9 +1,6 @@
 package de.uniks.liverisk.controller;
 
-import de.uniks.liverisk.model.Game;
-import de.uniks.liverisk.model.Platform;
-import de.uniks.liverisk.model.Player;
-import de.uniks.liverisk.model.Unit;
+import de.uniks.liverisk.model.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,17 +11,15 @@ public class GameController {
     private static final ArrayList<String> DEFAULT_NAMES = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
     private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("0x008000ff", "0xff0000ff", "0x0000ffff", "0xffff00ff"));
 
-    private Game game;
-
-    public Game getGame() {
-        return game;
-    }
-
     public void initialize(int playerCount) {
-        if (game != null || playerCount < 2 || playerCount > 4) return;
-        game = new Game();
+        Game game = Model.getInstance().getGame();
+        if (playerCount < 2 || playerCount > 4) return;
         for (int i = 0; i < playerCount; i++) {
-            game.withPlayers(new Player().setName(DEFAULT_NAMES.get(i)).setColor(DEFAULT_COLORS.get(i)));
+            Player player = new Player();
+            player.setName(DEFAULT_NAMES.get(i))
+                    .setColor(DEFAULT_COLORS.get(i))
+                    .withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit());
+            game.withPlayers(player);
         }
     }
 
@@ -74,17 +69,18 @@ public class GameController {
 
     //checks if player names or colors include duplicates
     public boolean playerConfigurationIsInvalid() {
+        Game game = Model.getInstance().getGame();
         HashSet<String> nameSet = new HashSet<>();
         HashSet<String> colorSet = new HashSet<>();
-        getGame().getPlayers().stream().filter(p -> !p.getName().isEmpty() && !p.getColor().isEmpty()).forEach(p -> {
+        game.getPlayers().stream().filter(p -> !p.getName().isEmpty() && !p.getColor().isEmpty()).forEach(p -> {
             nameSet.add(p.getName());
             colorSet.add(p.getColor());
         });
-        return nameSet.size() != getGame().getPlayers().size() || colorSet.size() != getGame().getPlayers().size();
+        return nameSet.size() != game.getPlayers().size() || colorSet.size() != game.getPlayers().size();
     }
 
     public Player getPlayerByNumber(int number) {
-        return getGame().getPlayers().get(number);
+        return Model.getInstance().getGame().getPlayers().get(number);
     }
 
     public String getPlayerName(Player player) {
