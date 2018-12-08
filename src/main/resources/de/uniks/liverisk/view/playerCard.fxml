@@ -9,11 +9,11 @@
 
 <VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.liverisk.controller.PlayerCardController">
    <children>
-      <Label fx:id="playerNameLabel" style="-fx-text-fill: LightGrey;" text="Label">
+      <Label fx:id="playerNameLabel" style="-fx-text-fill: White;" text="Label">
          <font>
-            <Font size="20.0" />
+            <Font name="System Bold" size="20.0" />
          </font></Label>
-      <HBox fx:id="meeples" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="190.0" spacing="2.0">
+      <HBox fx:id="meeples" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="2.0">
          <children>
              <Circle fill="DODGERBLUE" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
              <Circle fill="DODGERBLUE" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
