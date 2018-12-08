@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-import java.util.HashSet;
 import java.util.Objects;
 
 public class PlayerCardController {
@@ -20,32 +19,16 @@ public class PlayerCardController {
 
     private Player player;
 
-    public void initialize() {
-        for (Node node : meeples.getChildren()) node.setVisible(false);
-    }
-
     public void setMeepleColor(final String color) {
         for (Node node : meeples.getChildren()) {
             node.setStyle("-fx-fill: #" + color);
         }
     }
 
-    public int getSpareUnitCount() {
-        HashSet<Unit> spareUnits = new HashSet<>();
-        for (Unit unit : player.getUnits()) {
-            if (unit.getPlatform() == null) spareUnits.add(unit);
-        }
-        return spareUnits.size();
-    }
-
     public void updateVisibleMeeples() {
-        int count = getSpareUnitCount();
-        for (Node node : meeples.getChildren()) {
-            node.setVisible(false);
-        }
-        for (int i = 0; i < count; i++) {
-            meeples.getChildren().get(i).setVisible(true);
-        }
+        int count = (int) player.getUnits().stream().filter(u -> u.getPlatform() == null).count();
+        for (int i = 0; i < Math.min(count, meeples.getChildren().size()); i++) meeples.getChildren().get(i).setVisible(true);
+        for (int i = count; i < meeples.getChildren().size(); i++) meeples.getChildren().get(i).setVisible(false);
     }
 
     public void setPlayer(final Player player) {
@@ -54,6 +37,7 @@ public class PlayerCardController {
 
         playerNameLabel.setText(player.getName());
         setMeepleColor(player.getColor().substring(2, player.getColor().length() - 2));
+
         updateVisibleMeeples();
 
         //adds property change listeners to player's units platform property
