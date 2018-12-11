@@ -34,7 +34,7 @@ public class PlayerCardControllerTestApplication extends Application {
         platform.setCapacity(5).setPlayer(player).withNeighbors(player.getPlatforms().get(0));
 
         FXMLLoader fxmlLoader = new FXMLLoader(SceneBuilder.class.getResource("playerCard.fxml"));
-        Scene scene = null;
+
         try {
             Parent parent = fxmlLoader.load();
             PlayerCardController controller = fxmlLoader.getController();
@@ -50,7 +50,7 @@ public class PlayerCardControllerTestApplication extends Application {
 
             VBox vbox = new VBox(5, reenforceButton, addSpareUnitButton, removeUnitButton);
             HBox hbox = new HBox(20, vbox, parent);
-            scene = new Scene(hbox, 350, 100);
+            Scene scene = new Scene(hbox, 350, 100);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
