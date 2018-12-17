@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class PlatformControllerTestApplication extends Application {
 
@@ -51,7 +52,7 @@ public class PlatformControllerTestApplication extends Application {
 
             reenforceButton.setOnAction(e -> gc.reenforce(platform));
             addSpareUnitButton.setOnAction(e -> player.withUnits(new Unit()));
-            clearPlatformButton.setOnAction(e -> platform.getUnits().get(0).removeYou());
+            clearPlatformButton.setOnAction(e -> new ArrayList<>(platform.getUnits()).stream().limit(Math.min(1, platform.getUnits().size() - 1)).forEach(Unit::removeYou));
 
             VBox buttonBox = new VBox(5, reenforceButton, addSpareUnitButton, clearPlatformButton);
             VBox parentBox = new VBox(10, platformParent, playerCardParent);
