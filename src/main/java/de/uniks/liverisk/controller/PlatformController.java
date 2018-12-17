@@ -16,13 +16,15 @@ import java.io.IOException;
 
 public class PlatformController {
 
-    private Platform platform;
+    private static final Paint DEFAULT_PLATFORM_COLOR = Paint.valueOf("#8d8d8d");
 
     @FXML
     Ellipse platformShape;
 
     @FXML
     HBox meepleBox;
+
+    private Platform platform;
 
     public void setPlatform(final Platform platform) {
         this.platform = platform;
@@ -51,7 +53,7 @@ public class PlatformController {
             String color = player.getColor().substring(2, player.getColor().length() - 2);
             platformShape.setFill(Paint.valueOf("#" + color));
         } else {
-            platformShape.setFill(Paint.valueOf("#8d8d8d"));
+            platformShape.setFill(DEFAULT_PLATFORM_COLOR);
         }
     }
 

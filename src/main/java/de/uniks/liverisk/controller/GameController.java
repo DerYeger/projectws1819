@@ -9,7 +9,10 @@ import java.util.HashSet;
 public class GameController {
 
     private static final ArrayList<String> DEFAULT_NAMES = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
-    private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("0x008000ff", "0xff0000ff", "0x0000ffff", "0xffff00ff"));
+    private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("0x336633ff", "0xe64d4dff", "0x4d66ccff", "0xcccc33ff"));
+
+    private static final int STARTING_PLATFORM_CAPACITY = 5;
+    private static final int REGULAR_PLATFORM_CAPACITY = 3;
 
     //TODO:
     //implement non-start-platforms and platform connections according to future assignments
@@ -22,7 +25,7 @@ public class GameController {
                     .setColor(DEFAULT_COLORS.get(i))
                     .withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit());
             Platform startPlatform = new Platform();
-            startPlatform.setCapacity(5).setPlayer(player).withUnits(player.getUnits().get(0));
+            startPlatform.setCapacity(STARTING_PLATFORM_CAPACITY).setPlayer(player).withUnits(player.getUnits().get(0));
             game.withPlayers(player);
         }
     }
