@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.Double?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Polygon?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.liverisk.controller.PlatformMeepleController">
+   <children>
+      <Ellipse centerX="7.0" centerY="18.0" fill="WHITE" radiusX="7.0" radiusY="5.0" stroke="BLACK" strokeType="INSIDE" />
+      <Polygon fx:id="meeple" fill="#464646" opacity="0.9" stroke="BLACK" strokeType="INSIDE">
+        <points>
+          <Double fx:value="0.0" />
+          <Double fx:value="18.0" />
+          <Double fx:value="14.0" />
+          <Double fx:value="18.0" />
+          <Double fx:value="7.0" />
+          <Double fx:value="0.0" />
+        </points>
+      </Polygon>
+   </children>
+</AnchorPane>

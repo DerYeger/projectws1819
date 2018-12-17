@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Ellipse?>
+
+<StackPane prefHeight="60.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.liverisk.controller.PlatformController">
+   <children>
+      <Ellipse fx:id="platformShape" fill="#868686" opacity="0.75" radiusX="50.0" radiusY="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <HBox fx:id="meepleBox" alignment="CENTER" prefHeight="60.0" prefWidth="100.0" spacing="3.0">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="15.0" />
+         </padding></HBox>
+   </children>
+</StackPane>

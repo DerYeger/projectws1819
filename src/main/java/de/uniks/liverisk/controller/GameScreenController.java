@@ -8,11 +8,15 @@ import de.uniks.liverisk.view.SceneBuilder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
 public class GameScreenController {
+
+    @FXML
+    AnchorPane anchorPane;
 
     @FXML
     VBox playerList;
@@ -30,6 +34,20 @@ public class GameScreenController {
                 e.printStackTrace();
             }
         }
+        //PLACEHOLDER, just for visualisation
+        VBox vBox = new VBox(20);
+        for (int i = 0; i < Model.getInstance().getGame().getPlayers().size(); i++) {
+            FXMLLoader fxmlLoader = new FXMLLoader(SceneBuilder.class.getResource("platform.fxml"));
+            try {
+                Parent platform = fxmlLoader.load();
+                PlatformController controller = fxmlLoader.getController();
+                controller.setPlatform(game.getPlayers().get(i).getPlatforms().get(0));
+                vBox.getChildren().add(platform);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        anchorPane.getChildren().add(vBox);
     }
 
 }

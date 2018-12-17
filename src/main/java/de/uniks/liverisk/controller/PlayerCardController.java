@@ -19,13 +19,13 @@ public class PlayerCardController {
 
     private Player player;
 
-    public void setMeepleColor(final String color) {
+    private void setMeepleColor(final String color) {
         for (Node node : meeples.getChildren()) {
             node.setStyle("-fx-fill: #" + color);
         }
     }
 
-    public void updateVisibleMeeples() {
+    private void updateVisibleMeeples() {
         int count = (int) player.getUnits().stream().filter(u -> u.getPlatform() == null).count();
         for (int i = 0; i < Math.min(count, meeples.getChildren().size()); i++) meeples.getChildren().get(i).setVisible(true);
         for (int i = count; i < meeples.getChildren().size(); i++) meeples.getChildren().get(i).setVisible(false);
@@ -42,12 +42,12 @@ public class PlayerCardController {
 
         //adds property change listeners to player's units platform property
         for (Unit unit : player.getUnits()) {
-            unit.addPropertyChangeListener("platform", pl -> {if (pl.getOldValue() == null) updateVisibleMeeples();});
+            unit.addPropertyChangeListener(Unit.PROPERTY_platform, pl -> {if (pl.getOldValue() == null) updateVisibleMeeples();});
         }
 
         //adds property change listener to the player's units property
-        player.addPropertyChangeListener("units", ul -> {
-            if (ul.getNewValue() != null) ((Unit) ul.getNewValue()).addPropertyChangeListener("platform", pl -> {if (pl.getOldValue() == null) updateVisibleMeeples();});
+        player.addPropertyChangeListener(Player.PROPERTY_units, ul -> {
+            if (ul.getNewValue() != null) ((Unit) ul.getNewValue()).addPropertyChangeListener(Unit.PROPERTY_platform, pl -> {if (pl.getOldValue() == null) updateVisibleMeeples();});
             updateVisibleMeeples();
         });
     }
