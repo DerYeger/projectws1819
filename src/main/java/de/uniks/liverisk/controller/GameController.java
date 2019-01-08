@@ -23,9 +23,9 @@ public class GameController {
             Player player = new Player();
             player.setName(DEFAULT_NAMES.get(i))
                     .setColor(DEFAULT_COLORS.get(i))
-                    .withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit());
+                    .withUnits(new Unit(), new Unit(), new Unit(), new Unit());
             Platform startPlatform = new Platform();
-            startPlatform.setCapacity(STARTING_PLATFORM_CAPACITY).setPlayer(player).withUnits(player.getUnits().get(0));
+            startPlatform.setCapacity(STARTING_PLATFORM_CAPACITY).setPlayer(player).withUnits(new Unit());
             game.withPlayers(player);
         }
     }
@@ -38,7 +38,7 @@ public class GameController {
 
         ArrayList<Unit> unitsToMove = new ArrayList<>(source.getUnits().subList(0, Math.min(destination.getCapacity() - destination.getUnits().size(), source.getUnits().size() - 1)));
         destination.withUnits(unitsToMove);
-        destination.setPlayer(destination.getUnits().get(0).getPlayer());
+        destination.setPlayer(source.getPlayer());
         return true;
     }
 
@@ -54,8 +54,8 @@ public class GameController {
         ArrayList<Unit> attackers = new ArrayList<>(source.getUnits());
         ArrayList<Unit> defenders = new ArrayList<>(destination.getUnits());
 
-        attackers.stream().limit(lostUnitCount).forEach(u -> u.removeYou());
-        defenders.stream().limit(lostUnitCount).forEach(u -> u.removeYou());
+        attackers.stream().limit(lostUnitCount).forEach(Unit::removeYou);
+        defenders.stream().limit(lostUnitCount).forEach(Unit::removeYou);
 
         if (destination.getUnits().isEmpty()) {
             destination.setPlayer(null);
@@ -68,9 +68,12 @@ public class GameController {
         if (platform == null || platform.getPlayer() == null || platform.getUnits().size() >= platform.getCapacity()) return false;
 
         int oldUnitCount = platform.getUnits().size();
-        platform.getPlayer().getUnits().stream().filter(u -> u.getPlatform() == null)
+        new ArrayList<>(platform.getPlayer().getUnits()).stream()
                 .limit(platform.getCapacity() - platform.getUnits().size())
-                .forEach(u -> u.setPlatform(platform));
+                .forEach(u -> {
+                    u.setPlatform(platform);
+                    u.setPlayer(null);
+                });
         return oldUnitCount != platform.getUnits().size();
     }
 
@@ -105,5 +108,4 @@ public class GameController {
     public void setPlayerColor(Player player, String color) {
         player.setColor(color);
     }
-
 }

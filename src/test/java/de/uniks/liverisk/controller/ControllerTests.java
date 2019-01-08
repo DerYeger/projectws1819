@@ -22,10 +22,10 @@ public class ControllerTests extends TestCase {
         Platform platform1 = new Platform().setCapacity(5);
         Platform platform2 = new Platform().setCapacity(3);
         Player alice = new Player();
+
         game.withPlatforms(platform1, platform2).withPlayers(alice);
-        alice.withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit())
-                .withPlatforms(platform1);
-        platform1.withUnits(alice.getUnits()).withNeighbors(platform2);
+        alice.withPlatforms(platform1);
+        platform1.withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit()).withNeighbors(platform2);
 
         //action
         Assert.assertTrue(gc.move(platform1, platform2));
@@ -55,20 +55,16 @@ public class ControllerTests extends TestCase {
 
         platformA.withUnits(new Unit())
                 .setPlayer(alice)
-                .withNeighbors(platformB)
-                .setCapacity(3);
+                .setCapacity(3)
+                .withNeighbors(platformB);
         platformB.withUnits(new Unit(), new Unit(), new Unit())
                 .setPlayer(bob)
                 .setCapacity(3);
-        alice.withUnits(platformA.getUnits());
-        bob.withUnits(platformB.getUnits());
 
         //actions
         Assert.assertTrue(gc.attack(platformB, platformA));
 
         //asserts
-        Assert.assertEquals(0, alice.getUnits().size());
-        Assert.assertEquals(2, bob.getUnits().size());
         Assert.assertEquals(0, alice.getPlatforms().size());
         Assert.assertEquals(2, bob.getPlatforms().size());
         Assert.assertEquals(1, platformA.getUnits().size());
@@ -84,17 +80,22 @@ public class ControllerTests extends TestCase {
         //setup
         GameController gc = new GameController();
         Game game = new Game();
-        Platform platform = new Platform().setCapacity(3).withUnits(new Unit());
+        Platform platform = new Platform();
         Player alice = new Player();
-        game.withPlatforms(platform).withPlayers(alice);
-        alice.withPlatforms(platform).withUnits(platform.getUnits(), new Unit());
+
+        game.withPlatforms(platform)
+                .withPlayers(alice);
+        platform.setCapacity(3)
+                .withUnits(new Unit());
+        alice.withPlatforms(platform)
+                .withUnits(new Unit());
 
         //action
         Assert.assertTrue(gc.reenforce(platform));
 
         //asserts
         Assert.assertEquals(2, platform.getUnits().size());
-        for (Unit unit : alice.getUnits()) Assert.assertNotNull(unit.getPlatform());
+        Assert.assertTrue(alice.getUnits().isEmpty());
     }
 
     //none of the following tests is required to reach 100% CodeCoverage
@@ -111,8 +112,8 @@ public class ControllerTests extends TestCase {
         Platform platform4 = new Platform().setCapacity(5);
         Platform platform5 = new Platform().setCapacity(5).withUnits(new Unit(), new Unit(), new Unit(), new Unit());
         Platform platform6 = new Platform().setCapacity(5).withUnits(new Unit(), new Unit(), new Unit());
-        Player alice = new Player().withPlatforms(platform1).withUnits(platform1.getUnits());
-        Player bob = new Player().withPlatforms(platform3, platform5, platform6).withUnits(platform3.getUnits(), platform5.getUnits(), platform6.getUnits());
+        Player alice = new Player().withPlatforms(platform1);
+        Player bob = new Player().withPlatforms(platform3, platform5, platform6);
 
         platform1.withNeighbors(platform2);
         platform3.withNeighbors(platform4);
@@ -152,7 +153,6 @@ public class ControllerTests extends TestCase {
         bob.withPlatforms(platform4);
         platform1.withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit()).withNeighbors(platform2, platform4);
         platform2.withUnits(new Unit(), new Unit(), new Unit());
-        alice.withUnits(platform1.getUnits(), platform2.getUnits());
         platform4.withNeighbors(platform2, platform3);
 
         //actions and assert
@@ -201,7 +201,7 @@ public class ControllerTests extends TestCase {
         game.withPlatforms(platformA1, platformA2, platformA3, platformA4, platformA5, platformB1, platformB2, platformB3, platformB4, platformB5)
                 .withPlayers(alice, bob);
 
-        platformA1.withUnits(new Unit(), new Unit(), new Unit(), new Unit(),new Unit())
+        platformA1.withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit())
                 .setPlayer(alice)
                 .withNeighbors(platformB1)
                 .setCapacity(5);
@@ -227,7 +227,7 @@ public class ControllerTests extends TestCase {
         platformB2.withUnits(new Unit(), new Unit(), new Unit())
                 .setPlayer(bob)
                 .setCapacity(3);
-        platformB3.withUnits(new Unit(), new Unit(), new Unit(), new Unit(),new Unit())
+        platformB3.withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit())
                 .setPlayer(bob)
                 .setCapacity(5);
         platformB4.withUnits(new Unit(), new Unit())
@@ -236,8 +236,6 @@ public class ControllerTests extends TestCase {
         platformB5.withUnits(new Unit(), new Unit(), new Unit())
                 .setPlayer(bob)
                 .setCapacity(3);
-        alice.withUnits(platformA1.getUnits(), platformA2.getUnits(), platformA3.getUnits(), platformA4.getUnits(), platformA5.getUnits());
-        bob.withUnits(platformB1.getUnits(), platformB2.getUnits(), platformB3.getUnits(), platformB4.getUnits(), platformB5.getUnits());
 
         //actions
         Assert.assertTrue(gc.attack(platformA1, platformB1));   //successful attack
@@ -247,8 +245,18 @@ public class ControllerTests extends TestCase {
         Assert.assertTrue(gc.attack(platformA5, platformB5));   //successful attack with surplus unit
 
         //asserts
-        Assert.assertEquals(12, alice.getUnits().size());
-        Assert.assertEquals(4, bob.getUnits().size());
+        int aliceUnitCount = 0;
+        for (Platform platform : alice.getPlatforms()) {
+            aliceUnitCount += platform.getUnits().size();
+        }
+
+        int bobUnitCount = 0;
+        for (Platform platform : bob.getPlatforms()) {
+            bobUnitCount += platform.getUnits().size();
+        }
+
+        Assert.assertEquals(12, aliceUnitCount);
+        Assert.assertEquals(4, bobUnitCount);
         Assert.assertEquals(7, alice.getPlatforms().size());
         Assert.assertEquals(2, bob.getPlatforms().size());
 
@@ -300,8 +308,6 @@ public class ControllerTests extends TestCase {
         platformD.withUnits(new Unit())
                 .setPlayer(bob)
                 .setCapacity(3);
-        alice.withUnits(platformA.getUnits());
-        bob.withUnits(platformB.getUnits());
 
         //actions & asserts
         //null parameters
@@ -339,10 +345,11 @@ public class ControllerTests extends TestCase {
         Player alice = new Player();
         Player bob = new Player();
         Player clemens = new Player();
+
         game.withPlatforms(platformA, platformB, platformC).withPlayers(alice, bob, clemens);
-        alice.withPlatforms(platformA).withUnits(platformA.getUnits(), new Unit(), new Unit());
-        bob.withPlatforms(platformB).withUnits(platformB.getUnits(), new Unit());
-        clemens.withPlatforms(platformC).withUnits(platformC.getUnits(), new Unit(), new Unit(), new Unit(), new Unit(), new Unit(), new Unit());
+        alice.withPlatforms(platformA).withUnits(new Unit(), new Unit());
+        bob.withPlatforms(platformB).withUnits(new Unit());
+        clemens.withPlatforms(platformC).withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit(), new Unit());
 
         //actions & asserts
         Assert.assertTrue(gc.reenforce(platformA));    //spare unit count fits exactly
@@ -350,6 +357,9 @@ public class ControllerTests extends TestCase {
         Assert.assertTrue(gc.reenforce(platformC));    //more than enough spare units
 
         //asserts
+        Assert.assertTrue(alice.getUnits().isEmpty());
+        Assert.assertTrue(bob.getUnits().isEmpty());
+        Assert.assertEquals(4, clemens.getUnits().size());
         Assert.assertEquals(3, platformA.getUnits().size());
         Assert.assertEquals(2, platformB.getUnits().size());
         Assert.assertEquals(3, platformC.getUnits().size());
@@ -366,9 +376,10 @@ public class ControllerTests extends TestCase {
         Platform platformD = new Platform().setCapacity(3);
         Player alice = new Player();
         Player bob = new Player();
+
         game.withPlatforms(platformA, platformB, platformC, platformD).withPlayers(alice, bob);
-        alice.withPlatforms(platformA).withUnits(platformA.getUnits(), new Unit());
-        bob.withPlatforms(platformB).withUnits(platformB.getUnits());
+        alice.withPlatforms(platformA).withUnits(new Unit());
+        bob.withPlatforms(platformB);
 
         //actions & asserts
         Assert.assertFalse(gc.reenforce(platformA));    //reenforcing full platform
@@ -376,5 +387,4 @@ public class ControllerTests extends TestCase {
         Assert.assertFalse(gc.reenforce(platformC));    //reenforcing unowned platform with units
         Assert.assertFalse(gc.reenforce(platformD));    //reenforcing unowned platform without units
     }
-
 }

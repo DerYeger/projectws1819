@@ -2,8 +2,8 @@ package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
-
 import de.uniks.liverisk.view.SceneBuilder;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,16 +19,15 @@ public class PlatformController {
     private static final Paint DEFAULT_PLATFORM_COLOR = Paint.valueOf("#8d8d8d");
 
     @FXML
-    Ellipse platformShape;
+    private Ellipse platformShape;
 
     @FXML
-    HBox meepleBox;
+    private HBox meepleBox;
 
     private Platform platform;
 
     public void setPlatform(final Platform platform) {
         this.platform = platform;
-        updatePlatformColor();
 
         meepleBox.getChildren().removeAll();
         for (int i = 0; i < platform.getCapacity(); i++) {
@@ -43,9 +42,14 @@ public class PlatformController {
             }
         }
 
-        platform.addPropertyChangeListener(Platform.PROPERTY_player, evt -> updatePlatformColor());
+        addListeners();
+
+        updatePlatformColor();
     }
 
+    private void addListeners() {
+        platform.addPropertyChangeListener(Platform.PROPERTY_player, evt -> updatePlatformColor());
+    }
 
     private void updatePlatformColor() {
         Player player = platform.getPlayer();
@@ -56,5 +60,4 @@ public class PlatformController {
             platformShape.setFill(DEFAULT_PLATFORM_COLOR);
         }
     }
-
 }

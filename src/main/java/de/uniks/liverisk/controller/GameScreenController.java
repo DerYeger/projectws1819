@@ -2,9 +2,9 @@ package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.Game;
 import de.uniks.liverisk.model.Model;
-
 import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.view.SceneBuilder;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,10 +16,10 @@ import java.io.IOException;
 public class GameScreenController {
 
     @FXML
-    AnchorPane anchorPane;
+    private AnchorPane anchorPane;
 
     @FXML
-    VBox playerList;
+    private VBox playerList;
 
     public void initialize() {
         Game game = Model.getInstance().getGame();
@@ -34,6 +34,7 @@ public class GameScreenController {
                 e.printStackTrace();
             }
         }
+
         //PLACEHOLDER, just for visualisation
         VBox vBox = new VBox(20);
         for (int i = 0; i < Model.getInstance().getGame().getPlayers().size(); i++) {
@@ -48,6 +49,6 @@ public class GameScreenController {
             }
         }
         anchorPane.getChildren().add(vBox);
+        //PLACEHOLDER END
     }
-
 }
