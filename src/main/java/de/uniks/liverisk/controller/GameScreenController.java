@@ -3,7 +3,7 @@ package de.uniks.liverisk.controller;
 import de.uniks.liverisk.model.Game;
 import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.model.Player;
-import de.uniks.liverisk.view.SceneBuilder;
+import de.uniks.liverisk.view.ViewBuilder;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,24 +21,17 @@ public class GameScreenController {
     @FXML
     private VBox playerList;
 
-    public void initialize() {
+    public void initialize() throws IOException {
         Game game = Model.getInstance().getGame();
         for (Player player : game.getPlayers()) {
-            FXMLLoader fxmlLoader = new FXMLLoader(SceneBuilder.class.getResource("playerCard.fxml"));
-            try {
-                Parent parent = fxmlLoader.load();
-                PlayerCardController controller = fxmlLoader.getController();
-                controller.setPlayer(player);
-                playerList.getChildren().add(parent);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            playerList.getChildren().add(ViewBuilder.buildPlayerCardVBox(player));
         }
 
+        //
         //PLACEHOLDER, just for visualisation
         VBox vBox = new VBox(20);
         for (int i = 0; i < Model.getInstance().getGame().getPlayers().size(); i++) {
-            FXMLLoader fxmlLoader = new FXMLLoader(SceneBuilder.class.getResource("platform.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(ViewBuilder.class.getResource("platform.fxml"));
             try {
                 Parent platform = fxmlLoader.load();
                 PlatformController controller = fxmlLoader.getController();
@@ -50,5 +43,6 @@ public class GameScreenController {
         }
         anchorPane.getChildren().add(vBox);
         //PLACEHOLDER END
+        //
     }
 }

@@ -5,6 +5,8 @@ import de.uniks.liverisk.model.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.shape.Polygon;
 
+import java.util.Objects;
+
 public class PlatformMeepleController {
 
     @FXML
@@ -14,7 +16,8 @@ public class PlatformMeepleController {
 
     private Platform platform;
 
-    public void init(final Platform platform, final int slot) {
+    public void initialize(final Platform platform, final int slot) {
+        Objects.requireNonNull(platform);
         this.platform = platform;
         this.slot = slot;
 
@@ -28,6 +31,6 @@ public class PlatformMeepleController {
     }
 
     private void updateMeeple() {
-        meeple.setVisible(platform.getUnits().size() > slot);
+        meeple.setVisible(platform.getUnits().size() >= slot);
     }
 }

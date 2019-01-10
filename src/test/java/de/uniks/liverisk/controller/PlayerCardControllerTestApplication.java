@@ -4,7 +4,7 @@ import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.model.Unit;
-import de.uniks.liverisk.view.SceneBuilder;
+import de.uniks.liverisk.view.ViewBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,7 +33,7 @@ public class PlayerCardControllerTestApplication extends Application {
         Platform platform = new Platform();
         platform.setCapacity(5).setPlayer(player).withNeighbors(player.getPlatforms().get(0));
 
-        FXMLLoader fxmlLoader = new FXMLLoader(SceneBuilder.class.getResource("playerCard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ViewBuilder.class.getResource("playerCard.fxml"));
 
         try {
             Parent parent = fxmlLoader.load();

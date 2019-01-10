@@ -4,7 +4,7 @@ import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.model.Unit;
-import de.uniks.liverisk.view.SceneBuilder;
+import de.uniks.liverisk.view.ViewBuilder;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -42,12 +42,12 @@ public class TestApplication extends Application {
         Platform neutralPlatform = new Platform();
         neutralPlatform.setCapacity(3).setGame(Model.getInstance().getGame()).withNeighbors(alicePlatform, bobPlatform);
 
-        FXMLLoader alicePlatformLoader = new FXMLLoader(SceneBuilder.class.getResource("platform.fxml"));
-        FXMLLoader bobPlatformLoader = new FXMLLoader(SceneBuilder.class.getResource("platform.fxml"));
-        FXMLLoader neutralPlatformLoader = new FXMLLoader(SceneBuilder.class.getResource("platform.fxml"));
+        FXMLLoader alicePlatformLoader = new FXMLLoader(ViewBuilder.class.getResource("platform.fxml"));
+        FXMLLoader bobPlatformLoader = new FXMLLoader(ViewBuilder.class.getResource("platform.fxml"));
+        FXMLLoader neutralPlatformLoader = new FXMLLoader(ViewBuilder.class.getResource("platform.fxml"));
 
-        FXMLLoader alicePlayerCardLoader = new FXMLLoader(SceneBuilder.class.getResource("playerCard.fxml"));
-        FXMLLoader bobPlayerCardLoader = new FXMLLoader(SceneBuilder.class.getResource("playerCard.fxml"));
+        FXMLLoader alicePlayerCardLoader = new FXMLLoader(ViewBuilder.class.getResource("playerCard.fxml"));
+        FXMLLoader bobPlayerCardLoader = new FXMLLoader(ViewBuilder.class.getResource("playerCard.fxml"));
 
         try {
             Parent alicePlatformParent = alicePlatformLoader.load();

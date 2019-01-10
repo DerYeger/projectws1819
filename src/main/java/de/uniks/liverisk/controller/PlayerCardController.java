@@ -21,6 +21,7 @@ public class PlayerCardController {
 
     public void setPlayer(final Player player) {
         Objects.requireNonNull(player);
+
         this.player = player;
 
         addListeners();

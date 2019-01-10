@@ -4,11 +4,11 @@ import de.uniks.liverisk.model.Game;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.model.Unit;
-import junit.framework.TestCase;
+
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ControllerTests extends TestCase {
+public class ControllerTests {
 
     //Alice moves a unit
     //Start: Alice has 5 units on platform 1. No units are on platform 2, which is connected to platform 1.
@@ -157,7 +157,10 @@ public class ControllerTests extends TestCase {
 
         //actions and assert
         //null parameter
-        Assert.assertFalse(gc.move(null, null));
+        try {
+            gc.move(null, null);
+            Assert.fail();
+        } catch (Exception e) {}
 
         //source has now owner
         Assert.assertFalse(gc.move(platform3, platform2));
@@ -311,7 +314,10 @@ public class ControllerTests extends TestCase {
 
         //actions & asserts
         //null parameters
-        Assert.assertFalse(gc.attack(null, null));
+        try {
+            gc.attack(null, null);
+            Assert.fail();
+        } catch (Exception e) {}
 
         //source has now owner
         Assert.assertFalse(gc.attack(platformC, platformA));

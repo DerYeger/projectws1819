@@ -5,6 +5,7 @@ import de.uniks.liverisk.model.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 
 public class GameController {
 
@@ -16,7 +17,7 @@ public class GameController {
 
     //TODO:
     //implement non-start-platforms and platform connections according to future assignments
-    public void initGame(int playerCount) {
+    public void initGame(final int playerCount) {
         Game game = Model.getInstance().getGame();
         if (playerCount < 2 || playerCount > 4) return;
         for (int i = 0; i < playerCount; i++) {
@@ -30,9 +31,10 @@ public class GameController {
         }
     }
 
-    public boolean move(Platform source, Platform destination) {
-        if (source == null || destination == null ||
-                source.getPlayer() == null || destination.getPlayer() != null && source.getPlayer() != destination.getPlayer() ||
+    public boolean move(final Platform source, final Platform destination) {
+        Objects.requireNonNull(source);
+        Objects.requireNonNull(destination);
+        if (source.getPlayer() == null || destination.getPlayer() != null && source.getPlayer() != destination.getPlayer() ||
                 !source.getNeighbors().contains(destination) ||
                 destination.getUnits().size() >= destination.getCapacity() || source.getUnits().size() < 2) return false;
 
@@ -42,9 +44,10 @@ public class GameController {
         return true;
     }
 
-    public boolean attack(Platform source, Platform destination) {
-        if (source == null || destination == null ||
-                source.getPlayer() == null || destination.getPlayer() == null ||
+    public boolean attack(final Platform source, final Platform destination) {
+        Objects.requireNonNull(source);
+        Objects.requireNonNull(destination);
+        if (source.getPlayer() == null || destination.getPlayer() == null ||
                 source.getPlayer() == destination.getPlayer() ||
                 !source.getNeighbors().contains(destination) ||
                 source.getUnits().size() < 2) return false;
@@ -64,8 +67,9 @@ public class GameController {
         return true;
     }
 
-    public boolean reenforce(Platform platform) {
-        if (platform == null || platform.getPlayer() == null || platform.getUnits().size() >= platform.getCapacity()) return false;
+    public boolean reenforce(final Platform platform) {
+        Objects.requireNonNull(platform);
+        if (platform.getPlayer() == null || platform.getUnits().size() >= platform.getCapacity()) return false;
 
         int oldUnitCount = platform.getUnits().size();
         new ArrayList<>(platform.getPlayer().getUnits()).stream()
@@ -78,7 +82,7 @@ public class GameController {
     }
 
     //checks if player names or colors include duplicates
-    public boolean playerConfigurationIsInvalid() {
+    boolean playerConfigurationIsValid() {
         Game game = Model.getInstance().getGame();
         HashSet<String> nameSet = new HashSet<>();
         HashSet<String> colorSet = new HashSet<>();
@@ -86,26 +90,6 @@ public class GameController {
             nameSet.add(p.getName());
             colorSet.add(p.getColor());
         });
-        return nameSet.size() != game.getPlayers().size() || colorSet.size() != game.getPlayers().size();
-    }
-
-    public Player getPlayerByNumber(int number) {
-        return Model.getInstance().getGame().getPlayers().get(number);
-    }
-
-    public String getPlayerName(Player player) {
-        return player.getName();
-    }
-
-    public void setPlayerName(Player player, String name) {
-        player.setName(name);
-    }
-
-    public String getPlayerColor(Player player) {
-        return player.getColor();
-    }
-
-    public void setPlayerColor(Player player, String color) {
-        player.setColor(color);
+        return nameSet.size() == game.getPlayers().size() && colorSet.size() == game.getPlayers().size();
     }
 }

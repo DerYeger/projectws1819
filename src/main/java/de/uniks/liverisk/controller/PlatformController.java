@@ -2,17 +2,15 @@ package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
-import de.uniks.liverisk.view.SceneBuilder;
+import de.uniks.liverisk.view.ViewBuilder;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Ellipse;
 
 import java.io.IOException;
-
+import java.util.Objects;
 
 public class PlatformController {
 
@@ -26,20 +24,13 @@ public class PlatformController {
 
     private Platform platform;
 
-    public void setPlatform(final Platform platform) {
+    public void setPlatform(final Platform platform) throws IOException {
+        Objects.requireNonNull(platform);
         this.platform = platform;
 
         meepleBox.getChildren().removeAll();
-        for (int i = 0; i < platform.getCapacity(); i++) {
-            FXMLLoader fxmlLoader = new FXMLLoader(SceneBuilder.class.getResource("platformMeeple.fxml"));
-            try {
-                Parent parent = fxmlLoader.load();
-                PlatformMeepleController controller = fxmlLoader.getController();
-                controller.init(platform, i);
-                meepleBox.getChildren().add(parent);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        for (int i = 1; i <= platform.getCapacity(); i++) {
+            meepleBox.getChildren().add(ViewBuilder.buildPlatformMeepleAnchorPane(platform, i));
         }
 
         addListeners();
