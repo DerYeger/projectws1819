@@ -1,6 +1,7 @@
 package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.Player;
+import de.uniks.liverisk.util.Utils;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -21,14 +22,12 @@ public class PlayerCardController {
 
     public void setPlayer(final Player player) {
         Objects.requireNonNull(player);
-
         this.player = player;
 
         addListeners();
 
         playerNameLabel.setText(player.getName());
-        setMeepleColor(player.getColor().substring(2, player.getColor().length() - 2));
-
+        setMeepleColor(player.getColor());
         updateVisibleMeeples();
     }
 
@@ -38,7 +37,7 @@ public class PlayerCardController {
 
     private void setMeepleColor(final String color) {
         for (Node node : meeples.getChildren()) {
-            node.setStyle("-fx-fill: #" + color);
+            node.setStyle("-fx-fill: " + Utils.hexColorStringToWebColorString(color));
         }
     }
 

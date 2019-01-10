@@ -18,8 +18,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-import static de.uniks.liverisk.util.ThrowingEventHandlerWrapper.throwingEventHandlerWrapper;
-
 public class ViewBuilder {
 
     public static VBox buildStartScreenVBox(final Stage stage) {
@@ -53,10 +51,8 @@ public class ViewBuilder {
         return startScreenVBox;
     }
 
-    public static VBox buildPlayerEditorScreenVBox(final Stage stage, final int playerCount) {
+    public static VBox buildPlayerEditorScreenVBox(final Stage stage) {
         Objects.requireNonNull(stage);
-
-        new GameController().initGame(playerCount);
 
         Button startButton = new Button("Start");
 
@@ -77,18 +73,12 @@ public class ViewBuilder {
         labelBox.setAlignment(Pos.CENTER);
         editBox.setAlignment(Pos.CENTER);
 
-        startButton.setOnAction(throwingEventHandlerWrapper(event -> {
-            stage.getScene().setRoot(buildGameScreenAnchorPane());
-            stage.setWidth(800);
-            stage.setHeight(600);
-        }));
-
         Model.getInstance().getGame().getPlayers().forEach(player -> editBox.getChildren().add(buildPlayerEditorHBox(player)));
 
         playerEditorScreenVBox.getChildren().addAll(labelBox, editBox, startButton);
         labelBox.getChildren().addAll(welcomeLabel, infoLabel);
 
-        new PlayerEditorScreenController().initialize(startButton);
+        new PlayerEditorScreenController().initialize(stage, startButton);
 
         return playerEditorScreenVBox;
     }
@@ -115,8 +105,10 @@ public class ViewBuilder {
         return playerEditorHBox;
     }
 
-    private static AnchorPane buildGameScreenAnchorPane() throws IOException {
+    public static AnchorPane buildGameScreenAnchorPane(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ViewBuilder.class.getResource("gameScreen.fxml"));
+        stage.setWidth(800);
+        stage.setHeight(600);
         return fxmlLoader.load();
     }
 

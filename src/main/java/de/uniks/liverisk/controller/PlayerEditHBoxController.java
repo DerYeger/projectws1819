@@ -1,6 +1,7 @@
 package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.Player;
+import de.uniks.liverisk.util.Utils;
 
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
@@ -20,8 +21,7 @@ public class PlayerEditHBoxController {
         });
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             player.setColor(newValue.toString());
-            String newColor = newValue.toString().substring(2, newValue.toString().length() - 2);
-            colorPicker.setStyle("-fx-background-color: #" + newColor);
+            colorPicker.setStyle("-fx-background-color: " + Utils.hexColorStringToWebColorString(newValue.toString()));
         });
     }
 }

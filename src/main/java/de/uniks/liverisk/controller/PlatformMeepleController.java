@@ -20,9 +20,7 @@ public class PlatformMeepleController {
         Objects.requireNonNull(platform);
         this.platform = platform;
         this.slot = slot;
-
         addListeners();
-
         updateMeeple();
     }
 

@@ -6,7 +6,7 @@ import de.uniks.liverisk.view.ViewBuilder;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class PlatformController {
 
-    private static final Paint DEFAULT_PLATFORM_COLOR = Paint.valueOf("#8d8d8d");
+    private static final Color DEFAULT_PLATFORM_COLOR = Color.valueOf("#8d8d8d");
 
     @FXML
     private Ellipse platformShape;
@@ -27,15 +27,15 @@ public class PlatformController {
     public void setPlatform(final Platform platform) throws IOException {
         Objects.requireNonNull(platform);
         this.platform = platform;
+        addPlatformMeeples();
+        addListeners();
+        updatePlatformColor();
+    }
 
-        meepleBox.getChildren().removeAll();
+    private void addPlatformMeeples() throws IOException {
         for (int i = 1; i <= platform.getCapacity(); i++) {
             meepleBox.getChildren().add(ViewBuilder.buildPlatformMeepleAnchorPane(platform, i));
         }
-
-        addListeners();
-
-        updatePlatformColor();
     }
 
     private void addListeners() {
@@ -45,8 +45,7 @@ public class PlatformController {
     private void updatePlatformColor() {
         Player player = platform.getPlayer();
         if (player != null) {
-            String color = player.getColor().substring(2, player.getColor().length() - 2);
-            platformShape.setFill(Paint.valueOf("#" + color));
+            platformShape.setFill(Color.valueOf(player.getColor()));
         } else {
             platformShape.setFill(DEFAULT_PLATFORM_COLOR);
         }
