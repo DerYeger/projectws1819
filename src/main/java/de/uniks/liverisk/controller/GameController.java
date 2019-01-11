@@ -26,7 +26,9 @@ public class GameController {
                     .setColor(DEFAULT_COLORS.get(i))
                     .withUnits(new Unit(), new Unit(), new Unit(), new Unit());
             Platform startPlatform = new Platform();
-            startPlatform.setCapacity(STARTING_PLATFORM_CAPACITY).setPlayer(player).withUnits(new Unit());
+            startPlatform.setCapacity(STARTING_PLATFORM_CAPACITY)
+                    .setPlayer(player)
+                    .withUnits(new Unit());
             game.withPlayers(player);
         }
     }
@@ -34,31 +36,45 @@ public class GameController {
     public boolean move(final Platform source, final Platform destination) {
         Objects.requireNonNull(source);
         Objects.requireNonNull(destination);
-        if (source.getPlayer() == null || destination.getPlayer() != null && source.getPlayer() != destination.getPlayer() ||
-                !source.getNeighbors().contains(destination) ||
-                destination.getUnits().size() >= destination.getCapacity() || source.getUnits().size() < 2) return false;
 
-        ArrayList<Unit> unitsToMove = new ArrayList<>(source.getUnits().subList(0, Math.min(destination.getCapacity() - destination.getUnits().size(), source.getUnits().size() - 1)));
-        destination.withUnits(unitsToMove);
+        if (!moveIsPossible(source, destination)) return false;
+
+        int emptyDestinationSlots = destination.getCapacity() - destination.getUnits().size();
+        int unitsToMoveCount = Math.min(emptyDestinationSlots, source.getUnits().size() - 1);
+
+        ArrayList<Unit> unitsToMove = new ArrayList<>(source.getUnits());
+        unitsToMove.stream()
+                .limit(unitsToMoveCount)
+                .forEach(unit -> unit.setPlatform(destination));
+
         destination.setPlayer(source.getPlayer());
         return true;
+    }
+
+    private boolean moveIsPossible(final Platform source, final Platform destination) {
+        return source.getPlayer() != null &&
+                (destination.getPlayer() == null || source.getPlayer() == destination.getPlayer()) &&
+                source.getNeighbors().contains(destination) &&
+                destination.getUnits().size() < destination.getCapacity() &&
+                source.getUnits().size() > 1;
     }
 
     public boolean attack(final Platform source, final Platform destination) {
         Objects.requireNonNull(source);
         Objects.requireNonNull(destination);
-        if (source.getPlayer() == null || destination.getPlayer() == null ||
-                source.getPlayer() == destination.getPlayer() ||
-                !source.getNeighbors().contains(destination) ||
-                source.getUnits().size() < 2) return false;
+
+        if (!attackIsPossible(source, destination)) return false;
 
         int lostUnitCount = Math.min(source.getUnits().size() - 1, destination.getUnits().size());
 
         ArrayList<Unit> attackers = new ArrayList<>(source.getUnits());
         ArrayList<Unit> defenders = new ArrayList<>(destination.getUnits());
-
-        attackers.stream().limit(lostUnitCount).forEach(Unit::removeYou);
-        defenders.stream().limit(lostUnitCount).forEach(Unit::removeYou);
+        attackers.stream()
+                .limit(lostUnitCount)
+                .forEach(Unit::removeYou);
+        defenders.stream()
+                .limit(lostUnitCount)
+                .forEach(Unit::removeYou);
 
         if (destination.getUnits().isEmpty()) {
             destination.setPlayer(null);
@@ -67,18 +83,36 @@ public class GameController {
         return true;
     }
 
+    private boolean attackIsPossible(final Platform source, final Platform destination) {
+        return source.getPlayer() != null &&
+                destination.getPlayer() != null &&
+                source.getPlayer() != destination.getPlayer() &&
+                source.getNeighbors().contains(destination) &&
+                source.getUnits().size() > 1;
+    }
+
     public boolean reenforce(final Platform platform) {
         Objects.requireNonNull(platform);
-        if (platform.getPlayer() == null || platform.getUnits().size() >= platform.getCapacity()) return false;
 
-        int oldUnitCount = platform.getUnits().size();
-        new ArrayList<>(platform.getPlayer().getUnits()).stream()
-                .limit(platform.getCapacity() - platform.getUnits().size())
-                .forEach(u -> {
-                    u.setPlatform(platform);
-                    u.setPlayer(null);
+        if (!reenforcementIsPossible(platform)) return false;
+
+        int emptySlots = platform.getCapacity() - platform.getUnits().size();
+
+        ArrayList<Unit> spareUnits = new ArrayList<>(platform.getPlayer().getUnits());
+        spareUnits.stream()
+                .limit(emptySlots)
+                .forEach(unit -> {
+                    unit.setPlatform(platform);
+                    unit.setPlayer(null);
                 });
-        return oldUnitCount != platform.getUnits().size();
+
+        return true;
+    }
+
+    private boolean reenforcementIsPossible(final Platform platform) {
+        return platform.getPlayer() != null &&
+                platform.getUnits().size() < platform.getCapacity() &&
+                !platform.getPlayer().getUnits().isEmpty();
     }
 
     //checks if player names or colors include duplicates
@@ -86,10 +120,12 @@ public class GameController {
         Game game = Model.getInstance().getGame();
         HashSet<String> nameSet = new HashSet<>();
         HashSet<String> colorSet = new HashSet<>();
-        game.getPlayers().stream().filter(p -> !p.getName().isEmpty() && !p.getColor().isEmpty()).forEach(p -> {
-            nameSet.add(p.getName());
-            colorSet.add(p.getColor());
-        });
+        game.getPlayers().stream()
+                .filter(player -> !player.getName().isEmpty() && !player.getColor().isEmpty())
+                .forEach(player -> {
+                    nameSet.add(player.getName());
+                    colorSet.add(player.getColor());
+                });
         return nameSet.size() == game.getPlayers().size() && colorSet.size() == game.getPlayers().size();
     }
 }

@@ -1,7 +1,6 @@
 package de.uniks.liverisk.view;
 
 import de.uniks.liverisk.controller.*;
-import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
 
@@ -12,13 +11,15 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class ViewBuilder {
+
+    private static final int GAME_SCREEN_WIDTH = 800;
+    private static final int GAME_SCREEN_HEIGHT = 600;
 
     public static VBox buildStartScreenVBox(final Stage stage) {
         Objects.requireNonNull(stage);
@@ -34,6 +35,8 @@ public class ViewBuilder {
         VBox labelBox = new VBox(10);
         VBox buttonBox = new VBox(20);
 
+        new StartScreenController().initialize(stage, twoPlayerButton, threePlayerButton, fourPlayerButton);
+
         welcomeLabel.setStyle("-fx-font-size: 40");
         infoLabel.setStyle("-fx-font-size: 15");
 
@@ -45,8 +48,6 @@ public class ViewBuilder {
         startScreenVBox.getChildren().addAll(labelBox, buttonBox);
         labelBox.getChildren().addAll(welcomeLabel, infoLabel);
         buttonBox.getChildren().addAll(twoPlayerButton, threePlayerButton, fourPlayerButton);
-
-        new StartScreenController().initialize(stage, twoPlayerButton, threePlayerButton, fourPlayerButton);
 
         return startScreenVBox;
     }
@@ -63,6 +64,8 @@ public class ViewBuilder {
         VBox labelBox = new VBox(10);
         VBox editBox = new VBox(20);
 
+        new PlayerEditorScreenController().initialize(stage, editBox, startButton);
+
         startButton.setStyle("-fx-pref-width: 140");
 
         welcomeLabel.setStyle("-fx-font-size: 40");
@@ -73,43 +76,46 @@ public class ViewBuilder {
         labelBox.setAlignment(Pos.CENTER);
         editBox.setAlignment(Pos.CENTER);
 
-        Model.getInstance().getGame().getPlayers().forEach(player -> editBox.getChildren().add(buildPlayerEditorHBox(player)));
-
         playerEditorScreenVBox.getChildren().addAll(labelBox, editBox, startButton);
         labelBox.getChildren().addAll(welcomeLabel, infoLabel);
-
-        new PlayerEditorScreenController().initialize(stage, startButton);
 
         return playerEditorScreenVBox;
     }
 
-    private static HBox buildPlayerEditorHBox(final Player player) {
+    public static HBox buildPlayerEditorHBox(final Player player) {
         Objects.requireNonNull(player);
 
         HBox playerEditorHBox = new HBox(60);
-        TextField nameField = new TextField(player.getName());
-        ColorPicker colorPicker = new ColorPicker(Color.web(player.getColor()));
+        TextField nameField = new TextField();
+        ColorPicker colorPicker = new ColorPicker();
+
+        new PlayerEditHBoxController().setPlayer(player, nameField, colorPicker);
 
         colorPicker.getStyleClass().add("button");
-        String color = colorPicker.getValue().toString();
-        color = color.substring(2, color.length() - 2);
-        colorPicker.setStyle("-fx-background-color: #" + color);
 
         playerEditorHBox.setAlignment(Pos.CENTER);
         playerEditorHBox.setStyle("-fx-padding: 0 40 0 40");
 
         playerEditorHBox.getChildren().addAll(nameField, colorPicker);
 
-        new PlayerEditHBoxController().initialize(player, nameField, colorPicker);
-
         return playerEditorHBox;
     }
 
-    public static AnchorPane buildGameScreenAnchorPane(Stage stage) throws IOException {
+    public static AnchorPane buildGameScreenAnchorPane(final Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ViewBuilder.class.getResource("gameScreen.fxml"));
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setWidth(GAME_SCREEN_WIDTH);
+        stage.setHeight(GAME_SCREEN_HEIGHT);
         return fxmlLoader.load();
+    }
+
+    public static StackPane buildPlatformStackPane(final Platform platform) throws IOException {
+        Objects.requireNonNull(platform);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(ViewBuilder.class.getResource("platform.fxml"));
+        StackPane platformStackPane = fxmlLoader.load();
+        PlatformController controller = fxmlLoader.getController();
+        controller.setPlatform(platform);
+        return platformStackPane;
     }
 
     public static VBox buildPlayerCardVBox(final Player player) throws IOException {

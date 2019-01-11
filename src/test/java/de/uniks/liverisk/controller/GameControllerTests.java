@@ -1,14 +1,11 @@
 package de.uniks.liverisk.controller;
 
-import de.uniks.liverisk.model.Game;
-import de.uniks.liverisk.model.Platform;
-import de.uniks.liverisk.model.Player;
-import de.uniks.liverisk.model.Unit;
+import de.uniks.liverisk.model.*;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ControllerTests {
+public class GameControllerTests {
 
     //Alice moves a unit
     //Start: Alice has 5 units on platform 1. No units are on platform 2, which is connected to platform 1.
@@ -392,5 +389,68 @@ public class ControllerTests {
         Assert.assertFalse(gc.reenforce(platformB));    //no spare units
         Assert.assertFalse(gc.reenforce(platformC));    //reenforcing unowned platform with units
         Assert.assertFalse(gc.reenforce(platformD));    //reenforcing unowned platform without units
+    }
+
+    @Test
+    public void testInitGame() {
+        //setup
+        Model.resetModel();
+        new GameController().initGame(3);
+
+        Game game = Model.getInstance().getGame();
+
+        //asserts
+        Assert.assertEquals(3, game.getPlayers().size());
+
+        for (Player player : game.getPlayers()) {
+            Assert.assertNotNull(player.getName());
+            Assert.assertNotNull(player.getColor());
+            Assert.assertEquals(1, player.getPlatforms().size());
+            Assert.assertEquals(4, player.getUnits().size());
+        }
+        for (Platform platform : game.getPlatforms()) {
+            Assert.assertFalse(platform.getNeighbors().isEmpty());
+            Assert.assertNotEquals(0, platform.getCapacity());
+            if (platform.getPlayer() == null) {
+                Assert.assertTrue(platform.getUnits().isEmpty());
+            } else {
+                Assert.assertEquals(1, platform.getUnits().size());
+            }
+        }
+    }
+
+    @Test
+    public void testPlayerConfigurationValidation() {
+        //setup
+        Model.resetModel();
+        GameController gc = new GameController();
+        gc.initGame(2);
+
+        Game game = Model.getInstance().getGame();
+
+        Player playerOne = game.getPlayers().get(0);
+        Player playerTwo = game.getPlayers().get(1);
+
+        //actions & asserts
+        Assert.assertTrue(gc.playerConfigurationIsValid());
+
+        playerOne.setName(playerTwo.getName());
+        Assert.assertFalse(gc.playerConfigurationIsValid());
+
+        playerOne.setColor(playerTwo.getColor());
+        Assert.assertFalse(gc.playerConfigurationIsValid());
+
+        playerOne.setName("New Name");
+        Assert.assertFalse(gc.playerConfigurationIsValid());
+
+        playerOne.setColor("New Color");
+        Assert.assertTrue(gc.playerConfigurationIsValid());
+
+        playerOne.setName("");
+        Assert.assertFalse(gc.playerConfigurationIsValid());
+
+        playerOne.setName("New Name");
+        playerOne.setColor("");
+        Assert.assertFalse(gc.playerConfigurationIsValid());
     }
 }

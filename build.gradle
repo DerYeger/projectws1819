@@ -20,7 +20,7 @@ dependencies {
     testCompile 'org.fulib:fulib:1.0.+'
 }
 
-//causes java.lang.AssertionError
+//causes java.lang.AssertionError when syncing
 
 //buildscript {
 //    repositories {

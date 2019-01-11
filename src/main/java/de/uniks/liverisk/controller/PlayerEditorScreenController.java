@@ -5,6 +5,7 @@ import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.view.ViewBuilder;
 
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -17,11 +18,15 @@ public class PlayerEditorScreenController {
 
     private Button startButton;
 
-    public void initialize(final Stage stage, final Button startButton) {
+    public void initialize(final Stage stage, final VBox editBox, final Button startButton) {
         Objects.requireNonNull(stage);
+        Objects.requireNonNull(editBox);
         Objects.requireNonNull(startButton);
         this.stage = stage;
         this.startButton = startButton;
+
+        Model.getInstance().getGame().getPlayers().forEach(player -> editBox.getChildren().add(ViewBuilder.buildPlayerEditorHBox(player)));
+
         addListeners();
         addHandlers();
     }

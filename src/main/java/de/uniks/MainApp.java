@@ -1,6 +1,5 @@
 package de.uniks;
 
-import de.uniks.liverisk.controller.GameController;
 import de.uniks.liverisk.view.ViewBuilder;
 
 import javafx.application.Application;
@@ -9,8 +8,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
-
-    private GameController gc;
 
     //main method required by assignment
     public static void main(String[] args) {

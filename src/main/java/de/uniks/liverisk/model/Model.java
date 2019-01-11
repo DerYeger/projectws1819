@@ -17,6 +17,10 @@ public class Model {
         return instance;
     }
 
+    public static void resetModel() {
+        instance = new Model();
+    }
+
     public Game getGame() {
         return game;
     }

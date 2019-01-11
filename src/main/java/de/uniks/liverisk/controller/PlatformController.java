@@ -27,6 +27,7 @@ public class PlatformController {
     public void setPlatform(final Platform platform) throws IOException {
         Objects.requireNonNull(platform);
         this.platform = platform;
+
         addPlatformMeeples();
         addListeners();
         updatePlatformColor();
