@@ -4,7 +4,7 @@ import de.uniks.liverisk.model.Game;
 import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
-import de.uniks.liverisk.view.ViewBuilder;
+import de.uniks.liverisk.view.GameScreenBuilder;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
@@ -23,7 +23,7 @@ public class GameScreenController {
     public void initialize() throws IOException {
         Game game = Model.getInstance().getGame();
         for (Player player : game.getPlayers()) {
-            playerList.getChildren().add(ViewBuilder.buildPlayerCardVBox(player));
+            playerList.getChildren().add(GameScreenBuilder.buildPlayerCardVBox(player));
         }
 
         //
@@ -31,7 +31,7 @@ public class GameScreenController {
         VBox vBox = new VBox(20);
         for (Player player : game.getPlayers()) {
             Platform platform = player.getPlatforms().get(0);
-            vBox.getChildren().add(ViewBuilder.buildPlatformStackPane(platform));
+            vBox.getChildren().add(GameScreenBuilder.buildPlatformStackPane(platform));
         }
         anchorPane.getChildren().add(vBox);
         //PLACEHOLDER END

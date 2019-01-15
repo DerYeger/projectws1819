@@ -2,7 +2,7 @@ package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
-import de.uniks.liverisk.view.ViewBuilder;
+import de.uniks.liverisk.view.GameScreenBuilder;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
@@ -35,7 +35,7 @@ public class PlatformController {
 
     private void addPlatformMeeples() throws IOException {
         for (int i = 1; i <= platform.getCapacity(); i++) {
-            meepleBox.getChildren().add(ViewBuilder.buildPlatformMeepleAnchorPane(platform, i));
+            meepleBox.getChildren().add(GameScreenBuilder.buildPlatformMeepleAnchorPane(platform, i));
         }
     }
 

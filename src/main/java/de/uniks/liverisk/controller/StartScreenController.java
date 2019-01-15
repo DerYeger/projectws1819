@@ -1,6 +1,6 @@
 package de.uniks.liverisk.controller;
 
-import de.uniks.liverisk.view.ViewBuilder;
+import de.uniks.liverisk.view.PlayerEditorScreenBuilder;
 
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -20,7 +20,7 @@ public class StartScreenController {
             final int playerCount = i + 2;
             buttons[i].setOnAction(throwingEventHandlerWrapper(e -> {
                 new GameController().initGame(playerCount);
-                stage.getScene().setRoot(ViewBuilder.buildPlayerEditorScreenVBox(stage));
+                stage.getScene().setRoot(PlayerEditorScreenBuilder.getPlayerEditorScreen(stage));
             }));
         }
     }
