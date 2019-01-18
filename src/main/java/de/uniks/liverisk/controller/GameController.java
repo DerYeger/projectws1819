@@ -15,6 +15,21 @@ public class GameController {
     private static final int STARTING_PLATFORM_CAPACITY = 5;
     private static final int REGULAR_PLATFORM_CAPACITY = 3;
 
+    private static GameController instance;
+
+    public static GameController getInstance() {
+        if (instance == null) instance = new GameController();
+        return instance;
+    }
+
+    public static void clear() {
+        instance = null;
+    }
+
+    private GameController() {
+        //singleton
+    }
+
     //TODO:
     //implement non-start-platforms and platform connections according to future assignments
     public void initGame(final int playerCount) {
@@ -31,6 +46,10 @@ public class GameController {
                     .withUnits(new Unit());
             game.withPlayers(player);
         }
+
+        //should not be changed if playing versus the computer
+        //only of platforms owned by the current player can be selected as the current platform
+        game.setCurrentPlayer(game.getPlayers().get(0));
     }
 
     public boolean move(final Platform source, final Platform destination) {

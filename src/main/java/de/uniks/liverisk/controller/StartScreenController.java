@@ -19,7 +19,7 @@ public class StartScreenController {
         for (int i = 0; i < buttons.length; i++) {
             final int playerCount = i + 2;
             buttons[i].setOnAction(throwingEventHandlerWrapper(e -> {
-                new GameController().initGame(playerCount);
+                GameController.getInstance().initGame(playerCount);
                 stage.getScene().setRoot(PlayerEditorScreenBuilder.getPlayerEditorScreen(stage));
             }));
         }

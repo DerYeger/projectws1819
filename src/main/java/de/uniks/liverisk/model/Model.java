@@ -11,9 +11,7 @@ public class Model {
     }
 
     public static Model getInstance() {
-        if (instance == null) {
-            instance = new Model();
-        }
+        if (instance == null) instance = new Model();
         return instance;
     }
 
@@ -24,5 +22,4 @@ public class Model {
     public Game getGame() {
         return game;
     }
-
 }

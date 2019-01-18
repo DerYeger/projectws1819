@@ -14,7 +14,7 @@ public class GameControllerTests {
     @Test
     public void testMove() {
         //setup
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         Game game = new Game();
         Platform platform1 = new Platform().setCapacity(5);
         Platform platform2 = new Platform().setCapacity(3);
@@ -41,7 +41,7 @@ public class GameControllerTests {
     @Test
     public void testAttack() {
         //setup
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         Game game = new Game();
         Platform platformA = new Platform();
         Platform platformB = new Platform();
@@ -75,7 +75,7 @@ public class GameControllerTests {
     @Test
     public void testReenforce() {
         //setup
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         Game game = new Game();
         Platform platform = new Platform();
         Player alice = new Player();
@@ -101,7 +101,7 @@ public class GameControllerTests {
     @Test
     public void testAdditionalMoveCases() {
         //setup
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         Game game = new Game();
         Platform platform1 = new Platform().setCapacity(5).withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit());
         Platform platform2 = new Platform().setCapacity(3);
@@ -136,7 +136,7 @@ public class GameControllerTests {
     @Test
     public void testBadMoveCases() {
         //setup
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         Game game = new Game();
         Platform platform1 = new Platform().setCapacity(5);
         Platform platform2 = new Platform().setCapacity(3);
@@ -183,7 +183,7 @@ public class GameControllerTests {
     @Test
     public void testAdditionalAttackCases() {
         //setup
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         Game game = new Game();
         Platform platformA1 = new Platform();
         Platform platformA2 = new Platform();
@@ -285,7 +285,7 @@ public class GameControllerTests {
     @Test
     public void testBadAttackCases() {
         //setup
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         Game game = new Game();
         Platform platformA = new Platform();
         Platform platformB = new Platform();
@@ -340,7 +340,7 @@ public class GameControllerTests {
     @Test
     public void testAdditionalReenforceCases() {
         //setup
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         Game game = new Game();
         Platform platformA = new Platform().setCapacity(3).withUnits(new Unit());
         Platform platformB = new Platform().setCapacity(3).withUnits(new Unit());
@@ -371,7 +371,7 @@ public class GameControllerTests {
     @Test
     public void testBadReenforceCases() {
         //setup
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         Game game = new Game();
         Platform platformA = new Platform().setCapacity(3).withUnits(new Unit(), new Unit(), new Unit());
         Platform platformB = new Platform().setCapacity(3).withUnits(new Unit());
@@ -395,7 +395,7 @@ public class GameControllerTests {
     public void testInitGame() {
         //setup
         Model.resetModel();
-        new GameController().initGame(3);
+        GameController.getInstance().initGame(3);
 
         Game game = Model.getInstance().getGame();
 
@@ -423,7 +423,7 @@ public class GameControllerTests {
     public void testPlayerConfigurationValidation() {
         //setup
         Model.resetModel();
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         gc.initGame(2);
 
         Game game = Model.getInstance().getGame();

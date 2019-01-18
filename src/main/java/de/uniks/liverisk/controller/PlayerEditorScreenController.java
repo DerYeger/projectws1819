@@ -49,6 +49,6 @@ public class PlayerEditorScreenController {
     }
 
     private void updateStartButtonUsability() {
-        startButton.setDisable(!new GameController().playerConfigurationIsValid());
+        startButton.setDisable(!GameController.getInstance().playerConfigurationIsValid());
     }
 }

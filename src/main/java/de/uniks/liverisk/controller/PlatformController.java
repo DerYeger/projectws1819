@@ -1,10 +1,14 @@
 package de.uniks.liverisk.controller;
 
+import de.uniks.liverisk.model.Game;
+import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.view.GameScreenBuilder;
 
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -30,7 +34,10 @@ public class PlatformController {
 
         addPlatformMeeples();
         addListeners();
+
         updatePlatformColor();
+
+        addHandlers();
     }
 
     private void addPlatformMeeples() throws IOException {
@@ -40,7 +47,15 @@ public class PlatformController {
     }
 
     private void addListeners() {
+        Model.getInstance().getGame().addPropertyChangeListener(Game.PROPERTY_selectedPlatform, evt -> {
+            Platform selectedPlatform = Model.getInstance().getGame().getSelectedPlatform();
+            platformShape.setStrokeWidth((selectedPlatform != null && selectedPlatform.equals(platform)) ? 5 : 0);
+        });
         platform.addPropertyChangeListener(Platform.PROPERTY_player, evt -> updatePlatformColor());
+    }
+
+    private void addHandlers() {
+        meepleBox.setOnMouseClicked(this::onMouseClicked);
     }
 
     private void updatePlatformColor() {
@@ -50,5 +65,49 @@ public class PlatformController {
         } else {
             platformShape.setFill(DEFAULT_PLATFORM_COLOR);
         }
+    }
+
+    private void onMouseClicked(MouseEvent e) {
+        Objects.requireNonNull(e);
+
+        if (e.getButton().equals(MouseButton.PRIMARY)) {
+            leftClick();
+        } else if (e.getButton().equals(MouseButton.SECONDARY)) {
+            rightClick();
+        }
+    }
+
+    private void leftClick() {
+        Game game = Model.getInstance().getGame();
+        Platform selectedPlatform = game.getSelectedPlatform();
+
+        if (selectedPlatform == null && platform.getPlayer() == game.getCurrentPlayer()) { //select
+            game.setSelectedPlatform(platform);
+        } else if (selectedPlatform != null && selectedPlatform.equals(platform)) { //unselect
+            clearSelection();
+        } else if (selectedPlatform != null) { //action
+            moveOrAttack(selectedPlatform, platform);
+        }
+    }
+
+    private void moveOrAttack(final Platform source, final Platform destination) {
+        Objects.requireNonNull(source);
+        Objects.requireNonNull(destination);
+
+        GameController gameController = GameController.getInstance();
+
+        if (destination.getPlayer() == null || destination.getPlayer().equals(source.getPlayer())) {
+            if (gameController.move(source, destination)) clearSelection();
+        } else {
+            if (gameController.attack(source, destination)) clearSelection();
+        }
+    }
+
+    private void clearSelection() {
+        Model.getInstance().getGame().setSelectedPlatform(null);
+    }
+
+    private void rightClick() {
+        GameController.getInstance().reenforce(platform);
     }
 }

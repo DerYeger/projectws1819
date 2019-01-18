@@ -27,7 +27,7 @@ public class TestApplication extends Application {
     //not part of the assignment, only used to test if implementation works
     @Override
     public void start(Stage primaryStage) throws IOException {
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         gc.initGame(2);
 
         Player alice = Model.getInstance().getGame().getPlayers().get(0);
