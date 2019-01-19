@@ -26,6 +26,8 @@ public class GameScreenController {
             playerList.getChildren().add(GameScreenBuilder.buildPlayerCardVBox(player));
         }
 
+        GameController.getInstance().startGameLoop();
+
         //
         //PLACEHOLDER, just for visualisation
         VBox vBox = new VBox(20);

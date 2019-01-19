@@ -1,5 +1,6 @@
 package de.uniks;
 
+import de.uniks.liverisk.controller.GameController;
 import de.uniks.liverisk.view.StartScreenBuilder;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -22,6 +23,8 @@ public class MainApp extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+
+        primaryStage.setOnCloseRequest(event -> GameController.getInstance().stopGameLoop());
         primaryStage.show();
     }
 

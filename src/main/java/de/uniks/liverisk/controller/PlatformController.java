@@ -108,6 +108,8 @@ public class PlatformController {
     }
 
     private void rightClick() {
-        GameController.getInstance().reenforce(platform);
+        Player currentPlayer = Model.getInstance().getGame().getCurrentPlayer();
+        Player player = platform.getPlayer();
+        if (player != null && player.equals(currentPlayer)) GameController.getInstance().reenforce(platform);
     }
 }

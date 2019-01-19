@@ -26,6 +26,8 @@ public class GameController {
         instance = null;
     }
 
+    private GameLoop gameLoop;
+
     private GameController() {
         //singleton
     }
@@ -48,8 +50,36 @@ public class GameController {
         }
 
         //should not be changed if playing versus the computer
-        //only of platforms owned by the current player can be selected as the current platform
+        //only platforms owned by the current player can be selected as the current platform or reenforced through ui inputs
         game.setCurrentPlayer(game.getPlayers().get(0));
+    }
+
+    public void initGame(final int playerCount, final int nonPlayerCharacterCount) {
+        initGame(playerCount);
+        addNonPlayerCharactersToGameLoop(nonPlayerCharacterCount);
+    }
+
+    private void addNonPlayerCharactersToGameLoop(final int nonPlayerCharacterCount) {
+        final ArrayList<Player> players = Model.getInstance().getGame().getPlayers();
+        final ArrayList<NonPlayerCharacter> nonPlayerCharacters = new ArrayList<>();
+
+        if (nonPlayerCharacterCount >= players.size()) Model.getInstance().getGame().setCurrentPlayer(null);
+
+        for (int i = players.size() - nonPlayerCharacterCount; i < players.size(); i++) {
+            nonPlayerCharacters.add(new NonPlayerCharacter(players.get(i)));
+        }
+
+        if (gameLoop == null) gameLoop = new GameLoop();
+        gameLoop.withNonPlayerCharacters(nonPlayerCharacters);
+    }
+
+    public void startGameLoop() {
+        if (gameLoop == null) gameLoop = new GameLoop();
+        gameLoop.start();
+    }
+
+    public void stopGameLoop() {
+        if (gameLoop != null) gameLoop.stop();
     }
 
     public boolean move(final Platform source, final Platform destination) {

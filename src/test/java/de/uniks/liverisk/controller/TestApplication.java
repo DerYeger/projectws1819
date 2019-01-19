@@ -28,7 +28,7 @@ public class TestApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         GameController gc = GameController.getInstance();
-        gc.initGame(2);
+        gc.initGame(2, 2);
 
         Player alice = Model.getInstance().getGame().getPlayers().get(0);
         alice.setName("Alice");
@@ -117,6 +117,8 @@ public class TestApplication extends Application {
         Scene scene = new Scene(mainBox, 800, 200);
         primaryStage.setScene(scene);
         primaryStage.show();
+        gc.startGameLoop();
+        primaryStage.setOnCloseRequest(event -> gc.stopGameLoop());
     }
 
     private static boolean canNotReenforce(Player player) {
