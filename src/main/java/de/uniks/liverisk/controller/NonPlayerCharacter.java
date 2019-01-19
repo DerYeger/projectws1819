@@ -12,7 +12,7 @@ public class NonPlayerCharacter {
 
     private Player player;
 
-    public NonPlayerCharacter(Player player) {
+    public NonPlayerCharacter(final Player player) {
         Objects.requireNonNull(player);
         this.player = player;
     }

@@ -8,7 +8,7 @@ public class NonPlayerCharactersUpdateRunnable implements Runnable {
 
     private ArrayList<NonPlayerCharacter> nonPlayerCharacters;
 
-    public NonPlayerCharactersUpdateRunnable(Collection<NonPlayerCharacter> nonPlayerCharacters) {
+    public NonPlayerCharactersUpdateRunnable(final Collection<NonPlayerCharacter> nonPlayerCharacters) {
         Objects.requireNonNull(nonPlayerCharacters);
         this.nonPlayerCharacters = new ArrayList<>(nonPlayerCharacters);
     }

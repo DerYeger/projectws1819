@@ -18,7 +18,7 @@ public class GameLoop {
 
     private NonPlayerCharactersUpdateRunnable nonPlayerCharactersUpdateRunnable;
 
-    public void withNonPlayerCharacters(Collection<NonPlayerCharacter> nonPlayerCharacters) {
+    public void withNonPlayerCharacters(final Collection<NonPlayerCharacter> nonPlayerCharacters) {
         Objects.requireNonNull(nonPlayerCharacters);
         nonPlayerCharactersUpdateRunnable = new NonPlayerCharactersUpdateRunnable(nonPlayerCharacters);
     }
