@@ -18,26 +18,23 @@ public class NonPlayerCharacter {
     }
 
     public void update() {
-        //TODO implement
-        System.out.println("before reenforce");
-        if (reenforcedMostExposedPlatform()) return;
-        System.out.println("before move");
-        if (moveToEmptyPlatform()) return;
-        System.out.println("before attack");
-        attackHostilePlatform();
+        if (reenforcedPlatform()) return;
+
+        if (movedToEmptyPlatform()) return;
+
+        if (attackedHostilePlatform()) return;
+
+        //if (movedToFrontlinePlatform()) return;
     }
 
     //TODO improve
-    private boolean reenforcedMostExposedPlatform() {
-        Platform platformToReenforce = player.getPlatforms().stream()
-                .filter(platform -> platform.getUnits().size() < platform.getCapacity())
-                .min(Comparator.comparingInt((Platform a) -> a.getUnits().size()))
-                .orElse(null);
-        return platformToReenforce != null && gameController.reenforce(platformToReenforce);
+    private boolean reenforcedPlatform() {
+        Platform platform = getAnyReenforcablePlatform();
+        return platform != null && gameController.reenforce(platform);
     }
 
     //attempts to move to an empty platform and returns true if such a platform was found
-    private boolean moveToEmptyPlatform() {
+    private boolean movedToEmptyPlatform() {
         for (Platform platform : player.getPlatforms()) {
             Platform emptyNeighbor = getAnyEmptyNeighbor(platform);
             if (platform.getUnits().size() > 1 && emptyNeighbor != null) {
@@ -47,25 +44,59 @@ public class NonPlayerCharacter {
         return false;
     }
 
-    private boolean attackHostilePlatform() {
+    private boolean attackedHostilePlatform() {
         for (Platform platform : player.getPlatforms()) {
             Platform hostileNeighbor = getAnyHostileNeighbor(platform);
             if (platform.getUnits().size() > 1 && hostileNeighbor != null) {
+                System.out.println("attacked");
                 return gameController.attack(platform, hostileNeighbor);
             }
         }
         return false;
     }
 
+    private boolean movedToFrontlinePlatform() {
+        for (Platform platform : player.getPlatforms()) {
+            Platform frontlinePlatform = getAnyFrontlineNeighbor(platform);
+            if (platform.getUnits().size() > 1 && frontlinePlatform != null) {
+                return gameController.move(platform, frontlinePlatform);
+            }
+        }
+        return false;
+    }
+
+    private Platform getAnyReenforcablePlatform() {
+        return player.getPlatforms().stream()
+                .filter(platform -> platform.getUnits().size() < platform.getCapacity())
+                .min(Comparator.comparingInt((Platform a) -> a.getCapacity() - a.getUnits().size()))
+                .orElse(null);
+    }
+
     private Platform getAnyEmptyNeighbor(final Platform platform) {
+        Objects.requireNonNull(platform);
         return platform.getNeighbors().stream()
                 .filter(neighbor -> neighbor.getPlayer() == null)
                 .findAny().orElse(null);
     }
 
     private Platform getAnyHostileNeighbor(final Platform platform) {
+        Objects.requireNonNull(platform);
         return platform.getNeighbors().stream()
                 .filter(neighbor -> neighbor.getPlayer() != null && !neighbor.getPlayer().equals(player))
                 .findAny().orElse(null);
+    }
+
+    //returns a neighbor of the input platform that either has an empty or hostile neighbor itself
+    private Platform getAnyFrontlineNeighbor(final Platform platform) {
+        Objects.requireNonNull(platform);
+        for (Platform neighbor : platform.getNeighbors()) {
+            if (neighbor.getPlayer().equals(player) &&
+                    neighbor.getNeighbors().stream()
+                            .anyMatch(neighborsNeighbor -> neighborsNeighbor.getPlayer() == null ||
+                                    !neighborsNeighbor.getPlayer().equals(player))) {
+                return neighbor;
+            }
+        }
+        return null;
     }
 }

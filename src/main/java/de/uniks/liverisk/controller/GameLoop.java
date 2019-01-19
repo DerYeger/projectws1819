@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 public class GameLoop {
 
-    private static final int UNIT_DISTRIBUTION_DELAY = 2000;
-    private static final int UNIT_DISTRIBUTION_INTERVAL = 2000;
+    private static final int UNIT_DISTRIBUTION_DELAY = 3000;
+    private static final int UNIT_DISTRIBUTION_INTERVAL = 3000;
 
     private static final int NON_PLAYER_CHARACTERS_UPDATE_DELAY = 2000;
     private static final int NON_PLAYER_CHARACTERS_UPDATE_INTERVAL = 2000;

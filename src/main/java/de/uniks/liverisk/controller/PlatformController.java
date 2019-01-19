@@ -51,7 +51,11 @@ public class PlatformController {
             Platform selectedPlatform = Model.getInstance().getGame().getSelectedPlatform();
             platformShape.setStrokeWidth((selectedPlatform != null && selectedPlatform.equals(platform)) ? 5 : 0);
         });
-        platform.addPropertyChangeListener(Platform.PROPERTY_player, evt -> updatePlatformColor());
+        platform.addPropertyChangeListener(Platform.PROPERTY_player, evt -> {
+            updatePlatformColor();
+            Game game = Model.getInstance().getGame();
+            if (game.getSelectedPlatform() != null && game.getSelectedPlatform().equals(platform)) game.setSelectedPlatform(null);
+        });
     }
 
     private void addHandlers() {
