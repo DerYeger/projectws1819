@@ -8,11 +8,13 @@ import java.util.concurrent.TimeUnit;
 
 public class GameLoop {
 
-    private static final int UNIT_DISTRIBUTION_DELAY = 3000;
-    private static final int UNIT_DISTRIBUTION_INTERVAL = 3000;
+    private static final int UNIT_DISTRIBUTION_DELAY = 5000;
+    private static final int UNIT_DISTRIBUTION_INTERVAL = 10000;
+    private static final double UNIT_DISTRIBUTION_MODIFIER = 0.5;
 
-    private static final int NON_PLAYER_CHARACTERS_UPDATE_DELAY = 2000;
-    private static final int NON_PLAYER_CHARACTERS_UPDATE_INTERVAL = 2000;
+    private static final int NON_PLAYER_CHARACTERS_UPDATE_DELAY = 5000;
+    private static final int NON_PLAYER_CHARACTERS_UPDATE_INTERVAL = 10000;
+    private static final double NON_PLAYER_CHARACTERS_UPDATE_MODIFIER = 0.5;
 
     private ScheduledExecutorService executorService;
 
@@ -37,11 +39,15 @@ public class GameLoop {
 
     private void addUnitDistributionRunnable() {
         executorService.scheduleAtFixedRate(new UnitDistributionRunnable(),
-                UNIT_DISTRIBUTION_DELAY, UNIT_DISTRIBUTION_INTERVAL, TimeUnit.MILLISECONDS);
+                (int) (UNIT_DISTRIBUTION_DELAY * UNIT_DISTRIBUTION_MODIFIER),
+                (int) (UNIT_DISTRIBUTION_INTERVAL * UNIT_DISTRIBUTION_MODIFIER),
+                TimeUnit.MILLISECONDS);
     }
 
     private void addNonPlayerCharactersRunnable() {
         executorService.scheduleAtFixedRate(nonPlayerCharactersUpdateRunnable,
-                NON_PLAYER_CHARACTERS_UPDATE_DELAY, NON_PLAYER_CHARACTERS_UPDATE_INTERVAL, TimeUnit.MILLISECONDS);
+                (int) (NON_PLAYER_CHARACTERS_UPDATE_DELAY * NON_PLAYER_CHARACTERS_UPDATE_MODIFIER),
+                (int) (NON_PLAYER_CHARACTERS_UPDATE_INTERVAL * NON_PLAYER_CHARACTERS_UPDATE_MODIFIER),
+                TimeUnit.MILLISECONDS);
     }
 }

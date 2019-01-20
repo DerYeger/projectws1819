@@ -2,10 +2,7 @@ package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 public class GameController {
 
@@ -65,8 +62,10 @@ public class GameController {
 
         if (nonPlayerCharacterCount >= players.size()) Model.getInstance().getGame().setCurrentPlayer(null);
 
+        Random random = new Random(System.currentTimeMillis());
         for (int i = players.size() - nonPlayerCharacterCount; i < players.size(); i++) {
-            nonPlayerCharacters.add(new NonPlayerCharacter(players.get(i)));
+            int strategy = random.nextInt(2) + 1;
+            nonPlayerCharacters.add(new NonPlayerCharacter(players.get(i), strategy));
         }
 
         if (gameLoop == null) gameLoop = new GameLoop();
