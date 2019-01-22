@@ -10,11 +10,11 @@ public class GameLoop {
 
     private static final int UNIT_DISTRIBUTION_DELAY = 5000;
     private static final int UNIT_DISTRIBUTION_INTERVAL = 10000;
-    private static final double UNIT_DISTRIBUTION_MODIFIER = 0.5;
+    private static final double UNIT_DISTRIBUTION_MODIFIER = 1;
 
     private static final int NON_PLAYER_CHARACTERS_UPDATE_DELAY = 5000;
     private static final int NON_PLAYER_CHARACTERS_UPDATE_INTERVAL = 10000;
-    private static final double NON_PLAYER_CHARACTERS_UPDATE_MODIFIER = 0.5;
+    private static final double NON_PLAYER_CHARACTERS_UPDATE_MODIFIER = 1;
 
     private ScheduledExecutorService executorService;
 

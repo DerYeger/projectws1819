@@ -41,9 +41,12 @@ public class PlayerCardController {
         }
     }
 
-    private void updateVisibleMeeples() {
-        int count = player.getUnits().size();
-        for (int i = 0; i < Math.min(count, meeples.getChildren().size()); i++) meeples.getChildren().get(i).setVisible(true);
-        for (int i = count; i < meeples.getChildren().size(); i++) meeples.getChildren().get(i).setVisible(false);
+    //TODO fix indexoutofbounds error
+    //proposal: implement playercardmeeplecontroller and change visibilty similar to platformmeeplecontroller
+     private void updateVisibleMeeples() {
+         int count = player.getUnits().size();
+         for (int i = 0; i < meeples.getChildren().size(); i++) {
+             meeples.getChildren().get(i).setVisible(i < count);
+         }
     }
 }

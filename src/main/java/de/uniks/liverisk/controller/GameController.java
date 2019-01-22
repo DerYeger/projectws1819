@@ -62,10 +62,8 @@ public class GameController {
 
         if (nonPlayerCharacterCount >= players.size()) Model.getInstance().getGame().setCurrentPlayer(null);
 
-        Random random = new Random(System.currentTimeMillis());
         for (int i = players.size() - nonPlayerCharacterCount; i < players.size(); i++) {
-            int strategy = random.nextInt(2) + 1;
-            nonPlayerCharacters.add(new NonPlayerCharacter(players.get(i), strategy));
+            nonPlayerCharacters.add(new NonPlayerCharacter(players.get(i)));
         }
 
         if (gameLoop == null) gameLoop = new GameLoop();
@@ -150,8 +148,8 @@ public class GameController {
         spareUnits.stream()
                 .limit(emptySlots)
                 .forEach(unit -> {
-                    unit.setPlatform(platform);
-                    unit.setPlayer(null);
+                    unit.setPlatform(platform)
+                            .setPlayer(null);
                 });
 
         return true;

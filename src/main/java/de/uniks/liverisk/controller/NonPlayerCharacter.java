@@ -3,65 +3,110 @@ package de.uniks.liverisk.controller;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
 
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class NonPlayerCharacter {
 
-    public static final int RANDOM = 0;
+    private static final int BEHAVIOUR_COUNT = 4;
 
-    public static final int AGGRESSIVE = 1;
+    private static final int REENFORCING = 0;
+    private static final int AGGRESSIVE = 1;
+    private static final int PASSIVE = 2;
+    private static final int DEFENSIVE = 3;
 
-    public static final int PASSIVE = 2;
+    private static Random random;
 
     private GameController gameController = GameController.getInstance();
 
     private Player player;
 
-    private int strategy;
+    private static int getRandomInt() {
+        if (random == null) random = new Random(System.currentTimeMillis());
+        return random.nextInt(BEHAVIOUR_COUNT);
+    }
 
     public NonPlayerCharacter(final Player player) {
-        this(player, RANDOM);
-    }
-
-    public NonPlayerCharacter(final Player player, final int strategy) {
         Objects.requireNonNull(player);
         this.player = player;
-        if (strategy == RANDOM) {
-            this.strategy = new Random(System.currentTimeMillis()).nextInt(2) + 1;
-        } else {
-            this.strategy = strategy;
-        }
     }
 
-    public void update() {
-        reenforce();
-        switch (strategy) {
+    public void update()  {
+
+        int behaviour = getRandomInt();
+        switch (behaviour) {
+            case REENFORCING:
+                reenforcingUpdate();
+                break;
             case AGGRESSIVE:
                 aggressiveUpdate();
                 break;
             case PASSIVE:
+                passiveUpdate();
+                break;
+            case DEFENSIVE:
+                defensiveUpdate();
+                break;
             default:
-                aggressiveUpdate();
+                reenforcingUpdate();
                 break;
         }
     }
 
-    private void reenforce() {
-        while (!player.getUnits().isEmpty() && reenforcedPlatform());
+    private void reenforcingUpdate() {
+        if (reenforcedPlatform()) {
+            System.out.println(player.getName() + " reenforced.");
+        } else if (movedToEmptyPlatform()) {
+            System.out.println(player.getName() + " moved to empty platform.");
+//        } else if (movedToFrontlinePlatform()) {
+//            System.out.println(player.getName() + " moved to front.");
+        } else if (attackedHostilePlatform()) {
+            System.out.println(player.getName() + " attacked.");
+        } else {
+        System.out.println(player.getName() + " did nothing!");
+        }
     }
 
     private void aggressiveUpdate() {
-        if (attackedHostilePlatform()) return;
-        if (movedToEmptyPlatform()) return;
-        //if (movedToFrontlinePlatform()) return;
+        if (attackedHostilePlatform()) {
+            System.out.println(player.getName() + " attacked.");
+        } else if (movedToEmptyPlatform()) {
+            System.out.println(player.getName() + " moved to empty platform.");
+//        } else if (movedToFrontlinePlatform()) {
+//            System.out.println(player.getName() + " moved to front.");
+        } else if (reenforcedPlatform()) {
+            System.out.println(player.getName() + " reenforced.");
+        } else {
+            System.out.println(player.getName() + " did nothing!");
+        }
     }
 
     private void passiveUpdate() {
-        if (movedToEmptyPlatform()) return;
-        if (attackedHostilePlatform()) return;
-        //if (movedToFrontlinePlatform()) return;
+        if (movedToEmptyPlatform()) {
+            System.out.println(player.getName() + " moved to empty platform.");
+//        } else if (movedToFrontlinePlatform()) {
+//            System.out.println(player.getName() + " moved to front.");
+        } else if (attackedHostilePlatform()) {
+            System.out.println(player.getName() + " attacked.");
+        } else if (reenforcedPlatform()) {
+            System.out.println(player.getName() + " reenforced.");
+        } else {
+            System.out.println(player.getName() + " did nothing!");
+        }
+    }
+
+    private void defensiveUpdate() {
+//        if (movedToFrontlinePlatform()) {
+//            System.out.println(player.getName() + " moved to front.");
+//        } else
+        if (movedToEmptyPlatform()) {
+            System.out.println(player.getName() + " moved to empty platform.");
+        } else if (attackedHostilePlatform()) {
+            System.out.println(player.getName() + " attacked.");
+        } else if (reenforcedPlatform()) {
+            System.out.println(player.getName() + " reenforced.");
+        } else {
+            System.out.println(player.getName() + " did nothing!");
+        }
     }
 
     //TODO improve
@@ -70,33 +115,35 @@ public class NonPlayerCharacter {
         return platform != null && gameController.reenforce(platform);
     }
 
-    //attempts to move to an empty platform and returns true if such a platform was found
+    //attempts to move to an empty platform and returns true if successful
     private boolean movedToEmptyPlatform() {
         for (Platform platform : player.getPlatforms()) {
+            if (platform.getUnits().size() < 2) continue;
             Platform emptyNeighbor = getAnyEmptyNeighbor(platform);
-            if (platform.getUnits().size() > 1 && emptyNeighbor != null) {
-                return gameController.move(platform, emptyNeighbor);
-            }
+            if (emptyNeighbor == null) continue;
+            return gameController.move(platform, emptyNeighbor);
         }
         return false;
     }
 
+    //attempts to attack to a hostile platform and returns true if successful
     private boolean attackedHostilePlatform() {
         for (Platform platform : player.getPlatforms()) {
+            if (platform.getUnits().size() < 2) continue;
             Platform hostileNeighbor = getAnyHostileNeighbor(platform);
-            if (platform.getUnits().size() > 1 && hostileNeighbor != null) {
-                return gameController.attack(platform, hostileNeighbor);
-            }
+            if (hostileNeighbor == null) continue;
+            return gameController.attack(platform, hostileNeighbor);
         }
         return false;
     }
 
+    //attempts to move to an allied platform and returns true if successful
     private boolean movedToFrontlinePlatform() {
         for (Platform platform : player.getPlatforms()) {
+            if (platform.getUnits().size() < 2) continue;
             Platform frontlinePlatform = getAnyFrontlineNeighbor(platform);
-            if (platform.getUnits().size() > 1 && frontlinePlatform != null) {
-                return gameController.move(platform, frontlinePlatform);
-            }
+            if (frontlinePlatform == null) continue;
+            return gameController.move(platform, frontlinePlatform);
         }
         return false;
     }
@@ -104,35 +151,36 @@ public class NonPlayerCharacter {
     private Platform getAnyReenforcablePlatform() {
         return player.getPlatforms().parallelStream()
                 .filter(platform -> platform.getUnits().size() < platform.getCapacity())
-                .min(Comparator.comparingInt((Platform a) -> a.getCapacity() - a.getUnits().size()))
+                .min(Comparator.comparingInt((Platform platform) -> platform.getCapacity() - platform.getUnits().size()))
                 .orElse(null);
     }
 
     private Platform getAnyEmptyNeighbor(final Platform platform) {
         Objects.requireNonNull(platform);
-        return platform.getNeighbors().parallelStream()
+        List<Platform> potentialTargets = platform.getNeighbors();
+        Collections.shuffle(potentialTargets);
+        return potentialTargets.parallelStream()
                 .filter(neighbor -> neighbor.getPlayer() == null)
                 .findAny().orElse(null);
     }
 
     private Platform getAnyHostileNeighbor(final Platform platform) {
         Objects.requireNonNull(platform);
-        return platform.getNeighbors().parallelStream()
+        List<Platform> potentialTargets = platform.getNeighbors();
+        Collections.shuffle(potentialTargets);
+        return potentialTargets.parallelStream()
                 .filter(neighbor -> neighbor.getPlayer() != null && !neighbor.getPlayer().equals(player))
                 .findAny().orElse(null);
     }
 
-    //returns a neighbor of the input platform that either has an empty or hostile neighbor itself
     private Platform getAnyFrontlineNeighbor(final Platform platform) {
         Objects.requireNonNull(platform);
-        for (Platform neighbor : platform.getNeighbors()) {
-            if (neighbor.getPlayer().equals(player) &&
-                    neighbor.getNeighbors().parallelStream()
-                            .anyMatch(neighborsNeighbor -> neighborsNeighbor.getPlayer() == null ||
-                                    !neighborsNeighbor.getPlayer().equals(player))) {
-                return neighbor;
-            }
-        }
-        return null;
+        List<Platform> potentialTargets = platform.getNeighbors();
+        Collections.shuffle(potentialTargets);
+        return potentialTargets.parallelStream()
+                .filter(neighbor -> neighbor.getPlayer().equals(player) &&
+                        getAnyEmptyNeighbor(platform) == null && getAnyHostileNeighbor(platform) == null &&
+                        (getAnyEmptyNeighbor(neighbor) != null || getAnyHostileNeighbor(neighbor) != null))
+                .findAny().orElse(null);
     }
 }

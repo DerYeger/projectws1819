@@ -22,7 +22,7 @@ public class PlayerEditorScreenBuilder {
         return buildPlayerEditorScreenVBox(stage);
     }
 
-    public static VBox buildPlayerEditorScreenVBox(final Stage stage) {
+    private static VBox buildPlayerEditorScreenVBox(final Stage stage) {
         Objects.requireNonNull(stage);
 
         Button startButton = new Button("Start");

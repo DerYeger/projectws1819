@@ -17,7 +17,7 @@ public class StartScreenBuilder {
         return buildStartScreenVBox(stage);
     }
 
-    public static VBox buildStartScreenVBox(final Stage stage) {
+    private static VBox buildStartScreenVBox(final Stage stage) {
         Objects.requireNonNull(stage);
 
         Button twoPlayerButton = new Button("Start 2-player Game");

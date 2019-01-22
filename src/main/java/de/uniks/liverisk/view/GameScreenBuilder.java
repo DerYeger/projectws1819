@@ -25,7 +25,7 @@ public class GameScreenBuilder {
         return buildGameScreenAnchorPane(stage);
     }
 
-    public static AnchorPane buildGameScreenAnchorPane(final Stage stage) throws IOException {
+    private static AnchorPane buildGameScreenAnchorPane(final Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(GameScreenBuilder.class.getResource("gameScreen.fxml"));
         stage.setWidth(GAME_SCREEN_WIDTH);
         stage.setHeight(GAME_SCREEN_HEIGHT);
