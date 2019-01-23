@@ -25,7 +25,7 @@ public class GameControllerTests {
         platform1.withUnits(new Unit(), new Unit(), new Unit(), new Unit(), new Unit()).withNeighbors(platform2);
 
         //action
-        Assert.assertTrue(gc.move(platform1, platform2));
+        Assert.assertTrue(gc.concurrentMove(platform1, platform2));
 
         //asserts
         Assert.assertEquals(2, platform1.getUnits().size());
@@ -59,7 +59,7 @@ public class GameControllerTests {
                 .setCapacity(3);
 
         //actions
-        Assert.assertTrue(gc.attack(platformB, platformA));
+        Assert.assertTrue(gc.concurrentAttack(platformB, platformA));
 
         //asserts
         Assert.assertEquals(0, alice.getPlatforms().size());
@@ -119,9 +119,9 @@ public class GameControllerTests {
         game.withPlatforms(platform1, platform2, platform3, platform4, platform5, platform6).withPlayers(alice, bob);
 
         //actions and asserts
-        Assert.assertTrue(gc.move(platform1, platform2));   //destination cap reached
-        Assert.assertTrue(gc.move(platform3, platform4));   //only 1 unit left on source
-        Assert.assertTrue(gc.move(platform5, platform6));   //destination cap reached, units already present
+        Assert.assertTrue(gc.concurrentMove(platform1, platform2));   //destination cap reached
+        Assert.assertTrue(gc.concurrentMove(platform3, platform4));   //only 1 unit left on source
+        Assert.assertTrue(gc.concurrentMove(platform5, platform6));   //destination cap reached, units already present
 
         Assert.assertEquals(2, platform1.getUnits().size());
         Assert.assertEquals(3, platform2.getUnits().size());
@@ -155,28 +155,28 @@ public class GameControllerTests {
         //actions and assert
         //null parameter
         try {
-            gc.move(null, null);
+            gc.concurrentMove(null, null);
             Assert.fail();
         } catch (Exception e) {}
 
         //source has now owner
-        Assert.assertFalse(gc.move(platform3, platform2));
+        Assert.assertFalse(gc.concurrentMove(platform3, platform2));
         Assert.assertNull(platform3.getPlayer());
 
         //invalid move to hostile owned platform
-        Assert.assertFalse(gc.move(platform1, platform4));
+        Assert.assertFalse(gc.concurrentMove(platform1, platform4));
         Assert.assertNotSame(platform1.getPlayer(), platform4.getPlayer());
 
         //invalid move between unconnected platforms
-        Assert.assertFalse(gc.move(platform1, platform3));
+        Assert.assertFalse(gc.concurrentMove(platform1, platform3));
         Assert.assertFalse(platform1.getNeighbors().contains(platform3));
 
         //target platform at max capacity
-        Assert.assertFalse(gc.move(platform1, platform2));
+        Assert.assertFalse(gc.concurrentMove(platform1, platform2));
         Assert.assertEquals(platform2.getCapacity(), platform2.getUnits().size());
 
         //source platform has less than two units
-        Assert.assertFalse(gc.move(platform4, platform3));
+        Assert.assertFalse(gc.concurrentMove(platform4, platform3));
         Assert.assertTrue(platform4.getUnits().size() < 2);
     }
 
@@ -238,11 +238,11 @@ public class GameControllerTests {
                 .setCapacity(3);
 
         //actions
-        Assert.assertTrue(gc.attack(platformA1, platformB1));   //successful attack
-        Assert.assertTrue(gc.attack(platformA2, platformB2));   //unsuccessful attack
-        Assert.assertTrue(gc.attack(platformA3, platformB3));   //unsuccessful attack
-        Assert.assertTrue(gc.attack(platformA4, platformB4));   //successful attack without unit to take over platform
-        Assert.assertTrue(gc.attack(platformA5, platformB5));   //successful attack with surplus unit
+        Assert.assertTrue(gc.concurrentAttack(platformA1, platformB1));   //successful attack
+        Assert.assertTrue(gc.concurrentAttack(platformA2, platformB2));   //unsuccessful attack
+        Assert.assertTrue(gc.concurrentAttack(platformA3, platformB3));   //unsuccessful attack
+        Assert.assertTrue(gc.concurrentAttack(platformA4, platformB4));   //successful attack without unit to take over platform
+        Assert.assertTrue(gc.concurrentAttack(platformA5, platformB5));   //successful attack with surplus unit
 
         //asserts
         int aliceUnitCount = 0;
@@ -312,28 +312,28 @@ public class GameControllerTests {
         //actions & asserts
         //null parameters
         try {
-            gc.attack(null, null);
+            gc.concurrentAttack(null, null);
             Assert.fail();
         } catch (Exception e) {}
 
         //source has now owner
-        Assert.assertFalse(gc.attack(platformC, platformA));
+        Assert.assertFalse(gc.concurrentAttack(platformC, platformA));
         Assert.assertNull(platformC.getPlayer());
 
         //attacking unowned platform
-        Assert.assertFalse(gc.attack(platformA, platformC));
+        Assert.assertFalse(gc.concurrentAttack(platformA, platformC));
         Assert.assertNull(platformC.getPlayer());
 
         //invalid attack between unconnected platforms
-        Assert.assertFalse(gc.attack(platformA, platformD));
+        Assert.assertFalse(gc.concurrentAttack(platformA, platformD));
         Assert.assertFalse(platformA.getNeighbors().contains(platformD));
 
         //source platform has less than two units
-        Assert.assertFalse(gc.move(platformA, platformB));
+        Assert.assertFalse(gc.concurrentMove(platformA, platformB));
         Assert.assertTrue(platformA.getUnits().size() < 2);
 
         //player attacks own platform
-        Assert.assertFalse(gc.attack(platformB, platformD));
+        Assert.assertFalse(gc.concurrentAttack(platformB, platformD));
         Assert.assertEquals(platformB.getPlayer(), platformD.getPlayer());
     }
 

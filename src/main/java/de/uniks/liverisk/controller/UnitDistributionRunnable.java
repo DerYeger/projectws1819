@@ -9,14 +9,13 @@ public class UnitDistributionRunnable implements Runnable {
 
     private static final boolean USE_SCALING_DISTRIBUTION = true;
 
-    private static final int MAX_SPARE_UNIT_COUNT = 16;
     private static final int MAX_UNITS_TO_ADD_PER_TICK = 3;
 
     @Override
     public void run() {
         Game game = Model.getInstance().getGame();
         game.getPlayers().parallelStream()
-                .filter(player -> !player.getPlatforms().isEmpty() && player.getUnits().size() < MAX_SPARE_UNIT_COUNT)
+                .filter(player -> !player.getPlatforms().isEmpty() && player.getUnits().size() < GameController.MAX_SPARE_UNIT_COUNT)
                 .forEach(this::addSpareUnits);
     }
 

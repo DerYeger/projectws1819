@@ -4,7 +4,7 @@ import de.uniks.liverisk.model.Game;
 import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
-import de.uniks.liverisk.view.GameScreenBuilder;
+import de.uniks.liverisk.view.PlatformBuilder;
 
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
@@ -42,7 +42,7 @@ public class PlatformController {
 
     private void addPlatformMeeples() throws IOException {
         for (int i = 1; i <= platform.getCapacity(); i++) {
-            meepleBox.getChildren().add(GameScreenBuilder.buildPlatformMeepleAnchorPane(platform, i));
+            meepleBox.getChildren().add(PlatformBuilder.buildPlatformMeepleAnchorPane(platform, i));
         }
     }
 
@@ -62,7 +62,7 @@ public class PlatformController {
         meepleBox.setOnMouseClicked(this::onMouseClicked);
     }
 
-    private void updatePlatformColor() {
+    private synchronized void updatePlatformColor() {
         Player player = platform.getPlayer();
         if (player != null) {
             platformShape.setFill(Color.valueOf(player.getColor()));
@@ -101,9 +101,9 @@ public class PlatformController {
         GameController gameController = GameController.getInstance();
 
         if (destination.getPlayer() == null || destination.getPlayer().equals(source.getPlayer())) {
-            if (gameController.move(source, destination)) clearSelection();
+            if (gameController.concurrentMove(source, destination)) clearSelection();
         } else {
-            if (gameController.attack(source, destination)) clearSelection();
+            if (gameController.concurrentAttack(source, destination)) clearSelection();
         }
     }
 

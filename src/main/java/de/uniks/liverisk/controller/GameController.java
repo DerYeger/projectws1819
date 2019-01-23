@@ -3,6 +3,7 @@ package de.uniks.liverisk.controller;
 import de.uniks.liverisk.model.*;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 public class GameController {
 
@@ -11,6 +12,8 @@ public class GameController {
 
     private static final int STARTING_PLATFORM_CAPACITY = 5;
     private static final int REGULAR_PLATFORM_CAPACITY = 3;
+
+    public static final int MAX_SPARE_UNIT_COUNT = 16;
 
     private static GameController instance;
 
@@ -24,6 +27,8 @@ public class GameController {
     }
 
     private GameLoop gameLoop;
+
+    private Semaphore mutex = new Semaphore(1);
 
     private GameController() {
         //singleton
@@ -79,7 +84,24 @@ public class GameController {
         if (gameLoop != null) gameLoop.stop();
     }
 
-    public boolean move(final Platform source, final Platform destination) {
+    public boolean concurrentMove(final Platform source, final Platform destination) {
+        boolean moved = false;
+        try {
+            try {
+                mutex.acquire();
+                moved = move(source, destination);
+            } finally {
+                mutex.release();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return moved;
+    }
+
+
+
+    private boolean move(final Platform source, final Platform destination) {
         Objects.requireNonNull(source);
         Objects.requireNonNull(destination);
 
@@ -105,7 +127,22 @@ public class GameController {
                 source.getUnits().size() > 1;
     }
 
-    public boolean attack(final Platform source, final Platform destination) {
+    public boolean concurrentAttack(final Platform source, final Platform destination) {
+        boolean attacked = false;
+        try {
+            try {
+                mutex.acquire();
+                attacked = attack(source, destination);
+            } finally {
+                mutex.release();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return attacked;
+    }
+
+    private boolean attack(final Platform source, final Platform destination) {
         Objects.requireNonNull(source);
         Objects.requireNonNull(destination);
 

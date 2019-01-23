@@ -1,10 +1,9 @@
 package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.Player;
-import de.uniks.liverisk.util.Utils;
+import de.uniks.liverisk.view.PlayerCardBuilder;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
@@ -24,29 +23,17 @@ public class PlayerCardController {
         Objects.requireNonNull(player);
         this.player = player;
 
-        addListeners();
-
-        playerNameLabel.setText(player.getName());
-        setMeepleColor(player.getColor());
-        updateVisibleMeeples();
+        addPlayerCardMeeples();
+        setPlayerNameLabelText();
     }
 
-    private void addListeners() {
-        player.addPropertyChangeListener(Player.PROPERTY_units, evt -> updateVisibleMeeples());
-    }
-
-    private void setMeepleColor(final String color) {
-        for (Node node : meeples.getChildren()) {
-            node.setStyle("-fx-fill: " + Utils.hexColorStringToWebColorString(color));
+    private void addPlayerCardMeeples() {
+        for (int i = 1; i <= GameController.MAX_SPARE_UNIT_COUNT; i++) {
+            meeples.getChildren().add(PlayerCardBuilder.buildPlayerCardMeepleCircle(player, i));
         }
     }
 
-    //TODO fix indexoutofbounds error
-    //proposal: implement playercardmeeplecontroller and change visibilty similar to platformmeeplecontroller
-     private void updateVisibleMeeples() {
-         int count = player.getUnits().size();
-         for (int i = 0; i < meeples.getChildren().size(); i++) {
-             meeples.getChildren().get(i).setVisible(i < count);
-         }
+    private void setPlayerNameLabelText() {
+        playerNameLabel.setText(player.getName());
     }
 }

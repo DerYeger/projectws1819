@@ -30,7 +30,7 @@ public class NonPlayerCharacter {
         this.player = player;
     }
 
-    public void update()  {
+    public synchronized void update()  {
 
         int behaviour = getRandomInt();
         switch (behaviour) {
@@ -121,7 +121,7 @@ public class NonPlayerCharacter {
             if (platform.getUnits().size() < 2) continue;
             Platform emptyNeighbor = getAnyEmptyNeighbor(platform);
             if (emptyNeighbor == null) continue;
-            return gameController.move(platform, emptyNeighbor);
+            return gameController.concurrentMove(platform, emptyNeighbor);
         }
         return false;
     }
@@ -132,7 +132,7 @@ public class NonPlayerCharacter {
             if (platform.getUnits().size() < 2) continue;
             Platform hostileNeighbor = getAnyHostileNeighbor(platform);
             if (hostileNeighbor == null) continue;
-            return gameController.attack(platform, hostileNeighbor);
+            return gameController.concurrentAttack(platform, hostileNeighbor);
         }
         return false;
     }
@@ -143,7 +143,7 @@ public class NonPlayerCharacter {
             if (platform.getUnits().size() < 2) continue;
             Platform frontlinePlatform = getAnyFrontlineNeighbor(platform);
             if (frontlinePlatform == null) continue;
-            return gameController.move(platform, frontlinePlatform);
+            return gameController.concurrentMove(platform, frontlinePlatform);
         }
         return false;
     }

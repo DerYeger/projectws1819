@@ -3,8 +3,9 @@ package de.uniks.liverisk.controller;
 import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
-import de.uniks.liverisk.view.GameScreenBuilder;
 
+import de.uniks.liverisk.view.PlatformBuilder;
+import de.uniks.liverisk.view.PlayerCardBuilder;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -51,16 +52,16 @@ public class TestApplication extends Application {
         nR.withNeighbors(bobPlatform, nT, nM, nB);
         nM.withNeighbors(nT, nB);
 
-        Parent alicePlayerCardParent = GameScreenBuilder.buildPlayerCardVBox(alice);
-        Parent bobPlayerCardParent = GameScreenBuilder.buildPlayerCardVBox(bob);
+        Parent alicePlayerCardParent = PlayerCardBuilder.buildPlayerCardVBox(alice);
+        Parent bobPlayerCardParent = PlayerCardBuilder.buildPlayerCardVBox(bob);
 
-        Parent alicePlatformParent = GameScreenBuilder.buildPlatformStackPane(alicePlatform);
-        Parent bobPlatformParent = GameScreenBuilder.buildPlatformStackPane(bobPlatform);
-        Parent nLParent = GameScreenBuilder.buildPlatformStackPane(nL);
-        Parent nRParent = GameScreenBuilder.buildPlatformStackPane(nR);
-        Parent nTParent = GameScreenBuilder.buildPlatformStackPane(nT);
-        Parent nMParent = GameScreenBuilder.buildPlatformStackPane(nM);
-        Parent nBParent = GameScreenBuilder.buildPlatformStackPane(nB);
+        Parent alicePlatformParent = PlatformBuilder.buildPlatformStackPane(alicePlatform);
+        Parent bobPlatformParent = PlatformBuilder.buildPlatformStackPane(bobPlatform);
+        Parent nLParent = PlatformBuilder.buildPlatformStackPane(nL);
+        Parent nRParent = PlatformBuilder.buildPlatformStackPane(nR);
+        Parent nTParent = PlatformBuilder.buildPlatformStackPane(nT);
+        Parent nMParent = PlatformBuilder.buildPlatformStackPane(nM);
+        Parent nBParent = PlatformBuilder.buildPlatformStackPane(nB);
 
         VBox middlePlatformBox = new VBox(10, nTParent, nMParent, nBParent);
         middlePlatformBox.setAlignment(Pos.CENTER);

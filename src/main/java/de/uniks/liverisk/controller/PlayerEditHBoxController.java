@@ -10,7 +10,6 @@ import java.util.Objects;
 
 import static de.uniks.liverisk.util.Utils.hexColorStringToWebColorString;
 
-
 public class PlayerEditHBoxController {
 
     private Player player;

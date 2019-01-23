@@ -12,14 +12,16 @@ public class PlatformMeepleController {
     @FXML
     private Polygon meeple;
 
-    private int slot;
-
     private Platform platform;
+
+    private int slot;
 
     public void initialize(final Platform platform, final int slot) {
         Objects.requireNonNull(platform);
+
         this.platform = platform;
         this.slot = slot;
+
         addListeners();
         updateMeeple();
     }
@@ -28,7 +30,7 @@ public class PlatformMeepleController {
         platform.addPropertyChangeListener(Platform.PROPERTY_units, evt -> updateMeeple());
     }
 
-    private void updateMeeple() {
+    private synchronized void updateMeeple() {
         meeple.setVisible(platform.getUnits().size() >= slot);
     }
 }

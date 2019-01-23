@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GameLoop {
 
-    private static final int UNIT_DISTRIBUTION_DELAY = 5000;
+    private static final int UNIT_DISTRIBUTION_DELAY = 2500;
     private static final int UNIT_DISTRIBUTION_INTERVAL = 10000;
     private static final double UNIT_DISTRIBUTION_MODIFIER = 1;
 
