@@ -6,7 +6,7 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #333333;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.liverisk.controller.GameScreenController">
    <children>
-      <VBox fx:id="playerList" layoutX="600.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #222222;">
+      <VBox fx:id="playerList" layoutX="600.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #222222;">
          <padding>
             <Insets left="5.0" top="5.0" />
          </padding></VBox>

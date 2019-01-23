@@ -27,10 +27,10 @@ public class PlatformMeepleController {
     }
 
     private void addListeners() {
-        platform.addPropertyChangeListener(Platform.PROPERTY_units, evt -> updateMeeple());
+        platform.addPropertyChangeListener(Platform.PROPERTY_units, evt -> javafx.application.Platform.runLater(this::updateMeeple));
     }
 
-    private synchronized void updateMeeple() {
+    private void updateMeeple() {
         meeple.setVisible(platform.getUnits().size() >= slot);
     }
 }

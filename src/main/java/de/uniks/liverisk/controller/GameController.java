@@ -71,8 +71,7 @@ public class GameController {
             nonPlayerCharacters.add(new NonPlayerCharacter(players.get(i)));
         }
 
-        if (gameLoop == null) gameLoop = new GameLoop();
-        gameLoop.withNonPlayerCharacters(nonPlayerCharacters);
+        gameLoop = new GameLoop(nonPlayerCharacters);
     }
 
     public void startGameLoop() {

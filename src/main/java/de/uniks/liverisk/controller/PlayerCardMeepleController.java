@@ -1,8 +1,8 @@
 package de.uniks.liverisk.controller;
 
-import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
 
+import javafx.application.Platform;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
@@ -34,10 +34,11 @@ public class PlayerCardMeepleController {
     }
 
     private void addListeners() {
-        player.addPropertyChangeListener(Platform.PROPERTY_units, evt -> updateMeeple());
+        player.addPropertyChangeListener(Player.PROPERTY_platforms, evt -> Platform.runLater(this::updateMeeple));
+        player.addPropertyChangeListener(Player.PROPERTY_units, evt -> Platform.runLater(this::updateMeeple));
     }
 
-    private synchronized void updateMeeple() {
-        meeple.setVisible(player.getUnits().size() >= slot);
+    private void updateMeeple() {
+        meeple.setVisible(player.getUnits().size() >= slot && !player.getPlatforms().isEmpty());
     }
 }

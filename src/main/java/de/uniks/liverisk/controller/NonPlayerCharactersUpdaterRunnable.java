@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-public class NonPlayerCharactersUpdateRunnable implements Runnable {
+public class NonPlayerCharactersUpdaterRunnable implements Runnable {
 
     private ArrayList<NonPlayerCharacter> nonPlayerCharacters;
 
-    public NonPlayerCharactersUpdateRunnable(final Collection<NonPlayerCharacter> nonPlayerCharacters) {
+    public NonPlayerCharactersUpdaterRunnable(final Collection<NonPlayerCharacter> nonPlayerCharacters) {
         Objects.requireNonNull(nonPlayerCharacters);
         this.nonPlayerCharacters = new ArrayList<>(nonPlayerCharacters);
     }

@@ -48,13 +48,11 @@ public class PlatformController {
 
     private void addListeners() {
         Model.getInstance().getGame().addPropertyChangeListener(Game.PROPERTY_selectedPlatform, evt -> {
-            Platform selectedPlatform = Model.getInstance().getGame().getSelectedPlatform();
-            platformShape.setStrokeWidth((selectedPlatform != null && selectedPlatform.equals(platform)) ? 5 : 0);
+            javafx.application.Platform.runLater(this::setStrokeVisibility);
         });
         platform.addPropertyChangeListener(Platform.PROPERTY_player, evt -> {
-            updatePlatformColor();
-            Game game = Model.getInstance().getGame();
-            if (game.getSelectedPlatform() != null && game.getSelectedPlatform().equals(platform)) game.setSelectedPlatform(null);
+            javafx.application.Platform.runLater(this::updatePlatformColor);
+            javafx.application.Platform.runLater(this::unselectPlatformIfNeccessary);
         });
     }
 
@@ -62,13 +60,23 @@ public class PlatformController {
         meepleBox.setOnMouseClicked(this::onMouseClicked);
     }
 
-    private synchronized void updatePlatformColor() {
+    private void updatePlatformColor() {
         Player player = platform.getPlayer();
         if (player != null) {
             platformShape.setFill(Color.valueOf(player.getColor()));
         } else {
             platformShape.setFill(DEFAULT_PLATFORM_COLOR);
         }
+    }
+
+    private void setStrokeVisibility() {
+        Platform selectedPlatform = Model.getInstance().getGame().getSelectedPlatform();
+        platformShape.setStrokeWidth((selectedPlatform != null && selectedPlatform.equals(platform)) ? 5 : 0);
+    }
+
+    private void unselectPlatformIfNeccessary() {
+        Game game = Model.getInstance().getGame();
+        if (game.getSelectedPlatform() != null && game.getSelectedPlatform().equals(platform)) game.setSelectedPlatform(null);
     }
 
     private void onMouseClicked(MouseEvent e) {
@@ -85,7 +93,7 @@ public class PlatformController {
         Game game = Model.getInstance().getGame();
         Platform selectedPlatform = game.getSelectedPlatform();
 
-        if (selectedPlatform == null && platform.getPlayer() == game.getCurrentPlayer()) { //select
+        if (selectedPlatform == null && platform.getPlayer() != null && platform.getPlayer() == game.getCurrentPlayer()) { //select
             game.setSelectedPlatform(platform);
         } else if (selectedPlatform != null && selectedPlatform.equals(platform)) { //unselect
             clearSelection();

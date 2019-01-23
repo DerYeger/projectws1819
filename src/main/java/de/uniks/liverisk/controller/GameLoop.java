@@ -1,7 +1,6 @@
 package de.uniks.liverisk.controller;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -18,18 +17,21 @@ public class GameLoop {
 
     private ScheduledExecutorService executorService;
 
-    private NonPlayerCharactersUpdateRunnable nonPlayerCharactersUpdateRunnable;
+    private NonPlayerCharactersUpdaterRunnable nonPlayerCharactersUpdaterRunnable;
 
-    public void withNonPlayerCharacters(final Collection<NonPlayerCharacter> nonPlayerCharacters) {
-        Objects.requireNonNull(nonPlayerCharacters);
-        nonPlayerCharactersUpdateRunnable = new NonPlayerCharactersUpdateRunnable(nonPlayerCharacters);
+    public GameLoop(Collection<NonPlayerCharacter> nonPlayerCharacters) {
+        nonPlayerCharactersUpdaterRunnable = new NonPlayerCharactersUpdaterRunnable(nonPlayerCharacters);
+    }
+
+    public GameLoop() {
+
     }
 
     public void start() {
         if (executorService == null) {
             executorService = Executors.newSingleThreadScheduledExecutor();
             addUnitDistributionRunnable();
-            if (nonPlayerCharactersUpdateRunnable != null) addNonPlayerCharactersRunnable();
+            if (nonPlayerCharactersUpdaterRunnable != null) addNonPlayerCharactersRunnable();
         }
     }
 
@@ -45,7 +47,7 @@ public class GameLoop {
     }
 
     private void addNonPlayerCharactersRunnable() {
-        executorService.scheduleAtFixedRate(nonPlayerCharactersUpdateRunnable,
+        executorService.scheduleAtFixedRate(nonPlayerCharactersUpdaterRunnable,
                 (int) (NON_PLAYER_CHARACTERS_UPDATE_DELAY * NON_PLAYER_CHARACTERS_UPDATE_MODIFIER),
                 (int) (NON_PLAYER_CHARACTERS_UPDATE_INTERVAL * NON_PLAYER_CHARACTERS_UPDATE_MODIFIER),
                 TimeUnit.MILLISECONDS);

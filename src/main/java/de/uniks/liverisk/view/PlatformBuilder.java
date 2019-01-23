@@ -3,6 +3,7 @@ package de.uniks.liverisk.view;
 import de.uniks.liverisk.controller.PlatformController;
 import de.uniks.liverisk.controller.PlatformMeepleController;
 import de.uniks.liverisk.model.Platform;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;

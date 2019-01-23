@@ -3,6 +3,7 @@ package de.uniks.liverisk.view;
 import de.uniks.liverisk.controller.PlayerCardController;
 import de.uniks.liverisk.controller.PlayerCardMeepleController;
 import de.uniks.liverisk.model.Player;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
