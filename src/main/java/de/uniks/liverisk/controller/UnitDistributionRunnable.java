@@ -6,7 +6,7 @@ import de.uniks.liverisk.model.Unit;
 
 public class UnitDistributionRunnable implements Runnable {
 
-    private static final boolean USE_SCALING_DISTRIBUTION = true;
+    private static final boolean USE_SCALING_DISTRIBUTION = false;
     private static final int MAX_UNITS_PER_TICK = 3;
 
     @Override
@@ -23,7 +23,9 @@ public class UnitDistributionRunnable implements Runnable {
     private void addSpareUnitsToPlayer(final Player player) {
         if (USE_SCALING_DISTRIBUTION) {
             int platformCount = player.getPlatforms().size();
-            int countOfUnitsToAdd = Math.min(MAX_UNITS_PER_TICK, platformCount);
+            int earnedUnits = Math.min(MAX_UNITS_PER_TICK, platformCount);
+            int emptySlots = GameController.MAX_SPARE_UNIT_COUNT - player.getUnits().size();
+            int countOfUnitsToAdd = Math.min(earnedUnits, emptySlots);
             for (int i = 0; i < countOfUnitsToAdd; i++) {
                 player.withUnits(new Unit());
             }

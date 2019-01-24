@@ -30,6 +30,10 @@ public class NonPlayerCharacter {
         this.player = player;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public synchronized void update()  {
 
         int behaviour = getRandomInt();

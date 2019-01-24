@@ -15,6 +15,8 @@ public class NonPlayerCharactersUpdaterRunnable implements Runnable {
 
     @Override
     public void run() {
-        nonPlayerCharacters.forEach(NonPlayerCharacter::update);
+        nonPlayerCharacters.stream()
+                .filter(npc -> !npc.getPlayer().getPlatforms().isEmpty())
+                .forEach(NonPlayerCharacter::update);
     }
 }
