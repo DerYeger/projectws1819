@@ -8,7 +8,8 @@ import de.uniks.liverisk.view.PlatformBuilder;
 import de.uniks.liverisk.view.PlayerCardBuilder;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -16,28 +17,32 @@ import java.io.IOException;
 public class GameScreenController {
 
     @FXML
-    private AnchorPane anchorPane;
+    private Pane platformAreaPane;
 
     @FXML
     private VBox playerList;
 
     public void initialize() throws IOException {
+        showPlayerCards();
+
+        showPlatforms();
+
+        GameController.getInstance().startGameLoop();
+    }
+
+    private void showPlayerCards() throws IOException {
         Game game = Model.getInstance().getGame();
         for (Player player : game.getPlayers()) {
             playerList.getChildren().add(PlayerCardBuilder.buildPlayerCardVBox(player));
         }
+    }
 
-        GameController.getInstance().startGameLoop();
-
-        //
-        //PLACEHOLDER, just for visualisation
-        VBox vBox = new VBox(20);
-        for (Player player : game.getPlayers()) {
-            Platform platform = player.getPlatforms().get(0);
-            vBox.getChildren().add(PlatformBuilder.buildPlatformStackPane(platform));
+    private void showPlatforms() throws IOException {
+        for (Platform platform : Model.getInstance().getGame().getPlatforms()) {
+            Parent platformParent = PlatformBuilder.buildPlatformStackPane(platform);
+            platformParent.setLayoutX(platform.getXPos());
+            platformParent.setLayoutY(platform.getYPos());
+            platformAreaPane.getChildren().add(platformParent);
         }
-        anchorPane.getChildren().add(vBox);
-        //PLACEHOLDER END
-        //
     }
 }

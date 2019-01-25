@@ -1,17 +1,29 @@
 package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.*;
+import de.uniks.liverisk.view.GameScreenBuilder;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameController {
 
     private static final ArrayList<String> DEFAULT_NAMES = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
     private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("0x336633ff", "0xe64d4dff", "0x4d66ccff", "0xcccc33ff"));
 
-    private static final int STARTING_PLATFORM_CAPACITY = 5;
-    private static final int REGULAR_PLATFORM_CAPACITY = 3;
+    private static final int PLATFORM_COUNT_MODIFIER = 3;
+    private static final ArrayList<Integer> PLATFORM_CAPACITIES = new ArrayList<>(Arrays.asList(3, 4, 5));
+
+
+    private static final int PLATFORM_WIDTH = 100;
+    private static final int PLATFORM_HEIGHT = 60;
+    private static final int PLATFORM_SPACING = 30;
+
+    private static final int LOWER_X_POS_BOUND = 50;
+    private static final int LOWER_Y_POS_BOUND = 50;
+    private static final int UPPER_X_POS_BOUND = GameScreenBuilder.GAME_SCREEN_HEIGHT - PLATFORM_WIDTH - 50;
+    private static final int UPPER_Y_POS_BOUND = GameScreenBuilder.GAME_SCREEN_HEIGHT - PLATFORM_HEIGHT - 50;
 
     public static final int MAX_SPARE_UNIT_COUNT = 16;
 
@@ -34,31 +46,99 @@ public class GameController {
         //singleton
     }
 
-    //TODO:
-    //implement non-start-platforms and platform connections according to future assignments
+    public void initGame(final int playerCount, final int nonPlayerCharacterCount) {
+        initGame(playerCount);
+        addNonPlayerCharactersToGameLoop(nonPlayerCharacterCount);
+    }
+
     public void initGame(final int playerCount) {
-        Game game = Model.getInstance().getGame();
         if (playerCount < 2 || playerCount > 4) return;
+
+        initPlayers(playerCount);
+
+        initPlatforms(playerCount * PLATFORM_COUNT_MODIFIER);
+    }
+
+    private void initPlayers(final int playerCount) {
+        Game game = Model.getInstance().getGame();
         for (int i = 0; i < playerCount; i++) {
             Player player = new Player();
             player.setName(DEFAULT_NAMES.get(i))
                     .setColor(DEFAULT_COLORS.get(i))
                     .withUnits(new Unit(), new Unit(), new Unit(), new Unit());
-            Platform startPlatform = new Platform();
-            startPlatform.setCapacity(STARTING_PLATFORM_CAPACITY)
-                    .setPlayer(player)
-                    .withUnits(new Unit());
             game.withPlayers(player);
         }
-
         //should not be changed if playing versus the computer
         //only platforms owned by the current player can be selected as the current platform or reenforced through ui inputs
         game.setCurrentPlayer(game.getPlayers().get(0));
     }
 
-    public void initGame(final int playerCount, final int nonPlayerCharacterCount) {
-        initGame(playerCount);
-        addNonPlayerCharactersToGameLoop(nonPlayerCharacterCount);
+    private void initPlatforms(final int platformCount) {
+        Game game = Model.getInstance().getGame();
+        for (int i = 0; i < platformCount; i++) {
+            game.withPlatforms(new Platform());
+        }
+
+        randomizePlatformLocations();
+        setStartingPlatforms();
+        setPlatformCapacties();
+    }
+
+    private void randomizePlatformLocations() {
+        for (Platform platform : Model.getInstance().getGame().getPlatforms()) {
+            do {
+                if (platform.getXPos() != 0) System.out.println("repeat");
+                double xPos = ThreadLocalRandom.current().nextInt(LOWER_X_POS_BOUND, UPPER_X_POS_BOUND);
+                double yPos = ThreadLocalRandom.current().nextInt(LOWER_Y_POS_BOUND, UPPER_Y_POS_BOUND);
+                platform.setXPos(xPos)
+                        .setYPos(yPos);
+            } while (!platformPlacementIsValid(platform));
+        }
+    }
+
+    private void setStartingPlatforms() {
+        for (Player player : Model.getInstance().getGame().getPlayers()) {
+            Platform startingPlatform = getEmptyPlatform();
+            startingPlatform.setPlayer(player)
+                    .withUnits(new Unit());
+        }
+    }
+
+    private void setPlatformCapacties() {
+        for (Platform platform : Model.getInstance().getGame().getPlatforms()) {
+            if (platform.getPlayer() != null) {
+                platform.setCapacity(PLATFORM_CAPACITIES.get(PLATFORM_CAPACITIES.size() - 1));
+            } else {
+                int platformCapacity = PLATFORM_CAPACITIES.get(ThreadLocalRandom.current().nextInt(PLATFORM_CAPACITIES.size()));
+                platform.setCapacity(platformCapacity);
+            }
+        }
+    }
+
+    private boolean platformPlacementIsValid(final Platform platform) {
+        return Model.getInstance().getGame().getPlatforms()
+                .parallelStream()
+                .noneMatch(p -> !p.equals(platform) && platformsOverlap(platform, p));
+    }
+
+    private boolean platformsOverlap(final Platform a, final Platform b) {
+        if (a.getYPos() + PLATFORM_HEIGHT + PLATFORM_SPACING < b.getYPos()
+                || a.getYPos() > b.getYPos() + PLATFORM_HEIGHT + PLATFORM_SPACING) {
+            return false;
+        }
+        if (a.getXPos() + PLATFORM_WIDTH + PLATFORM_SPACING < b.getXPos()
+                || a.getXPos() > b.getXPos() + PLATFORM_WIDTH + PLATFORM_SPACING) {
+            return false;
+        }
+        return true;
+    }
+
+    private Platform getEmptyPlatform() {
+        ArrayList<Platform> platforms = Model.getInstance().getGame().getPlatforms();
+        Collections.shuffle(platforms);
+        return platforms.stream()
+                .filter(platform -> platform.getPlayer() == null)
+                .findAny().orElse(null);
     }
 
     private void addNonPlayerCharactersToGameLoop(final int nonPlayerCharacterCount) {
@@ -97,8 +177,6 @@ public class GameController {
         }
         return moved;
     }
-
-
 
     private boolean move(final Platform source, final Platform destination) {
         Objects.requireNonNull(source);
