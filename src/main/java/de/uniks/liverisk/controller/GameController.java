@@ -1,7 +1,6 @@
 package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.*;
-import de.uniks.liverisk.view.GameScreenBuilder;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -15,15 +14,12 @@ public class GameController {
     private static final int PLATFORM_COUNT_MODIFIER = 3;
     private static final ArrayList<Integer> PLATFORM_CAPACITIES = new ArrayList<>(Arrays.asList(3, 4, 5));
 
-
-    private static final int PLATFORM_WIDTH = 100;
-    private static final int PLATFORM_HEIGHT = 60;
     private static final int PLATFORM_SPACING = 30;
 
     private static final int LOWER_X_POS_BOUND = 50;
     private static final int LOWER_Y_POS_BOUND = 50;
-    private static final int UPPER_X_POS_BOUND = GameScreenBuilder.GAME_SCREEN_HEIGHT - PLATFORM_WIDTH - 50;
-    private static final int UPPER_Y_POS_BOUND = GameScreenBuilder.GAME_SCREEN_HEIGHT - PLATFORM_HEIGHT - 50;
+    private static final int UPPER_X_POS_BOUND = GameScreenController.GAME_SCREEN_HEIGHT - PlatformController.PLATFORM_WIDTH - 50;
+    private static final int UPPER_Y_POS_BOUND = GameScreenController.GAME_SCREEN_HEIGHT - PlatformController.PLATFORM_HEIGHT - 50;
 
     public static final int MAX_SPARE_UNIT_COUNT = 16;
 
@@ -80,6 +76,7 @@ public class GameController {
         }
 
         randomizePlatformLocations();
+        randomizePlatformConnections();
         setStartingPlatforms();
         setPlatformCapacties();
     }
@@ -93,6 +90,18 @@ public class GameController {
                 platform.setXPos(xPos)
                         .setYPos(yPos);
             } while (!platformPlacementIsValid(platform));
+        }
+    }
+
+    private void randomizePlatformConnections() {
+        //TODO implement actual algorithm
+        //lookup delaunay triangulation
+        for (Platform platform : Model.getInstance().getGame().getPlatforms()) {
+            ArrayList<Platform> platforms = new ArrayList<>(Model.getInstance().getGame().getPlatforms());
+            Collections.shuffle(platforms);
+            platform.withNeighbors(platforms.parallelStream()
+                    .filter(p -> !p.equals(platform))
+                    .findAny().orElse(null));
         }
     }
 
@@ -118,16 +127,16 @@ public class GameController {
     private boolean platformPlacementIsValid(final Platform platform) {
         return Model.getInstance().getGame().getPlatforms()
                 .parallelStream()
-                .noneMatch(p -> !p.equals(platform) && platformsOverlap(platform, p));
+                .noneMatch(p -> p.getXPos() != 0 && !p.equals(platform) && platformsOverlap(platform, p));
     }
 
     private boolean platformsOverlap(final Platform a, final Platform b) {
-        if (a.getYPos() + PLATFORM_HEIGHT + PLATFORM_SPACING < b.getYPos()
-                || a.getYPos() > b.getYPos() + PLATFORM_HEIGHT + PLATFORM_SPACING) {
+        if (a.getYPos() + PlatformController.PLATFORM_HEIGHT + PLATFORM_SPACING < b.getYPos()
+                || a.getYPos() > b.getYPos() + PlatformController.PLATFORM_HEIGHT + PLATFORM_SPACING) {
             return false;
         }
-        if (a.getXPos() + PLATFORM_WIDTH + PLATFORM_SPACING < b.getXPos()
-                || a.getXPos() > b.getXPos() + PLATFORM_WIDTH + PLATFORM_SPACING) {
+        if (a.getXPos() + PlatformController.PLATFORM_WIDTH + PLATFORM_SPACING < b.getXPos()
+                || a.getXPos() > b.getXPos() + PlatformController.PLATFORM_WIDTH + PLATFORM_SPACING) {
             return false;
         }
         return true;

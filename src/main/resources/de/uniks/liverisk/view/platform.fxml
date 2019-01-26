@@ -7,7 +7,7 @@
 
 <StackPane alignment="BASELINE_CENTER" prefHeight="60.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uniks.liverisk.controller.PlatformController">
    <children>
-      <Ellipse fx:id="platformShape" fill="#868686" opacity="0.9" radiusX="50.0" radiusY="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Ellipse fx:id="platformShape" fill="#868686" radiusX="50.0" radiusY="30.0" stroke="#ccbbbb" strokeType="INSIDE" strokeWidth="0.0" />
       <HBox fx:id="meepleBox" alignment="CENTER" prefHeight="60.0" prefWidth="100.0" spacing="3.0">
          <padding>
             <Insets bottom="3.0" left="3.0" right="3.0" top="15.0" />

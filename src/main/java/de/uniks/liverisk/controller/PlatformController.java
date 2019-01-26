@@ -18,6 +18,9 @@ import java.util.Objects;
 
 public class PlatformController {
 
+    public static final int PLATFORM_WIDTH = 100;
+    public static final int PLATFORM_HEIGHT = 60;
+
     private static final Color DEFAULT_PLATFORM_COLOR = Color.valueOf("#8d8d8d");
 
     @FXML
