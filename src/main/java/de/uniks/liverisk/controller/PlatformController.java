@@ -96,7 +96,9 @@ public class PlatformController {
         Game game = Model.getInstance().getGame();
         Platform selectedPlatform = game.getSelectedPlatform();
 
-        if (selectedPlatform == null && platform.getPlayer() != null && platform.getPlayer() == game.getCurrentPlayer()) { //select
+        if ((selectedPlatform == null || !selectedPlatform.equals(platform) && !selectedPlatform.getNeighbors().contains(platform)) &&
+                platform.getPlayer() != null &&
+                platform.getPlayer().equals(game.getCurrentPlayer())) { //select
             game.setSelectedPlatform(platform);
         } else if (selectedPlatform != null && selectedPlatform.equals(platform)) { //unselect
             clearSelection();

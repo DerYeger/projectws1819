@@ -14,7 +14,7 @@ public class GameController {
     private static final int PLATFORM_COUNT_MODIFIER = 3;
     private static final ArrayList<Integer> PLATFORM_CAPACITIES = new ArrayList<>(Arrays.asList(3, 4, 5));
 
-    private static final int PLATFORM_SPACING = 30;
+    private static final int PLATFORM_SPACING = 50;
 
     private static final int LOWER_X_POS_BOUND = 50;
     private static final int LOWER_Y_POS_BOUND = 50;
@@ -84,25 +84,34 @@ public class GameController {
     private void randomizePlatformLocations() {
         for (Platform platform : Model.getInstance().getGame().getPlatforms()) {
             do {
-                if (platform.getXPos() != 0) System.out.println("repeat");
-                double xPos = ThreadLocalRandom.current().nextInt(LOWER_X_POS_BOUND, UPPER_X_POS_BOUND);
-                double yPos = ThreadLocalRandom.current().nextInt(LOWER_Y_POS_BOUND, UPPER_Y_POS_BOUND);
+                int xPos = ThreadLocalRandom.current().nextInt(LOWER_X_POS_BOUND, UPPER_X_POS_BOUND);
+                int yPos = ThreadLocalRandom.current().nextInt(LOWER_Y_POS_BOUND, UPPER_Y_POS_BOUND);
                 platform.setXPos(xPos)
                         .setYPos(yPos);
             } while (!platformPlacementIsValid(platform));
         }
     }
 
+    //TODO ensure that there are not multiple sub graphs
     private void randomizePlatformConnections() {
-        //TODO implement actual algorithm
-        //lookup delaunay triangulation
         for (Platform platform : Model.getInstance().getGame().getPlatforms()) {
-            ArrayList<Platform> platforms = new ArrayList<>(Model.getInstance().getGame().getPlatforms());
-            Collections.shuffle(platforms);
-            platform.withNeighbors(platforms.parallelStream()
-                    .filter(p -> !p.equals(platform))
-                    .findAny().orElse(null));
+            List<Platform> closeNeighors = getClosePlatforms(platform, 2);
+            platform.withNeighbors(closeNeighors);
         }
+    }
+
+    private List<Platform> getClosePlatforms(final Platform platform, int count) {
+        ArrayList<Platform> platforms = new ArrayList<>(Model.getInstance().getGame().getPlatforms());
+        platforms.remove(platform);
+        //platforms.remove(platform.getNeighbors());
+        platforms.sort(Comparator.comparingInt(p -> (int) getDistance(p, platform)));
+        return platforms.subList(0, count);
+    }
+
+    private double getDistance(final Platform a, final Platform b) {
+        double xComponent = b.getXPos() - a.getXPos();
+        double yComponent = b.getYPos() - a.getYPos();
+        return Math.sqrt(Math.pow(xComponent, 2) + Math.pow(yComponent, 2));
     }
 
     private void setStartingPlatforms() {
@@ -111,6 +120,16 @@ public class GameController {
             startingPlatform.setPlayer(player)
                     .withUnits(new Unit());
         }
+    }
+
+    private Platform getPossibleStartingPlatform() {
+        ArrayList<Platform> platforms = new ArrayList<>(Model.getInstance().getGame().getPlatforms());
+        Collections.shuffle(platforms);
+        return platforms.stream()
+                .filter(platform -> platform.getPlayer() == null
+                        && platform.getNeighbors().stream()
+                        .noneMatch(neighbor -> neighbor.getPlayer() != null))
+                .findAny().orElse(null);
     }
 
     private void setPlatformCapacties() {
@@ -140,17 +159,6 @@ public class GameController {
             return false;
         }
         return true;
-    }
-
-    private Platform getPossibleStartingPlatform() {
-        ArrayList<Platform> platforms = Model.getInstance().getGame().getPlatforms();
-        Collections.shuffle(platforms);
-        return platforms.stream()
-                .filter(platform -> platform.getPlayer() == null &&
-                        platform.getNeighbors()
-                                .parallelStream()
-                                .noneMatch(neighbor -> neighbor.getPlayer() != null))
-                .findAny().orElse(null);
     }
 
     private void addNonPlayerCharactersToGameLoop(final int nonPlayerCharacterCount) {
@@ -300,4 +308,6 @@ public class GameController {
                 });
         return nameSet.size() == game.getPlayers().size() && colorSet.size() == game.getPlayers().size();
     }
+
+
 }
