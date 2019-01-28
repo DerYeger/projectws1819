@@ -107,7 +107,7 @@ public class GameController {
 
     private void setStartingPlatforms() {
         for (Player player : Model.getInstance().getGame().getPlayers()) {
-            Platform startingPlatform = getEmptyPlatform();
+            Platform startingPlatform = getPossibleStartingPlatform();
             startingPlatform.setPlayer(player)
                     .withUnits(new Unit());
         }
@@ -142,11 +142,14 @@ public class GameController {
         return true;
     }
 
-    private Platform getEmptyPlatform() {
+    private Platform getPossibleStartingPlatform() {
         ArrayList<Platform> platforms = Model.getInstance().getGame().getPlatforms();
         Collections.shuffle(platforms);
         return platforms.stream()
-                .filter(platform -> platform.getPlayer() == null)
+                .filter(platform -> platform.getPlayer() == null &&
+                        platform.getNeighbors()
+                                .parallelStream()
+                                .noneMatch(neighbor -> neighbor.getPlayer() != null))
                 .findAny().orElse(null);
     }
 

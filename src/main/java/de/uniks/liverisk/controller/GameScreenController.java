@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 public class GameScreenController {
 
@@ -52,8 +53,10 @@ public class GameScreenController {
     }
 
     private void drawPlatformConnections() {
+        HashSet<Platform> donePlatforms = new HashSet<>();
         for (Platform platform : Model.getInstance().getGame().getPlatforms()) {
             for (Platform neighbor : platform.getNeighbors()) {
+                if (donePlatforms.contains(neighbor)) continue;
                 double startXPos = platform.getXPos() + PlatformController.PLATFORM_WIDTH / 2.0;
                 double startYPos = platform.getYPos() + PlatformController.PLATFORM_HEIGHT / 2.0;
                 double endXPos = neighbor.getXPos() + PlatformController.PLATFORM_WIDTH / 2.0;
@@ -62,6 +65,7 @@ public class GameScreenController {
                 connection.setStrokeWidth(5);
                 platformAreaPane.getChildren().add(connection);
             }
+            donePlatforms.add(platform);
         }
     }
 }
