@@ -79,9 +79,7 @@ public class GameController {
         ArrayList<Platform> platforms = new ArrayList<>(game.getPlatforms());
         Collections.shuffle(platforms);
         return platforms.stream()
-                .filter(platform -> platform.getPlayer() == null
-                        && platform.getNeighbors().stream()
-                        .noneMatch(neighbor -> neighbor.getPlayer() != null))
+                .filter(platform -> platform.getPlayer() == null)
                 .findAny().orElse(null);
     }
 
