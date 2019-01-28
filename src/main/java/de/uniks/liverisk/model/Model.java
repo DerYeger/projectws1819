@@ -2,7 +2,7 @@ package de.uniks.liverisk.model;
 
 public class Model {
 
-    private static Model instance;
+    private static Model model;
 
     private Game game;
 
@@ -11,12 +11,12 @@ public class Model {
     }
 
     public static Model getInstance() {
-        if (instance == null) instance = new Model();
-        return instance;
+        if (model == null) model = new Model();
+        return model;
     }
 
-    public static void resetModel() {
-        instance = new Model();
+    public static void clear() {
+        model = null;
     }
 
     public Game getGame() {

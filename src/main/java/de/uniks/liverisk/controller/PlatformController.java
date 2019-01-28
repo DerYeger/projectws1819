@@ -111,12 +111,12 @@ public class PlatformController {
         Objects.requireNonNull(source);
         Objects.requireNonNull(destination);
 
-        GameController gameController = GameController.getInstance();
+        GameLogicController gameLogicController = GameLogicController.getInstance();
 
         if (destination.getPlayer() == null || destination.getPlayer().equals(source.getPlayer())) {
-            if (gameController.concurrentMove(source, destination)) clearSelection();
+            if (gameLogicController.concurrentMove(source, destination)) clearSelection();
         } else {
-            if (gameController.concurrentAttack(source, destination)) clearSelection();
+            if (gameLogicController.concurrentAttack(source, destination)) clearSelection();
         }
     }
 
@@ -127,6 +127,6 @@ public class PlatformController {
     private void rightClick() {
         Player currentPlayer = Model.getInstance().getGame().getCurrentPlayer();
         Player player = platform.getPlayer();
-        if (player != null && player.equals(currentPlayer)) GameController.getInstance().reenforce(platform);
+        if (player != null && player.equals(currentPlayer)) GameLogicController.getInstance().reenforce(platform);
     }
 }

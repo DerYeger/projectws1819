@@ -33,7 +33,7 @@ public class GameScreenController {
         drawPlatformConnections();
         drawPlatforms();
 
-        GameController.getInstance().startGameLoop();
+        GameLoop.getInstance().start();
     }
 
     private void showPlayerCards() throws IOException {

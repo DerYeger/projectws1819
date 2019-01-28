@@ -16,14 +16,12 @@ public class NonPlayerCharacter {
 
     private static Random random;
 
-    private GameController gameController = GameController.getInstance();
-
-    private Player player;
-
     private static int getRandomInt() {
         if (random == null) random = new Random(System.currentTimeMillis());
         return random.nextInt(BEHAVIOUR_COUNT);
     }
+
+    private Player player;
 
     public NonPlayerCharacter(final Player player) {
         Objects.requireNonNull(player);
@@ -116,7 +114,7 @@ public class NonPlayerCharacter {
     //TODO improve
     private boolean reenforcedPlatform() {
         Platform platform = getAnyReenforcablePlatform();
-        return platform != null && gameController.reenforce(platform);
+        return platform != null && GameLogicController.getInstance().reenforce(platform);
     }
 
     //attempts to move to an empty platform and returns true if successful
@@ -125,7 +123,7 @@ public class NonPlayerCharacter {
             if (platform.getUnits().size() < 2) continue;
             Platform emptyNeighbor = getAnyEmptyNeighbor(platform);
             if (emptyNeighbor == null) continue;
-            return gameController.concurrentMove(platform, emptyNeighbor);
+            return GameLogicController.getInstance().concurrentMove(platform, emptyNeighbor);
         }
         return false;
     }
@@ -136,7 +134,7 @@ public class NonPlayerCharacter {
             if (platform.getUnits().size() < 2) continue;
             Platform hostileNeighbor = getAnyHostileNeighbor(platform);
             if (hostileNeighbor == null) continue;
-            return gameController.concurrentAttack(platform, hostileNeighbor);
+            return GameLogicController.getInstance().concurrentAttack(platform, hostileNeighbor);
         }
         return false;
     }
@@ -147,7 +145,7 @@ public class NonPlayerCharacter {
             if (platform.getUnits().size() < 2) continue;
             Platform frontlinePlatform = getAnyFrontlineNeighbor(platform);
             if (frontlinePlatform == null) continue;
-            return gameController.concurrentMove(platform, frontlinePlatform);
+            return GameLogicController.getInstance().concurrentMove(platform, frontlinePlatform);
         }
         return false;
     }
