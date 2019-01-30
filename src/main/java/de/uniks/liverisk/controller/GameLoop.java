@@ -44,7 +44,9 @@ public class GameLoop {
     }
 
     public void stop() {
-        executorService.shutdownNow();
+        if (executorService != null) {
+            executorService.shutdownNow();
+        }
     }
 
     public void addNonPlayerCharacters(final Collection<NonPlayerCharacter> nonPlayerCharacters) {
