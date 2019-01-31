@@ -8,14 +8,16 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameController {
 
+    public static final int SPARE_UNIT_LIMIT = 16;
+
     private static final ArrayList<String> DEFAULT_NAMES = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
     private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("0x336633ff", "0xe64d4dff", "0x4d66ccff", "0xcccc33ff"));
 
     private static final int PLATFORM_COUNT_MULTIPLIER = 3;
 
-    private static final ArrayList<Integer> PLATFORM_CAPACITIES = new ArrayList<>(Arrays.asList(3, 4, 5));
-
-    public static final int MAX_SPARE_UNIT_COUNT = 16;
+    private static final int LOWER_PLATFORM_CAPACITY_BOUND = 3;
+    private static final int UPPER_PLATFORM_CAPACITY_BOUND = 5;
+    private static final int STARTING_PLATFORM_CAPACITY = UPPER_PLATFORM_CAPACITY_BOUND;
 
     private static GameController gameController;
 
@@ -38,6 +40,7 @@ public class GameController {
 
     public void initGame(final int playerCount, final int nonPlayerCharacterCount) throws Exception {
         if (playerCount < 2 || playerCount > 4) throw new Exception("Invalid player count");
+        if (nonPlayerCharacterCount < 0 || nonPlayerCharacterCount > playerCount) throw new Exception("Invalid NonPlayerCharacter count");
         initGame(playerCount);
         addNonPlayerCharactersToGameLoop(nonPlayerCharacterCount);
     }
@@ -69,13 +72,13 @@ public class GameController {
 
     private void setStartingPlatforms() {
         for (Player player : game.getPlayers()) {
-            Platform startingPlatform = getPossibleStartingPlatform();
+            Platform startingPlatform = getAnyPossibleStartingPlatform();
             startingPlatform.setPlayer(player)
                     .withUnits(new Unit());
         }
     }
 
-    private Platform getPossibleStartingPlatform() {
+    private Platform getAnyPossibleStartingPlatform() {
         ArrayList<Platform> platforms = new ArrayList<>(game.getPlatforms());
         Collections.shuffle(platforms);
         return platforms.stream()
@@ -85,12 +88,13 @@ public class GameController {
 
     private void setPlatformCapacaties() {
         for (Platform platform : game.getPlatforms()) {
+            int capacity;
             if (platform.getPlayer() != null) {
-                platform.setCapacity(PLATFORM_CAPACITIES.get(PLATFORM_CAPACITIES.size() - 1));
+                capacity = STARTING_PLATFORM_CAPACITY;
             } else {
-                int platformCapacity = PLATFORM_CAPACITIES.get(ThreadLocalRandom.current().nextInt(PLATFORM_CAPACITIES.size()));
-                platform.setCapacity(platformCapacity);
+                capacity = ThreadLocalRandom.current().nextInt(LOWER_PLATFORM_CAPACITY_BOUND, UPPER_PLATFORM_CAPACITY_BOUND + 1);
             }
+            platform.setCapacity(capacity);
         }
     }
 
@@ -98,7 +102,8 @@ public class GameController {
         final ArrayList<Player> players = game.getPlayers();
         final ArrayList<NonPlayerCharacter> nonPlayerCharacters = new ArrayList<>();
 
-        if (nonPlayerCharacterCount >= players.size()) game.setCurrentPlayer(null);
+        //removes ability to use the ui, since all players are npcs
+        if (nonPlayerCharacterCount == players.size()) game.setCurrentPlayer(null);
 
         for (int i = players.size() - nonPlayerCharacterCount; i < players.size(); i++) {
             nonPlayerCharacters.add(new NonPlayerCharacter(players.get(i)));

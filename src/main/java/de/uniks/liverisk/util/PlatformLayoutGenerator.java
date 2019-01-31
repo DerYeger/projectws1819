@@ -11,10 +11,10 @@ public class PlatformLayoutGenerator {
 
     private static final int PLATFORM_SPACING = 50;
 
-    private static final int LOWER_X_POS_BOUND = 50;
-    private static final int LOWER_Y_POS_BOUND = 50;
-    private static final int UPPER_X_POS_BOUND = GameScreenController.GAME_SCREEN_HEIGHT - PlatformController.PLATFORM_WIDTH - 50;
-    private static final int UPPER_Y_POS_BOUND = GameScreenController.GAME_SCREEN_HEIGHT - PlatformController.PLATFORM_HEIGHT - 50;
+    private static final int LOWER_X_POS_BOUND = PLATFORM_SPACING;
+    private static final int LOWER_Y_POS_BOUND = PLATFORM_SPACING;
+    private static final int UPPER_X_POS_BOUND = GameScreenController.GAME_SCREEN_HEIGHT - PlatformController.PLATFORM_WIDTH - PLATFORM_SPACING;
+    private static final int UPPER_Y_POS_BOUND = GameScreenController.GAME_SCREEN_HEIGHT - PlatformController.PLATFORM_HEIGHT - PLATFORM_SPACING;
 
     public static ArrayList<Platform> randomizedPlatformLayout(final int platformCount) {
         ArrayList<Platform> platforms;

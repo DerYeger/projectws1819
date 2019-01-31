@@ -16,7 +16,7 @@ public class UnitDistributionRunnable implements Runnable {
 
     private void addSpareUnitsToPlayers() {
         Model.getInstance().getGame().getPlayers().parallelStream()
-                .filter(player -> !player.getPlatforms().isEmpty() && player.getUnits().size() < GameController.MAX_SPARE_UNIT_COUNT)
+                .filter(player -> !player.getPlatforms().isEmpty() && player.getUnits().size() < GameController.SPARE_UNIT_LIMIT)
                 .forEach(this::addSpareUnitsToPlayer);
     }
 
@@ -24,7 +24,7 @@ public class UnitDistributionRunnable implements Runnable {
         if (USE_SCALING_DISTRIBUTION) {
             int platformCount = player.getPlatforms().size();
             int earnedUnits = Math.min(MAX_UNITS_PER_TICK, platformCount);
-            int emptySlots = GameController.MAX_SPARE_UNIT_COUNT - player.getUnits().size();
+            int emptySlots = GameController.SPARE_UNIT_LIMIT - player.getUnits().size();
             int countOfUnitsToAdd = Math.min(earnedUnits, emptySlots);
             for (int i = 0; i < countOfUnitsToAdd; i++) {
                 player.withUnits(new Unit());
