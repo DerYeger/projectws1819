@@ -62,15 +62,16 @@ public class PlatformLayoutGenerator {
     //TODO ensure that there are not multiple sub graphs
     private static void randomizePlatformConnections(final ArrayList<Platform> platforms) {
         for (Platform platform : platforms) {
-            List<Platform> closePlatforms = getTwoClosestPlatforms(new ArrayList<>(platforms), platform);
+            List<Platform> closePlatforms = getTwoClosestPlatforms(platforms, platform);
             platform.withNeighbors(closePlatforms);
         }
     }
 
     private static List<Platform> getTwoClosestPlatforms(final ArrayList<Platform> platforms, final Platform platform) {
-        platforms.remove(platform);
-        platforms.sort(Comparator.comparingDouble(p -> getDistance(p, platform)));
-        return platforms.subList(0, 2);
+        ArrayList<Platform> platformList = new ArrayList<>(platforms);
+        platformList.remove(platform);
+        platformList.sort(Comparator.comparingDouble(p -> getDistance(p, platform)));
+        return platformList.subList(0, 2);
     }
 
     private static double getDistance(final Platform a, final Platform b) {
