@@ -1,5 +1,6 @@
-package de.uniks.liverisk.controller;
+package de.uniks.liverisk.util;
 
+import de.uniks.liverisk.controller.GameLogicController;
 import de.uniks.liverisk.model.Platform;
 import de.uniks.liverisk.model.Player;
 
@@ -55,60 +56,31 @@ public class NonPlayerCharacter {
     }
 
     private void reenforcingUpdate() {
-        if (reenforcedPlatform()) {
-            System.out.println(player.getName() + " reenforced.");
-        } else if (movedToEmptyPlatform()) {
-            System.out.println(player.getName() + " moved to empty platform.");
-//        } else if (movedToFrontlinePlatform()) {
-//            System.out.println(player.getName() + " moved to front.");
-        } else if (attackedHostilePlatform()) {
-            System.out.println(player.getName() + " attacked.");
-        } else {
-        System.out.println(player.getName() + " did nothing!");
-        }
+        if (reenforcedPlatform()) { return; }
+        if (movedToEmptyPlatform()) { return; }
+//      if (movedToFrontlinePlatform()) { return; }
+        attackedHostilePlatform();
     }
 
     private void aggressiveUpdate() {
-        if (attackedHostilePlatform()) {
-            System.out.println(player.getName() + " attacked.");
-        } else if (movedToEmptyPlatform()) {
-            System.out.println(player.getName() + " moved to empty platform.");
-//        } else if (movedToFrontlinePlatform()) {
-//            System.out.println(player.getName() + " moved to front.");
-        } else if (reenforcedPlatform()) {
-            System.out.println(player.getName() + " reenforced.");
-        } else {
-            System.out.println(player.getName() + " did nothing!");
-        }
+        if (attackedHostilePlatform()) { return; }
+        if (movedToEmptyPlatform()) { return; }
+//      if (movedToFrontlinePlatform()) {
+        reenforcedPlatform();
     }
 
     private void passiveUpdate() {
-        if (movedToEmptyPlatform()) {
-            System.out.println(player.getName() + " moved to empty platform.");
-//        } else if (movedToFrontlinePlatform()) {
-//            System.out.println(player.getName() + " moved to front.");
-        } else if (attackedHostilePlatform()) {
-            System.out.println(player.getName() + " attacked.");
-        } else if (reenforcedPlatform()) {
-            System.out.println(player.getName() + " reenforced.");
-        } else {
-            System.out.println(player.getName() + " did nothing!");
-        }
+        if (movedToEmptyPlatform()) { return; }
+//      if (movedToFrontlinePlatform()) { return; }
+        if (attackedHostilePlatform()) { return; }
+        reenforcedPlatform();
     }
 
     private void defensiveUpdate() {
-//        if (movedToFrontlinePlatform()) {
-//            System.out.println(player.getName() + " moved to front.");
-//        } else
-        if (movedToEmptyPlatform()) {
-            System.out.println(player.getName() + " moved to empty platform.");
-        } else if (attackedHostilePlatform()) {
-            System.out.println(player.getName() + " attacked.");
-        } else if (reenforcedPlatform()) {
-            System.out.println(player.getName() + " reenforced.");
-        } else {
-            System.out.println(player.getName() + " did nothing!");
-        }
+//      if (movedToFrontlinePlatform()) { return; }
+        if (movedToEmptyPlatform()) { return; }
+        if (attackedHostilePlatform()) { return; }
+        reenforcedPlatform();
     }
 
     //TODO improve

@@ -23,6 +23,7 @@ public class StartScreenBuilder {
         Button twoPlayerButton = new Button("Start 2-player Game");
         Button threePlayerButton = new Button("Start 3-player Game");
         Button fourPlayerButton = new Button("Start 4-player Game");
+        Button loadSaveGameButton = new Button("Load Saved Game");
 
         Label welcomeLabel = new Label("Welcome to LiveRisk.");
         Label infoLabel = new Label("Please select the number of players for this round.");
@@ -31,7 +32,7 @@ public class StartScreenBuilder {
         VBox labelBox = new VBox(10);
         VBox buttonBox = new VBox(20);
 
-        new StartScreenController().initialize(stage, twoPlayerButton, threePlayerButton, fourPlayerButton);
+        new StartScreenController().initialize(stage, loadSaveGameButton, twoPlayerButton, threePlayerButton, fourPlayerButton);
 
         welcomeLabel.setStyle("-fx-font-size: 40");
         infoLabel.setStyle("-fx-font-size: 15");
@@ -43,7 +44,7 @@ public class StartScreenBuilder {
 
         startScreenVBox.getChildren().addAll(labelBox, buttonBox);
         labelBox.getChildren().addAll(welcomeLabel, infoLabel);
-        buttonBox.getChildren().addAll(twoPlayerButton, threePlayerButton, fourPlayerButton);
+        buttonBox.getChildren().addAll(twoPlayerButton, threePlayerButton, fourPlayerButton, loadSaveGameButton);
 
         return startScreenVBox;
     }

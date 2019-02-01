@@ -28,7 +28,7 @@ public class PlayerCardController {
     }
 
     private void addPlayerCardMeeples() {
-        for (int i = 1; i <= GameController.SPARE_UNIT_LIMIT; i++) {
+        for (int i = 1; i <= GameController.SPARE_UNITS_LIMIT; i++) {
             meeples.getChildren().add(PlayerCardBuilder.buildPlayerCardMeepleCircle(player, i));
         }
     }

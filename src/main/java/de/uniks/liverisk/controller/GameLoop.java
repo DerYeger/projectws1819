@@ -1,5 +1,8 @@
 package de.uniks.liverisk.controller;
 
+import de.uniks.liverisk.util.GameLoopRunnable;
+import de.uniks.liverisk.util.NonPlayerCharacter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Executors;
@@ -8,13 +11,9 @@ import java.util.concurrent.TimeUnit;
 
 public class GameLoop {
 
-    private static final int UNIT_DISTRIBUTION_DELAY = 2500;
-    private static final int UNIT_DISTRIBUTION_INTERVAL = 10000;
-    private static final double UNIT_DISTRIBUTION_MODIFIER = 1;
-
-    private static final int NON_PLAYER_CHARACTERS_UPDATE_DELAY = 5000;
-    private static final int NON_PLAYER_CHARACTERS_UPDATE_INTERVAL = 10000;
-    private static final double NON_PLAYER_CHARACTERS_UPDATE_MODIFIER = 1;
+    private static final int DEFAULT_DELAY = 5000;
+    private static final int DEFAULT_INTERVAL = 10000;
+    private static final double SCHEDULE_MODIFIER = 0.5;
 
     private static GameLoop gameLoop;
 
@@ -35,36 +34,28 @@ public class GameLoop {
         //singleton
     }
 
+    public void addNonPlayerCharacters(final Collection<NonPlayerCharacter> nonPlayerCharacters) {
+        if (this.nonPlayerCharacters == null) this.nonPlayerCharacters = new ArrayList<>();
+        this.nonPlayerCharacters.addAll(nonPlayerCharacters);
+    }
+
     public void start() {
         if (executorService == null) {
             executorService = Executors.newSingleThreadScheduledExecutor();
-            addUnitDistributionRunnable();
-            addNonPlayerCharactersRunnable();
+            scheduleGameLoopRunnable();
         }
+    }
+
+    private void scheduleGameLoopRunnable() {
+        executorService.scheduleAtFixedRate(new GameLoopRunnable(nonPlayerCharacters),
+                (int) (DEFAULT_DELAY * SCHEDULE_MODIFIER),
+                (int) (DEFAULT_INTERVAL * SCHEDULE_MODIFIER),
+                TimeUnit.MILLISECONDS);
     }
 
     public void stop() {
         if (executorService != null) {
             executorService.shutdownNow();
         }
-    }
-
-    public void addNonPlayerCharacters(final Collection<NonPlayerCharacter> nonPlayerCharacters) {
-        if (this.nonPlayerCharacters == null) this.nonPlayerCharacters = new ArrayList<>();
-        this.nonPlayerCharacters.addAll(nonPlayerCharacters);
-    }
-
-    private void addUnitDistributionRunnable() {
-        executorService.scheduleAtFixedRate(new UnitDistributionRunnable(),
-                (int) (UNIT_DISTRIBUTION_DELAY * UNIT_DISTRIBUTION_MODIFIER),
-                (int) (UNIT_DISTRIBUTION_INTERVAL * UNIT_DISTRIBUTION_MODIFIER),
-                TimeUnit.MILLISECONDS);
-    }
-
-    private void addNonPlayerCharactersRunnable() {
-        executorService.scheduleAtFixedRate(new NonPlayerCharactersUpdaterRunnable(nonPlayerCharacters),
-                (int) (NON_PLAYER_CHARACTERS_UPDATE_DELAY * NON_PLAYER_CHARACTERS_UPDATE_MODIFIER),
-                (int) (NON_PLAYER_CHARACTERS_UPDATE_INTERVAL * NON_PLAYER_CHARACTERS_UPDATE_MODIFIER),
-                TimeUnit.MILLISECONDS);
     }
 }

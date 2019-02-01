@@ -1,6 +1,7 @@
 package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.*;
+import de.uniks.liverisk.util.NonPlayerCharacter;
 import de.uniks.liverisk.util.PlatformLayoutGenerator;
 
 import java.util.*;
@@ -8,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameController {
 
-    public static final int SPARE_UNIT_LIMIT = 16;
+    public static final int SPARE_UNITS_LIMIT = 16;
 
     private static final ArrayList<String> DEFAULT_NAMES = new ArrayList<>(Arrays.asList("Arthur", "Bill", "Charles", "Dutch"));
     private static final ArrayList<String> DEFAULT_COLORS = new ArrayList<>(Arrays.asList("0x336633ff", "0xe64d4dff", "0x4d66ccff", "0xcccc33ff"));
