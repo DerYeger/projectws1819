@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Utils {
 
-    public static String hexColorStringToWebColorString(String hexColorString) {
+    public static String hexColorStringToWebColorString(final String hexColorString) {
         Objects.requireNonNull(hexColorString);
         return '#' + hexColorString.substring(2, hexColorString.length() - 2);
     }
