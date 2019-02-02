@@ -39,14 +39,8 @@ public class GameController {
         game = Model.getInstance().getGame();
     }
 
-    public void initGame(final int playerCount, final int nonPlayerCharacterCount) throws Exception {
+    public void initGame(final int playerCount) throws Exception {
         if (playerCount < 2 || playerCount > 4) throw new Exception("Invalid player count");
-        if (nonPlayerCharacterCount < 0 || nonPlayerCharacterCount > playerCount) throw new Exception("Invalid NonPlayerCharacter count");
-        initGame(playerCount);
-        addNonPlayerCharactersToGameLoop(nonPlayerCharacterCount);
-    }
-
-    private void initGame(final int playerCount) {
         initPlayers(playerCount);
         initPlatforms(playerCount * PLATFORM_COUNT_MULTIPLIER);
     }
@@ -99,19 +93,6 @@ public class GameController {
         }
     }
 
-    private void addNonPlayerCharactersToGameLoop(final int nonPlayerCharacterCount) {
-        final ArrayList<Player> players = game.getPlayers();
-        final ArrayList<NonPlayerCharacter> nonPlayerCharacters = new ArrayList<>();
-
-        //removes ability to use the ui, since all players are npcs
-        if (nonPlayerCharacterCount == players.size()) game.setCurrentPlayer(null);
-
-        for (int i = players.size() - nonPlayerCharacterCount; i < players.size(); i++) {
-            nonPlayerCharacters.add(new NonPlayerCharacter(players.get(i)));
-        }
-
-        GameLoop.getInstance().addNonPlayerCharacters(nonPlayerCharacters);
-    }
 
     //checks if player names or colors include duplicates
     boolean playerConfigurationIsValid() {

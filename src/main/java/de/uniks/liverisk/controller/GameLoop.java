@@ -1,10 +1,13 @@
 package de.uniks.liverisk.controller;
 
+import de.uniks.liverisk.model.Game;
+import de.uniks.liverisk.model.Model;
+import de.uniks.liverisk.model.Player;
 import de.uniks.liverisk.util.GameLoopRunnable;
 import de.uniks.liverisk.util.NonPlayerCharacter;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,25 +31,19 @@ public class GameLoop {
 
     private ScheduledExecutorService executorService;
 
-    private ArrayList<NonPlayerCharacter> nonPlayerCharacters;
-
     private GameLoop() {
         //singleton
     }
 
-    public void addNonPlayerCharacters(final Collection<NonPlayerCharacter> nonPlayerCharacters) {
-        if (this.nonPlayerCharacters == null) this.nonPlayerCharacters = new ArrayList<>();
-        this.nonPlayerCharacters.addAll(nonPlayerCharacters);
-    }
-
-    public void start() {
+    public void start(final int nonPlayerCharacterCount) {
         if (executorService == null) {
             executorService = Executors.newSingleThreadScheduledExecutor();
-            scheduleGameLoopRunnable();
+            scheduleGameLoopRunnable(nonPlayerCharacterCount);
         }
     }
 
-    private void scheduleGameLoopRunnable() {
+    private void scheduleGameLoopRunnable(final int nonPlayerCharacterCount) {
+        List<NonPlayerCharacter> nonPlayerCharacters = initializeNonPlayerCharacters(nonPlayerCharacterCount);
         executorService.scheduleAtFixedRate(new GameLoopRunnable(nonPlayerCharacters),
                 (int) (DEFAULT_DELAY * SCHEDULE_MODIFIER),
                 (int) (DEFAULT_INTERVAL * SCHEDULE_MODIFIER),
@@ -57,5 +54,20 @@ public class GameLoop {
         if (executorService != null) {
             executorService.shutdownNow();
         }
+    }
+
+    private List<NonPlayerCharacter> initializeNonPlayerCharacters(final int nonPlayerCharacterCount) {
+        Game game = Model.getInstance().getGame();
+        final ArrayList<Player> players = game.getPlayers();
+        final ArrayList<NonPlayerCharacter> nonPlayerCharacters = new ArrayList<>();
+
+        //removes ability to use the ui, since all players are npcs
+        if (nonPlayerCharacterCount == players.size()) game.setCurrentPlayer(null);
+
+        for (int i = players.size() - nonPlayerCharacterCount; i < players.size(); i++) {
+            nonPlayerCharacters.add(new NonPlayerCharacter(players.get(i)));
+        }
+
+        return nonPlayerCharacters;
     }
 }

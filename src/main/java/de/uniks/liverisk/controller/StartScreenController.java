@@ -2,8 +2,8 @@ package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.view.GameScreenBuilder;
-
 import de.uniks.liverisk.view.PlayerEditorScreenBuilder;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -24,7 +24,7 @@ public class StartScreenController {
         Objects.requireNonNull(playerCountSelectionButtons);
         this.stage = stage;
 
-        loadButton.setOnAction(throwingEventHandlerWrapper(event -> loadSavedGame()));
+        loadButton.setOnAction(throwingEventHandlerWrapper(event -> switchToGameScreen()));
 
         for (int i = 0; i < playerCountSelectionButtons.length; i++) {
             final int playerCount = i + 2;
@@ -32,12 +32,7 @@ public class StartScreenController {
         }
     }
 
-    private void switchToPlayerEditorScreen(final int playerCount) throws Exception {
-        GameController.getInstance().initGame(playerCount, playerCount - 1);
-        stage.getScene().setRoot(PlayerEditorScreenBuilder.getPlayerEditorScreen(stage));
-    }
-
-    private void loadSavedGame() throws IOException {
+    private void switchToGameScreen() throws IOException {
         boolean loadingSuccessful = Model.getInstance().loadSavedGame();
         if (loadingSuccessful) {
             stage.getScene().setRoot(GameScreenBuilder.getGameScreen(stage));
@@ -47,4 +42,8 @@ public class StartScreenController {
         }
     }
 
+    private void switchToPlayerEditorScreen(final int playerCount) throws Exception {
+        GameController.getInstance().initGame(playerCount);
+        stage.getScene().setRoot(PlayerEditorScreenBuilder.getPlayerEditorScreen(stage));
+    }
 }

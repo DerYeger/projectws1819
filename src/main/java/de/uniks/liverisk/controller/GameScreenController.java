@@ -28,15 +28,15 @@ public class GameScreenController {
     private VBox playerList;
 
     public void initialize() throws IOException {
-        showPlayerCards();
+        drawPlayerCards();
 
         drawPlatformConnections();
         drawPlatforms();
 
-        GameLoop.getInstance().start();
+        startGameLoop();
     }
 
-    private void showPlayerCards() throws IOException {
+    private void drawPlayerCards() throws IOException {
         Game game = Model.getInstance().getGame();
         for (Player player : game.getPlayers()) {
             playerList.getChildren().add(PlayerCardBuilder.buildPlayerCardVBox(player));
@@ -67,5 +67,10 @@ public class GameScreenController {
             }
             donePlatforms.add(platform);
         }
+    }
+
+    private void startGameLoop() {
+        int playerCount = Model.getInstance().getGame().getPlayers().size();
+        GameLoop.getInstance().start(playerCount - 1);
     }
 }

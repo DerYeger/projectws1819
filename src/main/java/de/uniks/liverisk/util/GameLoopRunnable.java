@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class GameLoopRunnable implements Runnable {
 
-    private static final boolean USE_SCALING_DISTRIBUTION = true;
+    private static final boolean USE_SCALING_DISTRIBUTION = false;
     private static final int UNITS_PER_TICK_LIMIT = 3;
 
     private ArrayList<NonPlayerCharacter> nonPlayerCharacters;

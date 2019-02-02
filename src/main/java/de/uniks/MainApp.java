@@ -1,6 +1,7 @@
 package de.uniks;
 
 import de.uniks.liverisk.controller.GameLoop;
+import de.uniks.liverisk.model.Model;
 import de.uniks.liverisk.view.StartScreenBuilder;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -15,7 +16,7 @@ public class MainApp extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         Parent parent = StartScreenBuilder.getStartScreen(primaryStage);
 
         Scene scene = new Scene(parent,600, 570);
@@ -24,8 +25,13 @@ public class MainApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
 
-        primaryStage.setOnCloseRequest(event -> GameLoop.getInstance().stop());
+        primaryStage.setOnCloseRequest(event -> shutdownGame());
         primaryStage.show();
+    }
+
+    private void shutdownGame() {
+        GameLoop.getInstance().stop();
+        Model.getInstance().saveGame();
     }
 
 }

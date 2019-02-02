@@ -35,10 +35,8 @@ public class PlayerEditorScreenController {
 
     private void addListeners() {
         Model.getInstance().getGame().getPlayers().forEach(player -> {
-            player.addPropertyChangeListener(Player.PROPERTY_name,
-                    evt -> updateStartButtonUsability());
-            player.addPropertyChangeListener(Player.PROPERTY_color,
-                    evt -> updateStartButtonUsability());
+            player.addPropertyChangeListener(Player.PROPERTY_name, evt -> updateStartButtonUsability());
+            player.addPropertyChangeListener(Player.PROPERTY_color, evt -> updateStartButtonUsability());
         });
     }
 
