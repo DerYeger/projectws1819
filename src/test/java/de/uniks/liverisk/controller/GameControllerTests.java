@@ -15,7 +15,7 @@ public class GameControllerTests {
         //setup
         Model.clear();
         GameController.clear();
-        GameController.getInstance().initGame(3, 0);
+        GameController.getInstance().initGame(3);
 
         Game game = Model.getInstance().getGame();
 
@@ -45,7 +45,7 @@ public class GameControllerTests {
         Model.clear();
         GameController.clear();
         GameController gc = GameController.getInstance();
-        gc.initGame(2, 0);
+        gc.initGame(2);
 
         Game game = Model.getInstance().getGame();
 

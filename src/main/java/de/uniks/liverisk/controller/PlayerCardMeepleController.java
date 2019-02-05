@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
+import java.beans.PropertyChangeListener;
 import java.util.Objects;
 
 public class PlayerCardMeepleController {
@@ -34,8 +35,9 @@ public class PlayerCardMeepleController {
     }
 
     private void addListeners() {
-        player.addPropertyChangeListener(Player.PROPERTY_platforms, evt -> Platform.runLater(this::updateMeeple));
-        player.addPropertyChangeListener(Player.PROPERTY_units, evt -> Platform.runLater(this::updateMeeple));
+        final PropertyChangeListener meepleUpdateListener = evt -> Platform.runLater(this::updateMeeple);
+        player.addPropertyChangeListener(Player.PROPERTY_platforms, meepleUpdateListener);
+        player.addPropertyChangeListener(Player.PROPERTY_units, meepleUpdateListener);
     }
 
     private void updateMeeple() {

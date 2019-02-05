@@ -1,7 +1,6 @@
 package de.uniks.liverisk.controller;
 
 import de.uniks.liverisk.model.*;
-import de.uniks.liverisk.util.NonPlayerCharacter;
 import de.uniks.liverisk.util.PlatformLayoutGenerator;
 
 import java.util.*;
@@ -16,7 +15,7 @@ public class GameController {
 
     private static final int PLATFORM_COUNT_MULTIPLIER = 3;
 
-    private static final int LOWER_PLATFORM_CAPACITY_BOUND = 3;
+    private static final int LOWER_PLATFORM_CAPACITY_BOUND = 4;
     private static final int UPPER_PLATFORM_CAPACITY_BOUND = 5;
     private static final int STARTING_PLATFORM_CAPACITY = UPPER_PLATFORM_CAPACITY_BOUND;
 

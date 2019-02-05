@@ -7,6 +7,7 @@ import de.uniks.liverisk.model.Unit;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 public class GameLoopRunnable implements Runnable {
@@ -25,6 +26,7 @@ public class GameLoopRunnable implements Runnable {
     @Override
     public void run() {
         if (nonPlayerCharacters != null) {
+            Collections.shuffle(nonPlayerCharacters);
             updateNonPlayerCharacters();
         }
         addSpareUnitsToPlayers();
