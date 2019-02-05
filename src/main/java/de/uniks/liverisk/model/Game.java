@@ -334,7 +334,6 @@ public class Game
 
       result.append(" ").append(this.getName());
 
-
       return result.substring(1);
    }
 

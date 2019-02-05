@@ -31,7 +31,11 @@ public class MainApp extends Application {
 
     private void shutdownGame() {
         GameLoop.getInstance().stop();
+//        Model.getInstance().getGame().getPlayers().forEach(player -> {
+//            System.out.println(player + "\n" + player.getUnits() + "\n");
+//        });
         Model.getInstance().saveGame();
+        System.out.println("Game saved");
     }
 
 }

@@ -368,7 +368,15 @@ public Platform withoutNeighbors(Object... value)
       return true;
    }
 
+   @Override
+   public String toString()
+   {
+      StringBuilder result = new StringBuilder();
 
+      result.append(" ").append(this.getPlayer());
+
+      return result.substring(1);
+   }
 
    public void removeYou()
    {

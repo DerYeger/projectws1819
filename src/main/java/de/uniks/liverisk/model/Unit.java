@@ -119,7 +119,16 @@ public class Unit
       return true;
    }
 
+   @Override
+   public String toString()
+   {
+      StringBuilder result = new StringBuilder();
 
+      result.append(" ").append(this.getPlayer());
+      result.append(" ").append(this.getPlatform());
+
+      return result.substring(1);
+   }
 
    public void removeYou()
    {

@@ -356,7 +356,6 @@ public class Player
       result.append(" ").append(this.getName());
       result.append(" ").append(this.getColor());
 
-
       return result.substring(1);
    }
 
